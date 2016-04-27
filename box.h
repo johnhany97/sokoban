@@ -1,12 +1,12 @@
 #ifndef BOX_H
 #define BOX_H
-
+#include <SFML/Graphics.hpp>
 class box
 {
 public:
 	box();
 	void setPosition(int, int);
-	Vector2f getPosition();
+//	Vector2f getPosition();
 	void setIdealLoc(int, int);
 	int getXPosition();
 	int getYPosition();

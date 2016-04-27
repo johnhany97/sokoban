@@ -8,13 +8,28 @@
 	Sokoban
 */
 #include <iostream>
+#include "player.h"
+#include "box.h"
 #include <SFML/Graphics.hpp>
 
 using namespace std;
 using namespace sf;
 
+RenderWindow window(VideoMode(950, 950), "Sokoban - Hackarz Version");
+
 int main() {
-	//Our window is to be 950px X 950ox
+
+	while (window.isOpen()){
+		Event event;
+		while (window.pollEvent(event)) {
+			if (Keyboard::isKeyPressed(Keyboard::Escape) || event.type == Event::Closed)
+				window.close();
+		}
+		window.clear();
+
+		window.display();
+	}
+
 	system("pause");
 	return 0;
 }

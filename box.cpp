@@ -24,9 +24,9 @@ void box::setPosition(int x, int y) {
 	bx.setPosition(x, y);
 }
 
-Vector2f box::getPosition() {
+/*Vector2f box::getPosition() {
 	return bx.getPosition();
-}
+}*/
 
 void box::setIdealLoc(int x, int y){
 	idealLocX = x;

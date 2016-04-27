@@ -1,12 +1,12 @@
 #ifndef PLAYER_H
 #define PLAYER_H
-
+#include <SFML/Graphics.hpp>
 class player
 {
 public:
 	player();
 	void setPosition(int, int);
-	Vector2f getPosition();
+	//Vector2f getPosition();
 	int getXPosition();
 	int getYPosition();
 
