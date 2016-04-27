@@ -14,7 +14,7 @@ using namespace std;
 using namespace sf;
 
 int main() {
-
+	
 	system("pause");
 	return 0;
 }
