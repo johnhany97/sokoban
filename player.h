@@ -17,3 +17,9 @@ private:
 };
 
 #endif
+
+/*sfml-audio-d.lib
+sfml-graphics-d.lib
+sfml-network-d.lib
+sfml-system-d.lib
+sfml-window-d.lib*/
