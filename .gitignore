@@ -2,6 +2,8 @@
 *~
 CS-Project.vcxproj
 CS-Project.vcxproj.filters
+CS110-Project.vcxproj
+CS110-Project.vcxproj.filters
 openal32.dll
 sfml-audio-2.dll
 sfml-audio-d-2.dll
