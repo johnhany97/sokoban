@@ -43,4 +43,5 @@ void initialize() {
 	for (int i = 0; i < 4; i++) {
 		crates[i].setPosition((i + 1) * 100, (i + 1) * 100);
 	}
+	crates[1].switcher();
 }

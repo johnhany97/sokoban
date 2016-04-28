@@ -80,3 +80,22 @@ void box::move(int dir){
 	}
 }
 
+void box::switcher () {
+	if (onGoal) {
+		onGoal = false;
+		bxTexture.loadFromFile("box.png");
+		if (!bxTexture.loadFromFile("box.png"))
+		{
+			std::cout << "Failed to load box spritesheet!" << std::endl;
+		}
+		bx.setTexture(bxTexture);
+	}
+	else {
+		onGoal = true;
+		bxTexture.loadFromFile("box_win.png");
+		if (!bxTexture.loadFromFile("box_win.png")) {
+			std::cout << "Failed to load winning box spritesheet!" << std::endl;
+		}
+		bx.setTexture(bxTexture);
+	}
+}

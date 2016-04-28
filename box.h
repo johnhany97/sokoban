@@ -14,6 +14,7 @@ public:
 	void goalReach();
 	bool goalReached();
 	void draw(sf::RenderWindow&);
+	void switcher();
 
 private:
 	sf::Sprite bx;
