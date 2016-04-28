@@ -9,6 +9,7 @@ public:
 	sf::Vector2f getPosition();
 	int getXPosition();
 	int getYPosition();
+	void draw(sf::RenderWindow&);
 
 private:
 	sf::Sprite pl;

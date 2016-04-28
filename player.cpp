@@ -30,3 +30,7 @@ int player::getXPosition() {
 int player::getYPosition() {
 	return yLocation;
 }
+
+void player::draw(sf::RenderWindow& window) {
+	window.draw(pl);
+}
