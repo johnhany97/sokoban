@@ -13,10 +13,11 @@ public:
 	void move(int);
 	void goalReach();
 	bool goalReached();
+	void draw(sf::RenderWindow&);
 
 private:
-	Sprite bx;
-	Texture bxTexture;
+	sf::Sprite bx;
+	sf::Texture bxTexture;
 	int xLocation, yLocation;
 	int idealLocX, idealLocY;
 	bool onGoal;

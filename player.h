@@ -6,13 +6,13 @@ class player
 public:
 	player();
 	void setPosition(int, int);
-	//Vector2f getPosition();
+	//Vector2 getPosition();
 	int getXPosition();
 	int getYPosition();
 
 private:
-	Sprite pl;
-	Texture plTexture;
+	sf::Sprite pl;
+	sf::Texture plTexture;
 	int xLocation, yLocation;
 };
 

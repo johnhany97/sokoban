@@ -49,6 +49,10 @@ int box::getYPosition() {
 	return yLocation;
 }
 
+void box::draw(sf::RenderWindow& window) {
+	window.draw(bx);
+}
+
 void box::move(int dir){
 	/*
 		0 for up

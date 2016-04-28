@@ -19,7 +19,7 @@ void player::setPosition(int x, int y) {
 	pl.setPosition(x, y);
 }
 
-/*Vector2f player::getPosition() {
+/*Vector2 player::getPosition() {
 	return pl.getPosition();
 }*/
 
