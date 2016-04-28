@@ -1,10 +1,11 @@
-#ifndef PLAYER_H
-#define PLAYER_H
+#ifndef WALL_H
+#define WALL_H
 #include <SFML/Graphics.hpp>
-class player
+
+class wall
 {
 public:
-	player();
+	wall();
 	void setPosition(int, int);
 	sf::Vector2f getPosition();
 	int getXPosition();
@@ -12,9 +13,11 @@ public:
 	void draw(sf::RenderWindow&);
 
 private:
-	sf::Sprite pl;
-	sf::Texture plTexture;
+	sf::Sprite wl;
+	sf::Texture wlTexture;
 	int xLocation, yLocation;
 };
 
-#endif PLAYER_H
+
+#endif WALL_H
+
