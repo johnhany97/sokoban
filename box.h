@@ -6,7 +6,7 @@ class box
 public:
 	box();
 	void setPosition(int, int);
-//	Vector2f getPosition();
+	sf::Vector2f getPosition();
 	void setIdealLoc(int, int);
 	int getXPosition();
 	int getYPosition();

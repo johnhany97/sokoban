@@ -6,7 +6,7 @@ class player
 public:
 	player();
 	void setPosition(int, int);
-	//Vector2 getPosition();
+	sf::Vector2f getPosition();
 	int getXPosition();
 	int getYPosition();
 
@@ -17,9 +17,3 @@ private:
 };
 
 #endif
-
-/*sfml-audio-d.lib
-sfml-graphics-d.lib
-sfml-network-d.lib
-sfml-system-d.lib
-sfml-window-d.lib*/

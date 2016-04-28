@@ -19,9 +19,9 @@ void player::setPosition(int x, int y) {
 	pl.setPosition(x, y);
 }
 
-/*Vector2 player::getPosition() {
+sf::Vector2f player::getPosition() {
 	return pl.getPosition();
-}*/
+}
 
 int player::getXPosition() {
 	return xLocation;
