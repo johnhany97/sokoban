@@ -70,19 +70,23 @@ int main() {
 				break;
 			case 1: //Game //TODO: ASSUMING WE ONLY HAVE ONE MAP FOR NOW WHICH IS map1 //DOESN'T WORK
 				if (Keyboard::isKeyPressed(Keyboard::Right)) {
-					map1[playerLocY][playerLocX].move(3);
+					//IF VALID MOVE
+					swap(map1[playerLocY][playerLocX],map1[playerLocY][playerLocX+1]);
 					playerLocX++;
 				}
 				if (Keyboard::isKeyPressed(Keyboard::Left)) {
-					map1[playerLocY][playerLocX].move(2);
+					//IF VALID MOVE
+					swap(map1[playerLocY][playerLocX], map1[playerLocY][playerLocX-1]);
 					playerLocX--;
 				}
 				if (Keyboard::isKeyPressed(Keyboard::Up)) {
-					map1[playerLocY][playerLocX].move(0);
+					//IF VALID MOVE
+					swap(map1[playerLocY][playerLocX], map1[playerLocY-1][playerLocX]);
 					playerLocY--;
 				}
 				if (Keyboard::isKeyPressed(Keyboard::Down)) {
-					map1[playerLocY][playerLocX].move(1);
+					//IF VALID MOVE
+					swap(map1[playerLocY][playerLocX],map1[playerLocY+1][playerLocX]);
 					playerLocY++;
 				}
 				break;
