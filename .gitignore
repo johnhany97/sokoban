@@ -16,3 +16,6 @@ sfml-system-d-2.dll
 sfml-window-2.dll
 sfml-window-d-2.dll
 Debug/
+msvcp140d.dll
+ucrtbased.dll
+vcruntime140d.dll
