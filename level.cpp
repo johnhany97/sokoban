@@ -4,6 +4,18 @@
 
 using namespace std;
 
+level::level() {
+	size = 0;
+	x = 15;
+	y = 15;
+	for (int i = 0; i < x; i++) {
+		for (int j = 0; j < y; j++) {
+			arr.push_back(-1);
+			size++;
+		}
+	}
+}
+
 level::level(int k, int z)
 {
 	size = 0;
@@ -43,6 +55,7 @@ void level::initialize(int levelNo) {
 				break;
 			}
 			ip.get(x);
+			if (x == '\n') ip.get(x);
 		}
 	}
 }

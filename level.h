@@ -12,6 +12,7 @@ private:
 	int y;
 	int size;
 public:
+	level();
 	level(int, int);
 	void initialize(int);
 	int getContent(int, int);

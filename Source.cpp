@@ -35,9 +35,11 @@ RectangleShape gameBG;
 Text levelChoose, levelIP, levelWarning;
 bool warning = false;
 string s = "";
+int counter = 0;
 //MasterSwitch
 int status = 0; //0 for mainmenu, 1 for game, 2 for settings, 3 for level chooser
-int range = 0; //Number of levels we have
+int range = 1; //Number of levels we have
+int rangeChars = 5; //Number of characters a user is allowed to enter
 
 //Prototypes
 void initialize();
@@ -77,19 +79,30 @@ int main() {
 						s.pop_back();
 						levelIP.setString(s);
 						textAligner(levelIP);
+						counter--;
+						if (counter <= rangeChars)
+							warning = false;
 					}
-					else if (event.text.unicode < 58 && event.text.unicode > 47) {
+					else if (event.text.unicode < 58 && event.text.unicode > 47 && counter <= rangeChars) {
 						s.push_back((char)event.text.unicode);
 						levelIP.setString(s);
 						textAligner(levelIP);
+						counter++;
 					}
+					else if (counter > rangeChars)
+						warning = true;
 				}
 				if (Keyboard::isKeyPressed(Keyboard::Return)) {
-					int level = stoi(s);
-					if (level <= range && level > 0) {
+					int levelN = stoi(s);
+					if (levelN <= range && levelN > 0) {
 						//Level Input is within range
 						status = 1;
 						//Initialize Level
+						level currentLevel;
+						currentLevel.print();
+						cout << endl;
+						currentLevel.initialize(levelN);
+						currentLevel.print();
 					}
 					else { //Level Input out of range
 						warning = true;
