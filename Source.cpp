@@ -174,8 +174,6 @@ void initialize() {
 	gameBG.setFillColor(background);
 	gameBG.setPosition(0, 0);
 	gameBG.setSize(Vector2f(SCRWIDTH, SCRHEIGHT));
-
-	//Level
 }
 
 void levelChooser() {
