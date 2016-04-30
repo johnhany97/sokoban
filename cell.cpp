@@ -4,6 +4,13 @@
 
 cell::cell()
 {
+	xLoc = 0; yLoc = 0;
+	onGoal = false;
+	type = empty;
+	initialize();
+}
+
+void cell::initialize() {
 	switch (type) {
 	case 0: //Empty tile (floor)
 		clTexture.loadFromFile("floor.png");
@@ -79,8 +86,10 @@ void cell::setType(int t) {
 	}
 }
 
-void cell::setPosition(int x, int y) {
-	cl.setPosition(x, y);
+void cell::setPosition(int k, int z) {
+	cl.setPosition(k, z);
+	xLoc = k;
+	yLoc = z;
 }
 
 sf::Vector2f cell::getPosition() {
@@ -112,26 +121,26 @@ void cell::draw(sf::RenderWindow& window) {
 void cell::move(int dir) {
 	if (type == box || type == player) {
 		/*
-		0 for up
-		1 for down
-		2 for left
-		3 for right
+			0 for up
+			1 for down
+			2 for left
+			3 for right
 		*/
 		switch (dir) {
 		case 0: //Up
-			yLoc--;
+			yLoc-=50;
 			cl.move(0, -50);
 			break;
 		case 1: //Down
-			yLoc++;
+			yLoc+=50;
 			cl.move(0, 50);
 			break;
 		case 2: //Left
-			xLoc--;
+			xLoc-=50;
 			cl.move(-50, 0);
 			break;
 		case 3: //Right
-			xLoc++;
+			xLoc+=50;
 			cl.move(50, 0);
 			break;
 		}

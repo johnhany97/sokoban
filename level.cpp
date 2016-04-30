@@ -58,6 +58,31 @@ void level::initialize(int levelNo) {
 			if (x == '\n') ip.get(x);
 		}
 	}
+	initalized = true;
+}
+
+void level::setSize(int k, int z)
+{
+	if (!initalized) {
+		x = k;
+		y = z;
+		for (int i = 0; i < x; i++) {
+			for (int j = 0; j < y; j++) {
+				arr.push_back(-1);
+				size++;
+			}
+		}
+	}
+}
+
+int level::getX() const
+{
+	return x;
+}
+
+int level::getY() const
+{
+	return y;
 }
 
 int level::getContent(int i, int j) {

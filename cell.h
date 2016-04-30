@@ -14,6 +14,7 @@ private:
 public:
 	cell();
 	void setType(int);
+	void initialize();
 	void setPosition(int, int);
 	sf::Vector2f getPosition();
 	int getXPosition();

@@ -23,7 +23,7 @@ using namespace sf;
 
 //Global Variables
 RenderWindow window(VideoMode(SCRWIDTH, SCRHEIGHT), "Sokoban - Hackarz Version"); //SFML Window
-cell A[15][15];
+cell map1[15][15], map2[20][20];
 Font mainFont;
 //MainMenu
 Text mainTitle, mainPlay, mainSettings;
@@ -31,6 +31,7 @@ Text mainTitle, mainPlay, mainSettings;
 Text settingsTitle, settingsStatus, settingsBack;
 //Game
 RectangleShape gameBG;
+int playerLocX, playerLocY;
 //LevelChooser
 Text levelChoose, levelIP, levelWarning;
 bool warning = false;
@@ -47,6 +48,7 @@ void mainMenu();
 void settingsMenu();
 void levelChooser();
 void textAligner(Text&);
+void levelInitalize(level&, int);
 
 //Functions
 int main() {
@@ -66,7 +68,23 @@ int main() {
 					status = 2;
 				}
 				break;
-			case 1: //Game
+			case 1: //Game //TODO: ASSUMING WE ONLY HAVE ONE MAP FOR NOW WHICH IS map1 //DOESN'T WORK
+				if (Keyboard::isKeyPressed(Keyboard::Right)) {
+					map1[playerLocY][playerLocX].move(3);
+					playerLocX++;
+				}
+				if (Keyboard::isKeyPressed(Keyboard::Left)) {
+					map1[playerLocY][playerLocX].move(2);
+					playerLocX--;
+				}
+				if (Keyboard::isKeyPressed(Keyboard::Up)) {
+					map1[playerLocY][playerLocX].move(0);
+					playerLocY--;
+				}
+				if (Keyboard::isKeyPressed(Keyboard::Down)) {
+					map1[playerLocY][playerLocX].move(1);
+					playerLocY++;
+				}
 				break;
 			case 2: //Settings
 				if (Keyboard::isKeyPressed(Keyboard::B)) {
@@ -99,10 +117,7 @@ int main() {
 						status = 1;
 						//Initialize Level
 						level currentLevel;
-						currentLevel.print();
-						cout << endl;
-						currentLevel.initialize(levelN);
-						currentLevel.print();
+						levelInitalize(currentLevel, levelN);
 					}
 					else { //Level Input out of range
 						warning = true;
@@ -122,6 +137,12 @@ int main() {
 			break;
 		case 1: //Game
 			window.draw(gameBG);
+			//TEMP: Only draw Map1
+			for (int i = 0; i < 15; i++) {
+				for (int j = 0; j < 15; j++) {
+					map1[i][j].draw(window);
+				}
+			}
 			break;
 		case 2: //Settings
 			window.draw(settingsTitle);
@@ -236,4 +257,52 @@ void textAligner(Text& text) {
 	text.setOrigin(textRect.left + textRect.width / 2.0f,
 		textRect.top + textRect.height / 2.0f);
 	text.setPosition(Vector2f(SCRWIDTH / 2.0f, SCRHEIGHT / 2.0f));
+}
+
+void levelInitalize(level& currentLevel, int N) {
+	if (N <= 20) //Assuming here that our first 20 levels are only 15 x 15 
+	{
+		currentLevel.setSize(15, 15);
+		currentLevel.initialize(N);
+		int initialX = 50, initialY = 100;
+		for (int i = 0; i < 15; i++) {
+			initialX = 50;
+			for (int j = 0; j < 15; j++) {
+				if (i == 0 && j == 0) cout << currentLevel.getContent(0, 0);
+				switch (currentLevel.getContent(i, j))
+				{
+				case 0: //Empty
+					map1[i][j].setType(0);
+					map1[i][j].initialize();
+					map1[i][j].setPosition(initialX, initialY);
+					break;
+				case 1: //Wall
+					map1[i][j].setType(1);
+					map1[i][j].initialize();
+					map1[i][j].setPosition(initialX, initialY);
+					break;
+				case 2: //Goal
+					map1[i][j].setType(2);
+					map1[i][j].initialize();
+					map1[i][j].setPosition(initialX, initialY);
+					break;
+				case 3: //Box
+					map1[i][j].setType(3);
+					map1[i][j].initialize();
+					map1[i][j].setPosition(initialX, initialY);
+					break;
+				case 4: //Player
+					map1[i][j].setType(4);
+					map1[i][j].initialize();
+					map1[i][j].setPosition(initialX, initialY);
+					playerLocX = j;
+					playerLocY = i;
+					break;
+				}
+				initialX += 50;
+			}
+			initialY += 50;
+			initialX = 50;
+		}
+	}
 }
