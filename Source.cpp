@@ -23,7 +23,7 @@ using namespace sf;
 
 //Global Variables
 RenderWindow window(VideoMode(SCRWIDTH, SCRHEIGHT), "Sokoban - Hackarz Version"); //SFML Window
-cell map1[15][15], map2[20][20];
+cell map1A[15][15], map1B[15][15], map2[20][20];
 Font mainFont;
 //MainMenu
 Text mainTitle, mainPlay, mainSettings;
@@ -71,22 +71,22 @@ int main() {
 			case 1: //Game //TODO: ASSUMING WE ONLY HAVE ONE MAP FOR NOW WHICH IS map1 //DOESN'T WORK
 				if (Keyboard::isKeyPressed(Keyboard::Right)) {
 					//IF VALID MOVE
-					swap(map1[playerLocY][playerLocX],map1[playerLocY][playerLocX+1]);
+					swap(map1B[playerLocY][playerLocX],map1B[playerLocY][playerLocX+1]);
 					playerLocX++;
 				}
 				if (Keyboard::isKeyPressed(Keyboard::Left)) {
 					//IF VALID MOVE
-					swap(map1[playerLocY][playerLocX], map1[playerLocY][playerLocX-1]);
+					swap(map1B[playerLocY][playerLocX], map1B[playerLocY][playerLocX-1]);
 					playerLocX--;
 				}
 				if (Keyboard::isKeyPressed(Keyboard::Up)) {
 					//IF VALID MOVE
-					swap(map1[playerLocY][playerLocX], map1[playerLocY-1][playerLocX]);
+					swap(map1B[playerLocY][playerLocX], map1B[playerLocY-1][playerLocX]);
 					playerLocY--;
 				}
 				if (Keyboard::isKeyPressed(Keyboard::Down)) {
 					//IF VALID MOVE
-					swap(map1[playerLocY][playerLocX],map1[playerLocY+1][playerLocX]);
+					swap(map1B[playerLocY][playerLocX],map1B[playerLocY+1][playerLocX]);
 					playerLocY++;
 				}
 				break;
@@ -144,7 +144,12 @@ int main() {
 			//TEMP: Only draw Map1
 			for (int i = 0; i < 15; i++) {
 				for (int j = 0; j < 15; j++) {
-					map1[i][j].draw(window);
+					map1A[i][j].draw(window);
+				}
+			}
+			for (int i = 0; i < 15; i++) {
+				for (int j = 0; j < 15; j++) {
+					map1B[i][j].draw(window);
 				}
 			}
 			break;
@@ -273,32 +278,51 @@ void levelInitalize(level& currentLevel, int N) {
 				switch (currentLevel.getContent(i, j))
 				{
 				case 0: //Empty
-					map1[i][j].setType(0);
-					map1[i][j].initialize();
-					map1[i][j].setPosition(initialX, initialY);
+					map1A[i][j].setType(0);
+					map1A[i][j].initialize();
+					map1A[i][j].setPosition(initialX, initialY);
+					map1B[i][j].setType(5);
+					map1B[i][j].initialize();
+					map1B[i][j].setPosition(initialX, initialY);
 					break;
 				case 1: //Wall
-					map1[i][j].setType(1);
-					map1[i][j].initialize();
-					map1[i][j].setPosition(initialX, initialY);
+					map1A[i][j].setType(1);
+					map1A[i][j].initialize();
+					map1A[i][j].setPosition(initialX, initialY);
+					map1B[i][j].setType(5);
+					map1B[i][j].initialize();
+					map1B[i][j].setPosition(initialX, initialY);
 					break;
 				case 2: //Goal
-					map1[i][j].setType(2);
-					map1[i][j].initialize();
-					map1[i][j].setPosition(initialX, initialY);
+					map1A[i][j].setType(2);
+					map1A[i][j].initialize();
+					map1A[i][j].setPosition(initialX, initialY);
+					map1B[i][j].setType(5);
+					map1B[i][j].initialize();
+					map1B[i][j].setPosition(initialX, initialY);
 					break;
 				case 3: //Box
-					map1[i][j].setType(3);
-					map1[i][j].initialize();
-					map1[i][j].setPosition(initialX, initialY);
+					map1A[i][j].setType(0);
+					map1A[i][j].initialize();
+					map1A[i][j].setPosition(initialX, initialY);
+					map1B[i][j].setType(3);
+					map1B[i][j].initialize();
+					map1B[i][j].setPosition(initialX, initialY);
 					break;
 				case 4: //Player
-					map1[i][j].setType(4);
-					map1[i][j].initialize();
-					map1[i][j].setPosition(initialX, initialY);
+					map1A[i][j].setType(0);
+					map1A[i][j].initialize();
+					map1A[i][j].setPosition(initialX, initialY);
+					map1B[i][j].setType(4);
+					map1B[i][j].initialize();
+					map1B[i][j].setPosition(initialX, initialY);
 					playerLocX = j;
 					playerLocY = i;
 					break;
+				default: //S P A C E
+					map1B[i][j].setType(5);
+					map1B[i][j].initialize();
+					map1B[i][j].setPosition(initialX, initialY);
 				}
 				initialX += 50;
 			}

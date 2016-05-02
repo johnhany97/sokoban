@@ -4,7 +4,7 @@
 class cell
 {
 private:
-	enum kind { empty, wall, goal, box, player};
+	enum kind { empty, wall, goal, box, player, space};
 	sf::Sprite cl;
 	sf::Texture clTexture;
 	int xLoc, yLoc;

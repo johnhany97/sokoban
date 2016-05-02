@@ -61,6 +61,16 @@ void cell::initialize() {
 		xLoc = 0;
 		yLoc = 0;
 		break;
+	case 5: //S P A C E
+		clTexture.loadFromFile("space.png");
+		if (!clTexture.loadFromFile("space.png"))
+		{
+			std::cout << "Failed to load space spritesheet!" << std::endl;
+		}
+		cl.setTexture(clTexture);
+		xLoc = 0;
+		yLoc = 0;
+		break;
 	}
 }
 
@@ -80,6 +90,9 @@ void cell::setType(int t) {
 		break;
 	case 4: //Player
 		type = player;
+		break;
+	default: //S P A C E
+		type = space;
 		break;
 	}
 }
