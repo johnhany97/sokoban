@@ -15,8 +15,8 @@ cell::kind cell::getType() {
 void cell::initialize() {
 	switch (type) {
 	case 0: //Empty tile (floor)
-		clTexture.loadFromFile("floor.png");
-		if (!clTexture.loadFromFile("floor.png"))
+		clTexture.loadFromFile("sprites/floor.png");
+		if (!clTexture.loadFromFile("sprites/floor.png"))
 		{
 			std::cout << "Failed to load floor spritesheet!" << std::endl;
 		}
@@ -25,8 +25,8 @@ void cell::initialize() {
 		yLoc = 0;
 		break;
 	case 1: //Wall
-		clTexture.loadFromFile("wall.png");
-		if (!clTexture.loadFromFile("wall.png"))
+		clTexture.loadFromFile("sprites/wall.png");
+		if (!clTexture.loadFromFile("sprites/wall.png"))
 		{
 			std::cout << "Failed to load wall spritesheet!" << std::endl;
 		}
@@ -35,8 +35,8 @@ void cell::initialize() {
 		yLoc = 0;
 		break;
 	case 2: //Goal
-		clTexture.loadFromFile("goal.png");
-		if (!clTexture.loadFromFile("goal.png"))
+		clTexture.loadFromFile("sprites/goal.png");
+		if (!clTexture.loadFromFile("sprites/goal.png"))
 		{
 			std::cout << "Failed to load goal spritesheet!" << std::endl;
 		}
@@ -45,8 +45,8 @@ void cell::initialize() {
 		yLoc = 0;
 		break;
 	case 3: //Box
-		clTexture.loadFromFile("box.png");
-		if (!clTexture.loadFromFile("box.png"))
+		clTexture.loadFromFile("sprites/box.png");
+		if (!clTexture.loadFromFile("sprites/box.png"))
 		{
 			std::cout << "Failed to load box spritesheet!" << std::endl;
 		}
@@ -56,8 +56,8 @@ void cell::initialize() {
 		onGoal = false;
 		break;
 	case 4: //Player
-		clTexture.loadFromFile("player.png");
-		if (!clTexture.loadFromFile("player.png"))
+		clTexture.loadFromFile("sprites/player.png");
+		if (!clTexture.loadFromFile("sprites/player.png"))
 		{
 			std::cout << "Failed to load player spritesheet!" << std::endl;
 		}
@@ -66,8 +66,8 @@ void cell::initialize() {
 		yLoc = 0;
 		break;
 	case 5: //S P A C E
-		clTexture.loadFromFile("space.png");
-		if (!clTexture.loadFromFile("space.png"))
+		clTexture.loadFromFile("sprites/space.png");
+		if (!clTexture.loadFromFile("sprites/space.png"))
 		{
 			std::cout << "Failed to load space spritesheet!" << std::endl;
 		}
@@ -137,8 +137,8 @@ void cell::switcher() {
 	if (type == box) {
 		if (onGoal) {
 			onGoal = false;
-			clTexture.loadFromFile("box.png");
-			if (!clTexture.loadFromFile("box.png"))
+			clTexture.loadFromFile("sprites/box.png");
+			if (!clTexture.loadFromFile("sprites/box.png"))
 			{
 				std::cout << "Failed to load box spritesheet!" << std::endl;
 			}
@@ -146,8 +146,8 @@ void cell::switcher() {
 		}
 		else {
 			onGoal = true;
-			clTexture.loadFromFile("box_win.png");
-			if (!clTexture.loadFromFile("box_win.png")) {
+			clTexture.loadFromFile("sprites/box_win.png");
+			if (!clTexture.loadFromFile("sprites/box_win.png")) {
 				std::cout << "Failed to load winning box spritesheet!" << std::endl;
 			}
 			cl.setTexture(clTexture);
