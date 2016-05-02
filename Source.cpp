@@ -42,6 +42,7 @@ int status = 0; //0 for mainmenu, 1 for game, 2 for settings, 3 for level choose
 int range = 10; //Number of levels we have
 int rangeChars = 5; //Number of characters a user is allowed to enter
 
+
 //Prototypes
 void initialize();
 void mainMenu();
@@ -49,6 +50,13 @@ void settingsMenu();
 void levelChooser();
 void textAligner(Text&);
 void levelInitalize(level&, int);
+bool valideMove(int direction);
+bool NextIsBox(int direction);
+
+//Directions Arrays
+// UP , DOWN , LEFT , RIGHT
+int Dy[] = { -1, 1, 0, 0 };
+int Dx[] = { 0, 0, -1, 1 };
 
 //Functions
 int main() {
@@ -70,24 +78,42 @@ int main() {
 				break;
 			case 1: //Game //TODO: ASSUMING WE ONLY HAVE ONE MAP FOR NOW WHICH IS map1 //DOESN'T WORK
 				if (Keyboard::isKeyPressed(Keyboard::Right)) {
-					//IF VALID MOVE
-					swap(map1B[playerLocY][playerLocX],map1B[playerLocY][playerLocX+1]);
-					playerLocX++;
+					if (valideMove(3))
+					{
+						if (NextIsBox(3))
+						{
+							swap(map1B[playerLocY][playerLocX + 1], map1B[playerLocY][playerLocX + 2]);
+						}
+						swap(map1B[playerLocY][playerLocX], map1B[playerLocY][playerLocX + 1]);
+						playerLocX++;
+					}
 				}
 				if (Keyboard::isKeyPressed(Keyboard::Left)) {
-					//IF VALID MOVE
-					swap(map1B[playerLocY][playerLocX], map1B[playerLocY][playerLocX-1]);
-					playerLocX--;
+					if (valideMove(2))
+					{
+						if (NextIsBox(2))
+							swap(map1B[playerLocY][playerLocX - 1], map1B[playerLocY][playerLocX - 2]);
+						swap(map1B[playerLocY][playerLocX], map1B[playerLocY][playerLocX - 1]);
+						playerLocX--;
+					}
 				}
 				if (Keyboard::isKeyPressed(Keyboard::Up)) {
-					//IF VALID MOVE
-					swap(map1B[playerLocY][playerLocX], map1B[playerLocY-1][playerLocX]);
-					playerLocY--;
+					if (valideMove(0))
+					{
+						if (NextIsBox(0))
+							swap(map1B[playerLocY - 1][playerLocX], map1B[playerLocY - 2][playerLocX]);
+						swap(map1B[playerLocY][playerLocX], map1B[playerLocY - 1][playerLocX]);
+						playerLocY--;
+					}
 				}
 				if (Keyboard::isKeyPressed(Keyboard::Down)) {
-					//IF VALID MOVE
-					swap(map1B[playerLocY][playerLocX],map1B[playerLocY+1][playerLocX]);
-					playerLocY++;
+					if (valideMove(1))
+					{
+						if (NextIsBox(1))
+							swap(map1B[playerLocY + 1][playerLocX], map1B[playerLocY + 2][playerLocX]);
+						swap(map1B[playerLocY][playerLocX], map1B[playerLocY + 1][playerLocX]);
+						playerLocY++;
+					}
 				}
 				break;
 			case 2: //Settings
@@ -330,4 +356,24 @@ void levelInitalize(level& currentLevel, int N) {
 			initialX = 50;
 		}
 	}
+}
+
+bool valideMove(int direction)
+{
+	int x1 = playerLocX + Dx[direction]; //one in x
+	int y1 = playerLocY + Dy[direction]; // one in y
+	int x2 = playerLocX + (2 * Dx[direction]); // 2 in X
+	int y2 = playerLocY + (2 * Dy[direction]);  // 2 in y
+
+	if ((map1A[y1][x1].getType() == 1) || (map1B[y1][x1].getType()  == 3&&map1B[y2][x2].getType() == 3) || (map1B[y1][x1].getType() == 3 && map1A[y2][x2].getType() == 1))
+		return false;
+	return true;
+}
+
+bool NextIsBox(int direction)
+{
+	int x1 = playerLocX + Dx[direction]; //one in x
+	int y1 = playerLocY + Dy[direction]; // one in y
+
+	return (map1B[y1][x1].getType() == 3);
 }

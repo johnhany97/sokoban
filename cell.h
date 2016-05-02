@@ -13,13 +13,13 @@ private:
 
 public:
 	cell();
+	kind getType();
 	void setType(int);
 	void initialize();
 	void setPosition(int, int);
 	sf::Vector2f getPosition();
 	int getXPosition();
 	int getYPosition();
-	void move(int);
 	void goalReach();
 	bool goalReached();
 	void draw(sf::RenderWindow&);

@@ -8,6 +8,10 @@ cell::cell()
 	onGoal = false;
 }
 
+cell::kind cell::getType() {
+	return type;
+}
+
 void cell::initialize() {
 	switch (type) {
 	case 0: //Empty tile (floor)
@@ -127,35 +131,6 @@ int cell::getYPosition() {
 
 void cell::draw(sf::RenderWindow& window) {
 	window.draw(cl);
-}
-
-void cell::move(int dir) {
-	if (type == box || type == player) {
-		/*
-			0 for up
-			1 for down
-			2 for left
-			3 for right
-		*/
-		switch (dir) {
-		case 0: //Up
-			yLoc-=50;
-			cl.move(0, -50);
-			break;
-		case 1: //Down
-			yLoc+=50;
-			cl.move(0, 50);
-			break;
-		case 2: //Left
-			xLoc-=50;
-			cl.move(-50, 0);
-			break;
-		case 3: //Right
-			xLoc+=50;
-			cl.move(50, 0);
-			break;
-		}
-	}
 }
 
 void cell::switcher() {
