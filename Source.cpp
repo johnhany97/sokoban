@@ -39,7 +39,7 @@ string s = "";
 int counter = 0;
 //MasterSwitch
 int status = 0; //0 for mainmenu, 1 for game, 2 for settings, 3 for level chooser
-int range = 1; //Number of levels we have
+int range = 10; //Number of levels we have
 int rangeChars = 5; //Number of characters a user is allowed to enter
 
 //Prototypes
@@ -270,7 +270,6 @@ void levelInitalize(level& currentLevel, int N) {
 		for (int i = 0; i < 15; i++) {
 			initialX = 50;
 			for (int j = 0; j < 15; j++) {
-				if (i == 0 && j == 0) cout << currentLevel.getContent(0, 0);
 				switch (currentLevel.getContent(i, j))
 				{
 				case 0: //Empty

@@ -6,8 +6,6 @@ cell::cell()
 {
 	xLoc = 0; yLoc = 0;
 	onGoal = false;
-	type = empty;
-	initialize();
 }
 
 void cell::initialize() {
