@@ -50,8 +50,14 @@ void level::initialize(int levelNo) {
 			case '@': //Player
 				arr[i*y + j] = 4;
 				break;
+			case '?': //Box on goal
+				arr[i*y + j] = 5;
+				break;
+			case '+': //Player on goal
+				arr[i*y + j] = 6;
+				break;
 			case ' ': //Empty
-				arr[i*y+j] = 0;
+				arr[i*y + j] = 0;
 				break;
 			}
 			ip.get(x);

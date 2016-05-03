@@ -4,7 +4,7 @@
 class cell
 {
 private:
-	enum kind { empty, wall, goal, box, player, space};
+	enum kind { empty, wall, goal, box, player, space, box_win};
 	sf::Sprite cl;
 	sf::Texture clTexture;
 	int xLoc, yLoc;
@@ -20,10 +20,10 @@ public:
 	sf::Vector2f getPosition();
 	int getXPosition();
 	int getYPosition();
-	void goalReach();
+	void goalReach(int);
 	bool goalReached();
 	void draw(sf::RenderWindow&);
-	void switcher();
+	void switcher(int);
 };
 
 #endif
