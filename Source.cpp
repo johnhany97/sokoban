@@ -23,7 +23,7 @@ using namespace sf;
 
 //Global Variables
 RenderWindow window(VideoMode(SCRWIDTH, SCRHEIGHT), "Sokoban - Hackarz Version"); //SFML Window
-cell map1A[15][15], map1B[15][15], map2[20][20];
+cell map1A[17][17], map1B[17][17];
 Font mainFont;
 //MainMenu
 Text mainTitle, mainPlay, mainSettings;
@@ -41,7 +41,7 @@ string s = "";
 int counter = 0;
 //MasterSwitch
 int status = 0; //0 for mainmenu, 1 for game, 2 for settings, 3 for level chooser
-int range = 10; //Number of levels we have
+int range = 21; //Number of levels we have
 int rangeChars = 5; //Number of characters a user is allowed to enter
 
 //Prototypes
@@ -129,19 +129,6 @@ int main() {
 							playerLocY++;
 						}
 					}
-					else if (Keyboard::isKeyPressed(Keyboard::X)) {
-						for (int i = 0; i < 15; i++) {
-							for (int j = 0; j < 15; j++) {
-								cout << map1A[i][j].getType() << " ";
-							}cout << endl;
-						}
-						cout << endl;
-						for (int i = 0; i < 15; i++) {
-							for (int j = 0; j < 15; j++) {
-								cout << map1B[i][j].getType() << " ";
-							}cout << endl;
-						}
-					}
 				}
 				break;
 			case 2: //Settings
@@ -197,13 +184,13 @@ int main() {
 			window.draw(gameBG);
 			boxer();
 			//TEMP: Only draw Map1
-			for (int i = 0; i < 15; i++) {
-				for (int j = 0; j < 15; j++) {
+			for (int i = 0; i < 17; i++) {
+				for (int j = 0; j < 17; j++) {
 					map1A[i][j].draw(window);
 				}
 			}
-			for (int i = 0; i < 15; i++) {
-				for (int j = 0; j < 15; j++) {
+			for (int i = 0; i < 17; i++) {
+				for (int j = 0; j < 17; j++) {
 					map1B[i][j].draw(window);
 				}
 			}
@@ -225,7 +212,7 @@ int main() {
 			break;
 		}
 		window.display();
-		window.setFramerateLimit(60);
+		window.setFramerateLimit(30);
 	}
 
 	system("pause");
@@ -243,10 +230,11 @@ void initialize() {
 	mainFont.loadFromFile("Grinched.ttf");
 
 	//Game Won
+	gameWinText.setFont(mainFont);
 	gameWinText.setString("YOU WON!!");
-	gameWinText.setCharacterSize(100);
+	gameWinText.setCharacterSize(50);
 	gameWinText.setColor(Color::White);
-	gameWinText.setPosition(Vector2f(0, 0));
+	gameWinText.setPosition(Vector2f((SCRHEIGHT/2) - 100, 0));
 }
 
 void levelChooser() {
@@ -335,86 +323,83 @@ void textAligner(Text& text) {
 }
 
 void levelInitalize(level& currentLevel, int N) {
-	if (N <= 20) //Assuming here that our first 20 levels are only 15 x 15 
-	{
-		currentLevel.setSize(15, 15);
-		currentLevel.initialize(N);
-		int initialX = 50, initialY = 100;
-		for (int i = 0; i < 15; i++) {
-			initialX = 50;
-			for (int j = 0; j < 15; j++) {
-				switch (currentLevel.getContent(i, j))
-				{
-				case 0: //Empty
-					map1A[i][j].setType(0);
-					map1A[i][j].initialize();
-					map1A[i][j].setPosition(initialX, initialY);
-					map1B[i][j].setType(5);
-					map1B[i][j].initialize();
-					map1B[i][j].setPosition(initialX, initialY);
-					break;
-				case 1: //Wall
-					map1A[i][j].setType(1);
-					map1A[i][j].initialize();
-					map1A[i][j].setPosition(initialX, initialY);
-					map1B[i][j].setType(5);
-					map1B[i][j].initialize();
-					map1B[i][j].setPosition(initialX, initialY);
-					break;
-				case 2: //Goal
-					map1A[i][j].setType(2);
-					map1A[i][j].initialize();
-					map1A[i][j].setPosition(initialX, initialY);
-					map1B[i][j].setType(5);
-					map1B[i][j].initialize();
-					map1B[i][j].setPosition(initialX, initialY);
-					break;
-				case 3: //Box
-					map1A[i][j].setType(0);
-					map1A[i][j].initialize();
-					map1A[i][j].setPosition(initialX, initialY);
-					map1B[i][j].setType(3);
-					map1B[i][j].initialize();
-					map1B[i][j].setPosition(initialX, initialY);
-					break;
-				case 4: //Player
-					map1A[i][j].setType(0);
-					map1A[i][j].initialize();
-					map1A[i][j].setPosition(initialX, initialY);
-					map1B[i][j].setType(4);
-					map1B[i][j].initialize();
-					map1B[i][j].setPosition(initialX, initialY);
-					playerLocX = j;
-					playerLocY = i;
-					break;
-				case 5: //Box on Goal
-					map1A[i][j].setType(2);
-					map1A[i][j].initialize();
-					map1A[i][j].setPosition(initialX, initialY);
-					map1B[i][j].setType(6);
-					map1B[i][j].initialize();
-					map1B[i][j].setPosition(initialX, initialY);
-					break;
-				case 6: //Player on Goal
-					map1A[i][j].setType(2);
-					map1A[i][j].initialize();
-					map1A[i][j].setPosition(initialX, initialY);
-					map1B[i][j].setType(4);
-					map1B[i][j].initialize();
-					map1B[i][j].setPosition(initialX, initialY);
-					playerLocX = j;
-					playerLocY = i;
-					break;
-				default: //S P A C E
-					map1B[i][j].setType(5);
-					map1B[i][j].initialize();
-					map1B[i][j].setPosition(initialX, initialY);
-				}
-				initialX += 50;
+	currentLevel.setSize(17, 17);
+	currentLevel.initialize(N);
+	int initialX = 0, initialY = 50;
+	for (int i = 0; i < 17; i++) {
+		initialX = 0;
+		for (int j = 0; j < 17; j++) {
+			switch (currentLevel.getContent(i, j))
+			{
+			case 0: //Empty
+				map1A[i][j].setType(0);
+				map1A[i][j].initialize();
+				map1A[i][j].setPosition(initialX, initialY);
+				map1B[i][j].setType(5);
+				map1B[i][j].initialize();
+				map1B[i][j].setPosition(initialX, initialY);
+				break;
+			case 1: //Wall
+				map1A[i][j].setType(1);
+				map1A[i][j].initialize();
+				map1A[i][j].setPosition(initialX, initialY);
+				map1B[i][j].setType(5);
+				map1B[i][j].initialize();
+				map1B[i][j].setPosition(initialX, initialY);
+				break;
+			case 2: //Goal
+				map1A[i][j].setType(2);
+				map1A[i][j].initialize();
+				map1A[i][j].setPosition(initialX, initialY);
+				map1B[i][j].setType(5);
+				map1B[i][j].initialize();
+				map1B[i][j].setPosition(initialX, initialY);
+				break;
+			case 3: //Box
+				map1A[i][j].setType(0);
+				map1A[i][j].initialize();
+				map1A[i][j].setPosition(initialX, initialY);
+				map1B[i][j].setType(3);
+				map1B[i][j].initialize();
+				map1B[i][j].setPosition(initialX, initialY);
+				break;
+			case 4: //Player
+				map1A[i][j].setType(0);
+				map1A[i][j].initialize();
+				map1A[i][j].setPosition(initialX, initialY);
+				map1B[i][j].setType(4);
+				map1B[i][j].initialize();
+				map1B[i][j].setPosition(initialX, initialY);
+				playerLocX = j;
+				playerLocY = i;
+				break;
+			case 5: //Box on Goal
+				map1A[i][j].setType(2);
+				map1A[i][j].initialize();
+				map1A[i][j].setPosition(initialX, initialY);
+				map1B[i][j].setType(6);
+				map1B[i][j].initialize();
+				map1B[i][j].setPosition(initialX, initialY);
+				break;
+			case 6: //Player on Goal
+				map1A[i][j].setType(2);
+				map1A[i][j].initialize();
+				map1A[i][j].setPosition(initialX, initialY);
+				map1B[i][j].setType(4);
+				map1B[i][j].initialize();
+				map1B[i][j].setPosition(initialX, initialY);
+				playerLocX = j;
+				playerLocY = i;
+				break;
+			default: //S P A C E
+				map1B[i][j].setType(5);
+				map1B[i][j].initialize();
+				map1B[i][j].setPosition(initialX, initialY);
 			}
-			initialY += 50;
-			initialX = 50;
+			initialX += 50;
 		}
+		initialY += 50;
+		initialX = 0;
 	}
 }
 
@@ -447,36 +432,36 @@ bool NextIsBox(int direction)
 void boxer() {
 	bool tempFlag = false;
 	//MAP 1 ONLY SO FAR
-	for (int i = 0; i < 15; i++) {
-		for (int j = 0; j < 15; j++) {
+	for (int i = 0; i < 17; i++) {
+		for (int j = 0; j < 17; j++) {
 				if (map1A[i][j].getType() == 2 && map1B[i][j].getType() == 3) {
 					map1B[i][j].setType(6);
 					map1B[i][j].initialize();
-					map1B[i][j].setPosition((j * 50) + 50, (i * 50) + 100);
+					map1B[i][j].setPosition((j * 50), (i * 50) + 50);
 					flag = true;
 					tempFlag = true;
 				}
 				else if (map1A[i][j].getType() != 2 && map1B[i][j].getType() == 6) {
 					map1B[i][j].setType(3);
 					map1B[i][j].initialize();
-					map1B[i][j].setPosition((j * 50) + 50, (i * 50) + 100);
+					map1B[i][j].setPosition((j * 50), (i * 50) + 50);
 					flag = true;
 					tempFlag = true;
 				}
 				if (map1B[i][j].getType() == 4 && flag) {
 					map1B[i][j].setType(4);
 					map1B[i][j].initialize();
-					map1B[i][j].setPosition((j * 50) + 50, (i * 50) + 100);
+					map1B[i][j].setPosition((j * 50), (i * 50) + 50);
 				}
 				if (map1B[i][j].getType() == 3 && flag) {
 					map1B[i][j].setType(3);
 					map1B[i][j].initialize();
-					map1B[i][j].setPosition((j * 50) + 50, (i * 50) + 100);
+					map1B[i][j].setPosition((j * 50), (i * 50) + 50);
 				}
 				if (map1B[i][j].getType() == 6 && flag && !tempFlag) {
 					map1B[i][j].setType(6);
 					map1B[i][j].initialize();
-					map1B[i][j].setPosition((j * 50) + 50, (i * 50) + 100);
+					map1B[i][j].setPosition((j * 50), (i * 50) + 50);
 				}
 		}
 	}
@@ -485,8 +470,8 @@ void boxer() {
 bool gameWin() {
 	bool flag1 = true;
 	//TODO MAP1 SO FAR
-	for (int i = 0; i < 15; i++) {
-		for (int j = 0; j < 15; j++) {
+	for (int i = 0; i < 17; i++) {
+		for (int j = 0; j < 17; j++) {
 			if (map1B[i][j].getType() == 3)
 				flag1 = false;
 		}

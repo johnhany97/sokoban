@@ -6,8 +6,8 @@ using namespace std;
 
 level::level() {
 	size = 0;
-	x = 15;
-	y = 15;
+	x = 17;
+	y = 17;
 	for (int i = 0; i < x; i++) {
 		for (int j = 0; j < y; j++) {
 			arr.push_back(-1);
