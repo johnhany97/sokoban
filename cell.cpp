@@ -61,7 +61,7 @@ void cell::initialize() {
 		{
 			std::cout << "Failed to load player spritesheet!" << std::endl;
 		}
-		cl.setTexture(clTexture);
+		cl.setTexture(clTexture, true);
 		//xLoc = 0;
 		//yLoc = 0;
 		break;
@@ -76,8 +76,8 @@ void cell::initialize() {
 		//yLoc = 0;
 		break;
 	case 6: //Winning Box
-		clTexture.loadFromFile("box_win.png");
-		if (!clTexture.loadFromFile("box_win.png"))
+		clTexture.loadFromFile("sprites/box_win.png");
+		if (!clTexture.loadFromFile("sprites/box_win.png"))
 		{
 			std::cout << "Failed to load space spritesheet!" << std::endl;
 		}
@@ -148,6 +148,7 @@ int cell::getYPosition() {
 }
 
 void cell::draw(sf::RenderWindow& window) {
+	clTexture.setSmooth(true);
 	window.draw(cl);
 }
 
@@ -155,7 +156,7 @@ void cell::switcher(int win) {
 	if (type == box && win == 0) {
 		onGoal = false;
 		clTexture.loadFromFile("sprites/box.png");
-		if (!clTexture.loadFromFile("box.png"))
+		if (!clTexture.loadFromFile("sprites/box.png"))
 		{
 			std::cout << "Failed to load box spritesheet!" << std::endl;
 		}
@@ -164,7 +165,7 @@ void cell::switcher(int win) {
 	else if (type == box && win == 1) {
 		onGoal = true;
 		clTexture.loadFromFile("sprites/box_win.png");
-		if (!clTexture.loadFromFile("box_win.png")) {
+		if (!clTexture.loadFromFile("sprites/box_win.png")) {
 			std::cout << "Failed to load winning box spritesheet!" << std::endl;
 		}
 		cl.setTexture(clTexture);
