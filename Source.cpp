@@ -18,7 +18,7 @@ using namespace sf;
 
 //Global Definitions
 #define SCRWIDTH 950
-#define SCRHEIGHT 950
+#define SCRHEIGHT 1000
 #define CELLSIZE 50
 
 //Global Variables
@@ -32,6 +32,8 @@ Text settingsTitle, settingsStatus, settingsBack;
 //Game
 Text gameWinText;
 RectangleShape gameBG;
+Texture gameWinSplashTexture;
+Sprite gameWinSplash;
 int playerLocX, playerLocY;
 bool flag = false, levelWon = false;
 //LevelChooser
@@ -195,7 +197,7 @@ int main() {
 				}
 			}
 			if (gameWin()) {
-				window.draw(gameWinText);
+				window.draw(gameWinSplash);
 				levelWon = true;
 			}
 			break;
@@ -235,7 +237,17 @@ void initialize() {
 	gameWinText.setCharacterSize(50);
 	gameWinText.setColor(Color::White);
 	gameWinText.setPosition(Vector2f((SCRHEIGHT/2) - 100, 0));
+
+	//Game Won Sprite
+	gameWinSplashTexture.loadFromFile("images/win.jpg");
+	if (!gameWinSplashTexture.loadFromFile("images/win.jpg"))
+	{
+		std::cout << "Failed to load win splash spritesheet!" << std::endl;
+	}
+	gameWinSplash.setTexture(gameWinSplashTexture);
+	gameWinSplash.setPosition(Vector2f(0, 0));
 }
+
 
 void levelChooser() {
 	//Load MainFont
@@ -325,9 +337,9 @@ void textAligner(Text& text) {
 void levelInitalize(level& currentLevel, int N) {
 	currentLevel.setSize(17, 17);
 	currentLevel.initialize(N);
-	int initialX = 0, initialY = 50;
+	int initialX = 0, initialY = 100;
 	for (int i = 0; i < 17; i++) {
-		initialX = 0;
+		initialX = 50;
 		for (int j = 0; j < 17; j++) {
 			switch (currentLevel.getContent(i, j))
 			{
@@ -437,32 +449,32 @@ void boxer() {
 				if (map1A[i][j].getType() == 2 && map1B[i][j].getType() == 3) {
 					map1B[i][j].setType(6);
 					map1B[i][j].initialize();
-					map1B[i][j].setPosition((j * 50), (i * 50) + 50);
+					map1B[i][j].setPosition((j * 50) + 50, (i * 50) + 100);
 					flag = true;
 					tempFlag = true;
 				}
 				else if (map1A[i][j].getType() != 2 && map1B[i][j].getType() == 6) {
 					map1B[i][j].setType(3);
 					map1B[i][j].initialize();
-					map1B[i][j].setPosition((j * 50), (i * 50) + 50);
+					map1B[i][j].setPosition((j * 50) + 50, (i * 50) + 100);
 					flag = true;
 					tempFlag = true;
 				}
 				if (map1B[i][j].getType() == 4 && flag) {
 					map1B[i][j].setType(4);
 					map1B[i][j].initialize();
-					map1B[i][j].setPosition((j * 50), (i * 50) + 50);
+					map1B[i][j].setPosition((j * 50) + 50, (i * 50) + 100);
 				}
 				if (map1B[i][j].getType() == 3 && flag) {
 					map1B[i][j].setType(3);
 					map1B[i][j].initialize();
-					map1B[i][j].setPosition((j * 50), (i * 50) + 50);
+					map1B[i][j].setPosition((j * 50) + 50, (i * 50) + 100);
 				}
 				if (map1B[i][j].getType() == 6 && flag && !tempFlag) {
 					map1B[i][j].setType(6);
 					map1B[i][j].initialize();
-					map1B[i][j].setPosition((j * 50), (i * 50) + 50);
-				}
+					map1B[i][j].setPosition((j * 50) + 50, (i * 50) + 100);
+				} 
 		}
 	}
 }

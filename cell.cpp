@@ -15,8 +15,8 @@ cell::kind cell::getType() {
 void cell::initialize() {
 	switch (type) {
 	case 0: //Empty tile (floor)
-		clTexture.loadFromFile("sprites/floor.png");
-		if (!clTexture.loadFromFile("sprites/floor.png"))
+		clTexture.loadFromFile("sprites/floor.jpg");
+		if (!clTexture.loadFromFile("sprites/floor.jpg"))
 		{
 			std::cout << "Failed to load floor spritesheet!" << std::endl;
 		}
@@ -25,8 +25,8 @@ void cell::initialize() {
 		//yLoc = 0;
 		break;
 	case 1: //Wall
-		clTexture.loadFromFile("sprites/wall.png");
-		if (!clTexture.loadFromFile("sprites/wall.png"))
+		clTexture.loadFromFile("sprites/Wall.jpg");
+		if (!clTexture.loadFromFile("sprites/Wall.jpg"))
 		{
 			std::cout << "Failed to load wall spritesheet!" << std::endl;
 		}
@@ -35,8 +35,8 @@ void cell::initialize() {
 		//yLoc = 0;
 		break;
 	case 2: //Goal
-		clTexture.loadFromFile("sprites/goal.png");
-		if (!clTexture.loadFromFile("sprites/goal.png"))
+		clTexture.loadFromFile("sprites/Goal.png");
+		if (!clTexture.loadFromFile("sprites/Goal.png"))
 		{
 			std::cout << "Failed to load goal spritesheet!" << std::endl;
 		}
