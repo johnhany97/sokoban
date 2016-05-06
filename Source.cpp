@@ -43,6 +43,7 @@ int main() {
 	initialize();
 	levelChooser();
 	window.setKeyRepeatEnabled(false);
+	window.setFramerateLimit(30);
 	while (window.isOpen()){
 		Event event;
 		while (window.pollEvent(event)) {
@@ -58,7 +59,7 @@ int main() {
 					mmenu.volumePressed(sound);
 				}
 				break;
-			case 1: //Game //TODO: ASSUMING WE ONLY HAVE ONE MAP FOR NOW WHICH IS map1 //DOESN'T WORK
+			case 1: //Game
 				if (!levelWon) {
 					if (Keyboard::isKeyPressed(Keyboard::Right)) {
 						if (valideMove(3))
@@ -127,10 +128,10 @@ int main() {
 						textAligner(levelIP);
 						counter++;
 					}
-					else if (counter > rangeChars)
+					else if (counter > rangeChars || counter == 0)
 						warning = true;
 				}
-				if (Keyboard::isKeyPressed(Keyboard::Return)) {
+				if (Keyboard::isKeyPressed(Keyboard::Return) && counter > 0) {
 					int levelN = stoi(s);
 					if (levelN <= range && levelN > 0) {
 						//Level Input is within range
@@ -183,9 +184,7 @@ int main() {
 			break;
 		}
 		window.display();
-		window.setFramerateLimit(30);
 	}
-
 	system("pause");
 	return 0;
 }
@@ -351,39 +350,16 @@ bool NextIsBox(int direction)
 }
 
 void boxer() {
-	bool tempFlag = false;
-	//MAP 1 ONLY SO FAR
 	for (int i = 0; i < 17; i++) {
 		for (int j = 0; j < 17; j++) {
-				if (map1A[i][j].getType() == 2 && map1B[i][j].getType() == 3) {
-					map1B[i][j].setType(6);
-					map1B[i][j].initialize();
-					map1B[i][j].setPosition((j * 50) + 50, (i * 50) + 100);
-					flag = true;
-					tempFlag = true;
-				}
-				else if (map1A[i][j].getType() != 2 && map1B[i][j].getType() == 6) {
-					map1B[i][j].setType(3);
-					map1B[i][j].initialize();
-					map1B[i][j].setPosition((j * 50) + 50, (i * 50) + 100);
-					flag = true;
-					tempFlag = true;
-				}
-				if (map1B[i][j].getType() == 4 && flag) {
-					map1B[i][j].setType(4);
-					map1B[i][j].initialize();
-					map1B[i][j].setPosition((j * 50) + 50, (i * 50) + 100);
-				}
-				if (map1B[i][j].getType() == 3 && flag) {
-					map1B[i][j].setType(3);
-					map1B[i][j].initialize();
-					map1B[i][j].setPosition((j * 50) + 50, (i * 50) + 100);
-				}
-				if (map1B[i][j].getType() == 6 && flag && !tempFlag) {
-					map1B[i][j].setType(6);
-					map1B[i][j].initialize();
-					map1B[i][j].setPosition((j * 50) + 50, (i * 50) + 100);
-				} 
+			if (map1A[i][j].getType() == 2 && map1B[i][j].getType() == 3) {
+				map1B[i][j].switcher(1);
+				map1B[i][j].setType(6);
+			}
+			else if (map1A[i][j].getType() != 2 && map1B[i][j].getType() == 6) {
+				map1B[i][j].setType(3);
+				map1B[i][j].switcher(0);
+			}
 		}
 	}
 }

@@ -5,8 +5,9 @@ using namespace sf;
 class mainmenu
 {
 private:
-	Text mainTitle, mainPlay, mainSettings;
+	Text mainTitle;
 	Sprite playButton, settingsButton, volumeButton;
+	RectangleShape mainBG;
 	Texture playButtonTexture, settingsButtonTexture, volumeButtonTexture;
 	Font mainFont;
 public:

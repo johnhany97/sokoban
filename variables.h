@@ -13,7 +13,7 @@ using namespace sf;
 //Directions Arrays
 // UP , DOWN , LEFT , RIGHT
 const int Dy[4] = { -1, 1, 0, 0 };
-const const int Dx[4] = { 0, 0, -1, 1 };
+const int Dx[4] = { 0, 0, -1, 1 };
 
 const int range = 21; //Number of levels we have
 

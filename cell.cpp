@@ -155,19 +155,22 @@ void cell::draw(sf::RenderWindow& window) {
 void cell::switcher(int win) {
 	if (type == box && win == 0) {
 		onGoal = false;
-		clTexture.loadFromFile("sprites/box.png");
-		if (!clTexture.loadFromFile("sprites/box.png"))
+		sf::Image temp;
+		temp.loadFromFile("sprites/box.png");
+		if (!temp.loadFromFile("sprites/box.png"))
 		{
 			std::cout << "Failed to load box spritesheet!" << std::endl;
 		}
-		cl.setTexture(clTexture);
+		clTexture.update(temp);
 	}
 	else if (type == box && win == 1) {
 		onGoal = true;
-		clTexture.loadFromFile("sprites/box_win.png");
-		if (!clTexture.loadFromFile("sprites/box_win.png")) {
-			std::cout << "Failed to load winning box spritesheet!" << std::endl;
+		sf::Image temp;
+		temp.loadFromFile("sprites/box_win.png");
+		if (!temp.loadFromFile("sprites/box_win.png"))
+		{
+			std::cout << "Failed to load box win spritesheet!" << std::endl;
 		}
-		cl.setTexture(clTexture);
+		clTexture.update(temp);
 	}
 }

@@ -5,14 +5,21 @@ using namespace sf;
 mainmenu::mainmenu()
 {
 	//Load Default Font
-	mainFont.loadFromFile("Grinched.ttf");
+	mainFont.loadFromFile("Roboto.ttf");
 
 	//Title
 	mainTitle.setFont(mainFont);
-	mainTitle.setString("Sokoban");
-	mainTitle.setCharacterSize(200);
-	mainTitle.setColor(Color::Blue);
-	mainTitle.setPosition(Vector2f(230, 100));
+	mainTitle.setString("SOKOBAN");
+	mainTitle.setCharacterSize(150);
+	Color title(53, 94, 187);
+	mainTitle.setColor(title);
+	mainTitle.setPosition(Vector2f(120, 100));
+
+	//Background
+	Color background(83, 11, 134);
+	mainBG.setFillColor(background);
+	mainBG.setPosition(0, 0);
+	mainBG.setSize(Vector2f(950, 1000));
 
 	//Play Button
 	playButtonTexture.loadFromFile("images/play_button.png");
@@ -22,11 +29,6 @@ mainmenu::mainmenu()
 	}
 	playButton.setTexture(playButtonTexture, true);
 	playButton.setPosition(Vector2f(123, 601));
-	//mainPlay.setFont(mainFont);
-	//mainPlay.setString("Play (P)");
-	//mainPlay.setCharacterSize(80);
-	//mainPlay.setColor(Color::White);
-	//mainPlay.setPosition(Vector2f(380, 500));
 
 	//Settings Button
 	settingsButtonTexture.loadFromFile("images/settings_button.png");
@@ -36,11 +38,6 @@ mainmenu::mainmenu()
 	}
 	settingsButton.setTexture(settingsButtonTexture, true);
 	settingsButton.setPosition(Vector2f(123, 424.5));
-	//mainSettings.setFont(mainFont);
-	//mainSettings.setString("Settings (S)");
-	//mainSettings.setCharacterSize(80);
-	//mainSettings.setColor(Color::White);
-	//mainSettings.setPosition(Vector2f(330, 700));
 
 	//Volume Button
 	volumeButtonTexture.loadFromFile("images/volume_button.png");
@@ -53,6 +50,7 @@ mainmenu::mainmenu()
 }
 
 void mainmenu::draw(RenderWindow& window) {
+	window.draw(mainBG);
 	window.draw(mainTitle);
 	window.draw(playButton);
 	window.draw(settingsButton);
