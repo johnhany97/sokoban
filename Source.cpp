@@ -8,68 +8,38 @@
 	Sokoban
 */
 #include <iostream>
+#include "variables.h"
 #include "cell.h"
 #include "level.h"
+#include "mainmenu.h"
+#include "settingsmenu.h"
 #include <SFML/Graphics.hpp>
 #include <string>
 
 using namespace std;
 using namespace sf;
 
-//Global Definitions
-#define SCRWIDTH 950
-#define SCRHEIGHT 1000
-#define CELLSIZE 50
-
 //Global Variables
 RenderWindow window(VideoMode(SCRWIDTH, SCRHEIGHT), "Sokoban - Hackarz Version"); //SFML Window
-cell map1A[17][17], map1B[17][17];
 Font mainFont;
-//MainMenu
-Text mainTitle, mainPlay, mainSettings;
-//SettingsMenu
-Text settingsTitle, settingsStatus, settingsBack;
-//Game
-Text gameWinText;
-RectangleShape gameBG;
-Texture gameWinSplashTexture;
-Sprite gameWinSplash;
-int playerLocX, playerLocY;
-bool flag = false, levelWon = false;
-//LevelChooser
-Text levelChoose, levelIP, levelWarning;
-bool warning = false;
-string s = "";
-int counter = 0;
-//MasterSwitch
-int status = 0; //0 for mainmenu, 1 for game, 2 for settings, 3 for level chooser
-int range = 21; //Number of levels we have
-int rangeChars = 5; //Number of characters a user is allowed to enter
+mainmenu mmenu;
+settingsmenu smenu;
 
 //Prototypes
 void initialize();
-void mainMenu();
-void settingsMenu();
 void levelChooser();
-void textAligner(Text&);
 void levelInitalize(level&, int);
 bool valideMove(int);
 bool NextIsBox(int);
 void boxer();
 bool gameWin();
-
-//Directions Arrays
-// UP , DOWN , LEFT , RIGHT
-int Dy[] = { -1, 1, 0, 0 };
-int Dx[] = { 0, 0, -1, 1 };
+void textAligner(Text&);
 
 //Functions
 int main() {
 	Image icon;
 	icon.loadFromFile("HackarzIcon.png");
 	window.setIcon(50, 50, icon.getPixelsPtr());
-	mainMenu();
-	settingsMenu();
 	initialize();
 	levelChooser();
 	window.setKeyRepeatEnabled(false);
@@ -178,9 +148,7 @@ int main() {
 		window.clear();
 		switch (status) {
 		case 0: //MainMenu
-			window.draw(mainTitle);
-			window.draw(mainPlay);
-			window.draw(mainSettings);
+			mmenu.draw(window);
 			break;
 		case 1: //Game
 			window.draw(gameBG);
@@ -202,9 +170,7 @@ int main() {
 			}
 			break;
 		case 2: //Settings
-			window.draw(settingsTitle);
-			window.draw(settingsStatus);
-			window.draw(settingsBack);
+			smenu.draw(window);
 			break;
 		case 3: //LevelChooser
 			window.draw(levelChoose);
@@ -220,34 +186,6 @@ int main() {
 	system("pause");
 	return 0;
 }
-
-void initialize() {
-	//Game background
-	Color background(7, 118, 118);
-	gameBG.setFillColor(background);
-	gameBG.setPosition(0, 0);
-	gameBG.setSize(Vector2f(SCRWIDTH, SCRHEIGHT));
-
-	//Load MainFont
-	mainFont.loadFromFile("Grinched.ttf");
-
-	//Game Won
-	gameWinText.setFont(mainFont);
-	gameWinText.setString("YOU WON!!");
-	gameWinText.setCharacterSize(50);
-	gameWinText.setColor(Color::White);
-	gameWinText.setPosition(Vector2f((SCRHEIGHT/2) - 100, 0));
-
-	//Game Won Sprite
-	gameWinSplashTexture.loadFromFile("images/win.jpg");
-	if (!gameWinSplashTexture.loadFromFile("images/win.jpg"))
-	{
-		std::cout << "Failed to load win splash spritesheet!" << std::endl;
-	}
-	gameWinSplash.setTexture(gameWinSplashTexture);
-	gameWinSplash.setPosition(Vector2f(0, 0));
-}
-
 
 void levelChooser() {
 	//Load MainFont
@@ -275,63 +213,31 @@ void levelChooser() {
 	levelWarning.setPosition(Vector2f(260, 600));
 }
 
-void mainMenu() {
+void initialize() {
+	//Game background
+	Color background(7, 118, 118);
+	gameBG.setFillColor(background);
+	gameBG.setPosition(0, 0);
+	gameBG.setSize(Vector2f(SCRWIDTH, SCRHEIGHT));
+
 	//Load MainFont
 	mainFont.loadFromFile("Grinched.ttf");
 
-	//Title
-	mainTitle.setFont(mainFont);
-	mainTitle.setString("Sokoban");
-	mainTitle.setCharacterSize(200);
-	mainTitle.setColor(Color::Blue);
-	mainTitle.setPosition(Vector2f(230, 100));
+	//Game Won
+	gameWinText.setFont(mainFont);
+	gameWinText.setString("YOU WON!!");
+	gameWinText.setCharacterSize(50);
+	gameWinText.setColor(Color::White);
+	gameWinText.setPosition(Vector2f((SCRHEIGHT/2) - 100, 0));
 
-	//Play Button
-	mainPlay.setFont(mainFont);
-	mainPlay.setString("Play (P)");
-	mainPlay.setCharacterSize(80);
-	mainPlay.setColor(Color::White);
-	mainPlay.setPosition(Vector2f(380, 500));
-
-	//Settings Button
-	mainSettings.setFont(mainFont);
-	mainSettings.setString("Settings (S)");
-	mainSettings.setCharacterSize(80);
-	mainSettings.setColor(Color::White);
-	mainSettings.setPosition(Vector2f(330, 700));
-}
-
-void settingsMenu() {
-	//Load MainFont
-	mainFont.loadFromFile("Grinched.ttf");
-
-	//Settings Title
-	settingsTitle.setFont(mainFont);
-	settingsTitle.setString("Settings");
-	settingsTitle.setCharacterSize(80);
-	settingsTitle.setColor(Color::Magenta);
-	settingsTitle.setPosition(Vector2f(370, 100));
-
-	//Settings Status **TEMPORARY**
-	settingsStatus.setFont(mainFont);
-	settingsStatus.setString("NoThInG to SeE hEre :P");
-	settingsStatus.setCharacterSize(80);
-	settingsStatus.setColor(Color::White);
-	settingsStatus.setPosition(Vector2f(180, 450));
-
-	//Settings Back Button
-	settingsBack.setFont(mainFont);
-	settingsBack.setString("Press B to go back to Main Menu");
-	settingsBack.setCharacterSize(50);
-	settingsBack.setColor(Color::White);
-	settingsBack.setPosition(Vector2f(220, 700));
-}
-
-void textAligner(Text& text) {
-	sf::FloatRect textRect = text.getLocalBounds();
-	text.setOrigin(textRect.left + textRect.width / 2.0f,
-		textRect.top + textRect.height / 2.0f);
-	text.setPosition(Vector2f(SCRWIDTH / 2.0f, SCRHEIGHT / 2.0f));
+	//Game Won Sprite
+	gameWinSplashTexture.loadFromFile("images/win.jpg");
+	if (!gameWinSplashTexture.loadFromFile("images/win.jpg"))
+	{
+		std::cout << "Failed to load win splash spritesheet!" << std::endl;
+	}
+	gameWinSplash.setTexture(gameWinSplashTexture);
+	gameWinSplash.setPosition(Vector2f(0, 0));
 }
 
 void levelInitalize(level& currentLevel, int N) {
@@ -489,4 +395,11 @@ bool gameWin() {
 		}
 	}
 	return flag1;
+}
+
+void textAligner(Text& text) {
+	sf::FloatRect textRect = text.getLocalBounds();
+	text.setOrigin(textRect.left + textRect.width / 2.0f,
+		textRect.top + textRect.height / 2.0f);
+	text.setPosition(Vector2f(SCRWIDTH / 2.0f, SCRHEIGHT / 2.0f));
 }
