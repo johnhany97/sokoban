@@ -48,11 +48,14 @@ int main() {
 		while (window.pollEvent(event)) {
 			switch (status) {
 			case 0: //MainMenu
-				if (Keyboard::isKeyPressed(Keyboard::P)) {
+				if (Keyboard::isKeyPressed(Keyboard::P) || mmenu.mousePress(0, window)) {
 					status = 3;
 				}
-				if (Keyboard::isKeyPressed(Keyboard::S)) {
+				if (Keyboard::isKeyPressed(Keyboard::S) || mmenu.mousePress(1, window)) {
 					status = 2;
+				}
+				if (Keyboard::isKeyPressed(Keyboard::V) || mmenu.mousePress(2, window)) {
+					mmenu.volumePressed(sound);
 				}
 				break;
 			case 1: //Game //TODO: ASSUMING WE ONLY HAVE ONE MAP FOR NOW WHICH IS map1 //DOESN'T WORK

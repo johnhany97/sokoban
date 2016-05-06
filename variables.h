@@ -38,5 +38,7 @@ Sprite gameWinSplash;
 int playerLocX, playerLocY;
 bool flag = false, levelWon = false;
 
+bool sound = true;
+
 #endif
 
