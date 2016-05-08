@@ -12,6 +12,7 @@
 #include "cell.h"
 #include "level.h"
 #include "mainmenu.h"
+#include "sprite.h"
 #include "settingsmenu.h"
 #include <SFML/Graphics.hpp>
 #include <string>
@@ -75,8 +76,8 @@ int main() {
 								map1B[playerLocY][playerLocX + 1].setType(5);
 							}
 							swap(map1B[playerLocY][playerLocX], map1B[playerLocY][playerLocX + 1]);
-							//source.y = Right;
 							playerLocX++;
+							map1B[playerLocY][playerLocX].playerDir(1);
 						}
 					}
 					else if (Keyboard::isKeyPressed(Keyboard::Left)) {
@@ -87,8 +88,8 @@ int main() {
 								map1B[playerLocY][playerLocX - 1].setType(5);
 							}
 							swap(map1B[playerLocY][playerLocX], map1B[playerLocY][playerLocX - 1]);
-							//source.y = Left;
 							playerLocX--;
+							map1B[playerLocY][playerLocX].playerDir(0);
 						}
 					}
 					else if (Keyboard::isKeyPressed(Keyboard::Up)) {
@@ -223,20 +224,12 @@ int main() {
 			boxer();
 			for (int i = 0; i < 17; i++) {
 				for (int j = 0; j < 17; j++) {
-					map1A[i][j].draw(window, 0);
+					map1A[i][j].draw(window);
 				}
 			}
 			for (int i = 0; i < 17; i++) {
 				for (int j = 0; j < 17; j++) {
-					if (map1B[i][j].getType() != 4)
-						map1B[i][j].draw(window, 0);
-					else {
-						//source.x++;
-						//if (source.x * 32 >= map1B[i][j].getTextureX())
-						//	source.x = 0;
-						//map1B[i][j].updateRect(source.x, source.y);
-						map1B[i][j].draw(window, 1);
-					}
+					map1B[i][j].draw(window);
 				}
 			}
 			if (gameFinished) {
@@ -406,6 +399,7 @@ void levelInitalize(level& currentLevel, int N) {
 				map1B[i][j].setPosition(initialX, initialY);
 				playerLocX = j;
 				playerLocY = i;
+
 				break;
 			default: //S P A C E
 				map1B[i][j].setType(5);

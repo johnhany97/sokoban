@@ -142,27 +142,14 @@ bool cell::goalReached() {
 int cell::getXPosition() {
 	return cl.getPosition().x;
 }
-/*
-int cell::getTextureX() {
-	return clTexture.getSize().x;
-}
-
-void cell::updateRect(int x, int y) {
-	cl.setTextureRect(sf::IntRect(x * 32, y * 32, 32, 32));
-}*/
 
 int cell::getYPosition() {
 	return cl.getPosition().y;
 }
-/*
-int cell::getTextureY() {
-	return clTexture.getSize().y;
-}
-*/
 
-void cell::draw(sf::RenderWindow& window, int playerDraw) {
-		clTexture.setSmooth(true);
-		window.draw(cl);
+void cell::draw(sf::RenderWindow& window) {
+	clTexture.setSmooth(true);
+	window.draw(cl);
 }
 
 void cell::switcher(int win) {
@@ -185,5 +172,27 @@ void cell::switcher(int win) {
 			std::cout << "Failed to load box win spritesheet!" << std::endl;
 		}
 		clTexture.update(temp);
+	}
+}
+
+void cell::playerDir(int x) {
+	if (x == 0) { //Left
+		sf::Image img;
+		img.loadFromFile("sprites/player.png");
+		if (!img.loadFromFile("sprites/player.png"))
+		{
+			std::cout << "Failed to load box win spritesheet!" << std::endl;
+		}
+		clTexture.update(img);
+	}
+	else if (x == 1) { ///Right
+		sf::Image img;
+		img.loadFromFile("sprites/player_right.png");
+		if (!img.loadFromFile("sprites/player_right.png"))
+		{
+			std::cout << "Failed to load box win spritesheet!" << std::endl;
+		}
+		clTexture.update(img);
+		clTexture.update(img);
 	}
 }

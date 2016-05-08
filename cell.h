@@ -23,11 +23,9 @@ public:
 	int getYPosition();
 	void goalReach(int);
 	bool goalReached();
-	void draw(sf::RenderWindow&, int);
+	void draw(sf::RenderWindow&);
 	void switcher(int);
-	/*int getTextureX();
-	int getTextureY();
-	void updateRect(int, int);*/
+	void playerDir(int);
 };
 
 #endif
