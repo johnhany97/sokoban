@@ -12,7 +12,6 @@
 #include "cell.h"
 #include "level.h"
 #include "mainmenu.h"
-#include "sprite.h"
 #include "settingsmenu.h"
 #include <SFML/Graphics.hpp>
 #include <string>
