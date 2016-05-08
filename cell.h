@@ -5,6 +5,7 @@ class cell
 {
 private:
 	enum kind { empty, wall, goal, box, player, space, box_win};
+	enum Direction { Down, Right, Left, Up };
 	sf::Sprite cl;
 	sf::Texture clTexture;
 	int xLoc, yLoc;
@@ -22,8 +23,11 @@ public:
 	int getYPosition();
 	void goalReach(int);
 	bool goalReached();
-	void draw(sf::RenderWindow&);
+	void draw(sf::RenderWindow&, int);
 	void switcher(int);
+	/*int getTextureX();
+	int getTextureY();
+	void updateRect(int, int);*/
 };
 
 #endif

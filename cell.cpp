@@ -140,16 +140,29 @@ bool cell::goalReached() {
 }
 
 int cell::getXPosition() {
-	return xLoc;
+	return cl.getPosition().x;
 }
+/*
+int cell::getTextureX() {
+	return clTexture.getSize().x;
+}
+
+void cell::updateRect(int x, int y) {
+	cl.setTextureRect(sf::IntRect(x * 32, y * 32, 32, 32));
+}*/
 
 int cell::getYPosition() {
-	return yLoc;
+	return cl.getPosition().y;
 }
+/*
+int cell::getTextureY() {
+	return clTexture.getSize().y;
+}
+*/
 
-void cell::draw(sf::RenderWindow& window) {
-	clTexture.setSmooth(true);
-	window.draw(cl);
+void cell::draw(sf::RenderWindow& window, int playerDraw) {
+		clTexture.setSmooth(true);
+		window.draw(cl);
 }
 
 void cell::switcher(int win) {

@@ -4,19 +4,17 @@ using namespace sf;
 
 mainmenu::mainmenu()
 {
-	//Load Default Font
-	mainFont.loadFromFile("Roboto.ttf");
-
 	//Title
-	mainTitle.setFont(mainFont);
-	mainTitle.setString("SOKOBAN");
-	mainTitle.setCharacterSize(150);
-	Color title(53, 94, 187);
-	mainTitle.setColor(title);
-	mainTitle.setPosition(Vector2f(120, 100));
+	mainTitleTexture.loadFromFile("images/title.png");
+	if (!playButtonTexture.loadFromFile("images/title.png"))
+	{
+		std::cout << "Failed to load main title spritesheet!" << std::endl;
+	}
+	mainTitle.setTexture(mainTitleTexture, true);
+	mainTitle.setPosition(Vector2f(93, 142));
 
 	//Background
-	Color background(83, 11, 134);
+	Color background(130, 144, 153);
 	mainBG.setFillColor(background);
 	mainBG.setPosition(0, 0);
 	mainBG.setSize(Vector2f(950, 1000));
@@ -58,8 +56,8 @@ void mainmenu::draw(RenderWindow& window) {
 }
 
 bool mainmenu::mousePress(int spriteNo, RenderWindow &window) {
-	int mouseX = sf::Mouse::getPosition().x;
-	int mouseY = sf::Mouse::getPosition().y;
+	int mouseX = Mouse::getPosition().x;
+	int mouseY = Mouse::getPosition().y;
 
 	Vector2i windowPosition = window.getPosition();
 

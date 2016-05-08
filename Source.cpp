@@ -34,6 +34,7 @@ bool NextIsBox(int);
 void boxer();
 bool gameWin();
 void textAligner(Text&);
+bool mousePress(int);
 
 //Functions
 int main() {
@@ -44,18 +45,23 @@ int main() {
 	levelChooser();
 	window.setKeyRepeatEnabled(false);
 	window.setFramerateLimit(30);
+
+	//Vector2i source(1, Down);
+
+	Clock win_clock;
+	bool win_pic = true;
 	while (window.isOpen()){
 		Event event;
 		while (window.pollEvent(event)) {
 			switch (status) {
 			case 0: //MainMenu
-				if (Keyboard::isKeyPressed(Keyboard::P) || mmenu.mousePress(0, window)) {
+				if (mmenu.mousePress(0, window)) {
 					status = 3;
 				}
-				if (Keyboard::isKeyPressed(Keyboard::S) || mmenu.mousePress(1, window)) {
+				if (mmenu.mousePress(1, window)) {
 					status = 2;
 				}
-				if (Keyboard::isKeyPressed(Keyboard::V) || mmenu.mousePress(2, window)) {
+				if (mmenu.mousePress(2, window)) {
 					mmenu.volumePressed(sound);
 				}
 				break;
@@ -69,6 +75,7 @@ int main() {
 								map1B[playerLocY][playerLocX + 1].setType(5);
 							}
 							swap(map1B[playerLocY][playerLocX], map1B[playerLocY][playerLocX + 1]);
+							//source.y = Right;
 							playerLocX++;
 						}
 					}
@@ -80,6 +87,7 @@ int main() {
 								map1B[playerLocY][playerLocX - 1].setType(5);
 							}
 							swap(map1B[playerLocY][playerLocX], map1B[playerLocY][playerLocX - 1]);
+							//source.y = Left;
 							playerLocX--;
 						}
 					}
@@ -91,6 +99,7 @@ int main() {
 								map1B[playerLocY - 1][playerLocX].setType(5);
 							}
 							swap(map1B[playerLocY][playerLocX], map1B[playerLocY - 1][playerLocX]);
+							//source.y = Up;
 							playerLocY--;
 						}
 					}
@@ -102,9 +111,47 @@ int main() {
 								map1B[playerLocY + 1][playerLocX].setType(5);
 							}
 							swap(map1B[playerLocY][playerLocX], map1B[playerLocY + 1][playerLocX]);
+							//source.y = Down;
 							playerLocY++;
 						}
 					}
+				}
+				else if (mousePress(0)) { //Next Button
+					levelN++;
+					if (levelN > range) gameFinished = true;
+					if (levelN <= range) {
+						//Level Input is within range
+						status = 1;
+						levelWon = false;
+						flag = false;
+						//Initialize Level
+						level currentLevel;
+						levelInitalize(currentLevel, levelN);
+					} else { //Level out of range
+						//We should announce that he finished the game
+						gameFinished = true;
+						Image temp;
+						temp.loadFromFile("images/game_finished.png");
+						gameWinSplashTexture.update(temp);
+					}
+				}
+				else if (mousePress(1)) { //Home Button
+					status = 0;
+					s = "";
+					counter = 0;
+					warning = false;
+					flag = false;
+					levelWon = false;
+					gameFinished = false;
+					gameWinHome.setPosition(Vector2f(70, 810));
+					//Clear maps
+					for (int i = 0; i < 17; i++) {
+						for (int j = 0; j < 17; j++) {
+							map1A[i][j].setType(6);
+							map1B[i][j].setType(6);
+						}
+					}
+					levelIP.setString("");
 				}
 				break;
 			case 2: //Settings
@@ -132,7 +179,7 @@ int main() {
 						warning = true;
 				}
 				if (Keyboard::isKeyPressed(Keyboard::Return) && counter > 0) {
-					int levelN = stoi(s);
+					levelN = stoi(s);
 					if (levelN <= range && levelN > 0) {
 						//Level Input is within range
 						status = 1;
@@ -142,12 +189,29 @@ int main() {
 					}
 					else { //Level Input out of range
 						warning = true;
+						gameWinHome.setPosition(Vector2f(332, 810));
 					}
 				}
 				break;
 			}
 			if (Keyboard::isKeyPressed(Keyboard::Escape) || event.type == Event::Closed)
 				window.close();
+		}
+		if (win_clock.getElapsedTime().asSeconds() > 0.3f && !gameFinished) {
+			if (win_pic) {
+				Image img;
+				img.loadFromFile("images/game_win_2.png");
+				gameWinSplashTexture.update(img);
+				win_pic = false;
+				win_clock.restart();
+			}
+			else {
+				Image img;
+				img.loadFromFile("images/game_win.png");
+				gameWinSplashTexture.update(img);
+				win_pic = true;
+				win_clock.restart();
+			}
 		}
 		window.clear();
 		switch (status) {
@@ -157,19 +221,33 @@ int main() {
 		case 1: //Game
 			window.draw(gameBG);
 			boxer();
-			//TEMP: Only draw Map1
 			for (int i = 0; i < 17; i++) {
 				for (int j = 0; j < 17; j++) {
-					map1A[i][j].draw(window);
+					map1A[i][j].draw(window, 0);
 				}
 			}
 			for (int i = 0; i < 17; i++) {
 				for (int j = 0; j < 17; j++) {
-					map1B[i][j].draw(window);
+					if (map1B[i][j].getType() != 4)
+						map1B[i][j].draw(window, 0);
+					else {
+						//source.x++;
+						//if (source.x * 32 >= map1B[i][j].getTextureX())
+						//	source.x = 0;
+						//map1B[i][j].updateRect(source.x, source.y);
+						map1B[i][j].draw(window, 1);
+					}
 				}
 			}
-			if (gameWin()) {
+			if (gameFinished) {
 				window.draw(gameWinSplash);
+				window.draw(gameWinHome);
+				levelWon = true;
+			}
+			else if (gameWin() && !gameFinished) {
+				window.draw(gameWinSplash);
+				window.draw(gameWinHome);
+				window.draw(gameWinNext);
 				levelWon = true;
 			}
 			break;
@@ -233,13 +311,31 @@ void initialize() {
 	gameWinText.setPosition(Vector2f((SCRHEIGHT/2) - 100, 0));
 
 	//Game Won Sprite
-	gameWinSplashTexture.loadFromFile("images/win.jpg");
-	if (!gameWinSplashTexture.loadFromFile("images/win.jpg"))
+	gameWinSplashTexture.loadFromFile("images/game_win.png");
+	if (!gameWinSplashTexture.loadFromFile("images/game_win.png"))
 	{
 		std::cout << "Failed to load win splash spritesheet!" << std::endl;
 	}
 	gameWinSplash.setTexture(gameWinSplashTexture);
 	gameWinSplash.setPosition(Vector2f(0, 0));
+
+	//Next button
+	gameWinNextTexture.loadFromFile("images/next_button.png");
+	if (!gameWinNextTexture.loadFromFile("images/next_button.png"))
+	{
+		std::cout << "Failed to load next button spritesheet!" << std::endl;
+	}
+	gameWinNext.setTexture(gameWinNextTexture);
+	gameWinNext.setPosition(Vector2f(590, 810));
+
+	//Home button
+	gameWinHomeTexture.loadFromFile("images/home_button.png");
+	if (!gameWinHomeTexture.loadFromFile("images/home_button.png"))
+	{
+		std::cout << "Failed to load home button spritesheet!" << std::endl;
+	}
+	gameWinHome.setTexture(gameWinHomeTexture);
+	gameWinHome.setPosition(Vector2f(70, 810));
 }
 
 void levelInitalize(level& currentLevel, int N) {
@@ -381,4 +477,31 @@ void textAligner(Text& text) {
 	text.setOrigin(textRect.left + textRect.width / 2.0f,
 		textRect.top + textRect.height / 2.0f);
 	text.setPosition(Vector2f(SCRWIDTH / 2.0f, SCRHEIGHT / 2.0f));
+}
+
+bool mousePress(int spriteNo) {
+	int mouseX = Mouse::getPosition().x;
+	int mouseY = Mouse::getPosition().y;
+
+	Vector2i windowPosition = window.getPosition();
+
+	switch (spriteNo) {
+	case 0: //Next Button
+		if (mouseX > gameWinNext.getPosition().x + windowPosition.x && mouseX < (gameWinNext.getPosition().x + gameWinNext.getGlobalBounds().width + windowPosition.x)
+			&& mouseY > gameWinNext.getPosition().y + windowPosition.y + 30 && mouseY < (gameWinNext.getPosition().y + gameWinNext.getGlobalBounds().height + windowPosition.y + 30)) {
+			if (Mouse::isButtonPressed(Mouse::Left))
+				return true;
+			return false;
+		}
+		break;
+	case 1: //Home Button
+		if (mouseX > gameWinHome.getPosition().x + windowPosition.x && mouseX < (gameWinHome.getPosition().x + gameWinHome.getGlobalBounds().width + windowPosition.x)
+			&& mouseY > gameWinHome.getPosition().y + windowPosition.y + 30 && mouseY < (gameWinHome.getPosition().y + gameWinHome.getGlobalBounds().height + windowPosition.y + 30)) {
+			if (Mouse::isButtonPressed(Mouse::Left))
+				return true;
+			return false;
+		}
+		break;
+	}
+	return false;
 }

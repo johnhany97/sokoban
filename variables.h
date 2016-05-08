@@ -15,6 +15,8 @@ using namespace sf;
 const int Dy[4] = { -1, 1, 0, 0 };
 const int Dx[4] = { 0, 0, -1, 1 };
 
+//enum Direction { Down, Left, Right, Up };
+
 const int range = 21; //Number of levels we have
 
 //MasterSwitch
@@ -29,14 +31,15 @@ Text levelChoose, levelIP, levelWarning;
 bool warning = false;
 string s = "";
 int counter = 0;
+int levelN;
 
 //Game
 Text gameWinText;
 RectangleShape gameBG;
-Texture gameWinSplashTexture;
-Sprite gameWinSplash;
+Texture gameWinSplashTexture, gameWinNextTexture, gameWinHomeTexture;
+Sprite gameWinSplash, gameWinNext, gameWinHome;
 int playerLocX, playerLocY;
-bool flag = false, levelWon = false;
+bool flag = false, levelWon = false, gameFinished = false;
 
 bool sound = true;
 

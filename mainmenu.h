@@ -5,11 +5,9 @@ using namespace sf;
 class mainmenu
 {
 private:
-	Text mainTitle;
-	Sprite playButton, settingsButton, volumeButton;
+	Sprite playButton, settingsButton, volumeButton, mainTitle;
 	RectangleShape mainBG;
-	Texture playButtonTexture, settingsButtonTexture, volumeButtonTexture;
-	Font mainFont;
+	Texture playButtonTexture, settingsButtonTexture, volumeButtonTexture, mainTitleTexture;
 public:
 	mainmenu();
 	void draw(RenderWindow&);
