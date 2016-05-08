@@ -115,13 +115,37 @@ int main() {
 							playerLocY++;
 						}
 					}
+					else if (mousePress(2)) { //Restart button
+						//Initialize Level
+						level currentLevel;
+						levelInitalize(currentLevel, levelN);
+					}
+					else if (mousePress(3)) { //Home button
+						status = 0;
+						s = "";
+						counter = 0;
+						warning = false;
+						flag = false;
+						levelWon = false;
+						gameFinished = false;
+						gameWinHome.setPosition(Vector2f(70, 810));
+						//Clear maps
+						for (int i = 0; i < 17; i++) {
+							for (int j = 0; j < 17; j++) {
+								map1A[i][j].setType(6);
+								map1B[i][j].setType(6);
+							}
+						}
+						levelIP.setString("");
+					}
+					else if (mousePress(4)) { //Undo button
+						cout << "Hi, I will undo what you just did in the future :)" << endl;
+					}
 				}
 				else if (mousePress(0)) { //Next Button
 					levelN++;
 					if (levelN > range) gameFinished = true;
 					if (levelN <= range) {
-						//Level Input is within range
-						status = 1;
 						levelWon = false;
 						flag = false;
 						//Initialize Level
@@ -231,6 +255,9 @@ int main() {
 					map1B[i][j].draw(window);
 				}
 			}
+			window.draw(undoButton);
+			window.draw(restartButton);
+			window.draw(homeButton);
 			if (gameFinished) {
 				window.draw(gameWinSplash);
 				window.draw(gameWinHome);
@@ -328,6 +355,34 @@ void initialize() {
 	}
 	gameWinHome.setTexture(gameWinHomeTexture);
 	gameWinHome.setPosition(Vector2f(70, 810));
+
+	//undo Button (in game)
+	undoButtonTexture.loadFromFile("sprites/undo.png");
+	if (!undoButtonTexture.loadFromFile("sprites/undo.png"))
+	{
+		std::cout << "Failed to load undo button spritesheet!" << std::endl;
+	}
+	undoButton.setTexture(undoButtonTexture);
+	undoButton.setPosition(Vector2f(1, 937));
+
+	//home Button (in game)
+	homeButtonTexture.loadFromFile("sprites/home.png");
+	if (!homeButtonTexture.loadFromFile("sprites/home.png"))
+	{
+		std::cout << "Failed to load home button spritesheet!" << std::endl;
+	}
+	homeButton.setTexture(homeButtonTexture);
+	homeButton.setPosition(Vector2f(445, 937));
+
+	//restart Button (in game)
+	restartButtonTexture.loadFromFile("sprites/restart.png");
+	if (!restartButtonTexture.loadFromFile("sprites/restart.png"))
+	{
+		std::cout << "Failed to load restart button spritesheet!" << std::endl;
+	}
+	restartButton.setTexture(restartButtonTexture);
+	restartButton.setPosition(Vector2f(888, 937));
+
 }
 
 void levelInitalize(level& currentLevel, int N) {
@@ -490,6 +545,30 @@ bool mousePress(int spriteNo) {
 	case 1: //Home Button
 		if (mouseX > gameWinHome.getPosition().x + windowPosition.x && mouseX < (gameWinHome.getPosition().x + gameWinHome.getGlobalBounds().width + windowPosition.x)
 			&& mouseY > gameWinHome.getPosition().y + windowPosition.y + 30 && mouseY < (gameWinHome.getPosition().y + gameWinHome.getGlobalBounds().height + windowPosition.y + 30)) {
+			if (Mouse::isButtonPressed(Mouse::Left))
+				return true;
+			return false;
+		}
+		break;
+	case 2: //In game restart button
+		if (mouseX > restartButton.getPosition().x + windowPosition.x && mouseX < (restartButton.getPosition().x + restartButton.getGlobalBounds().width + windowPosition.x)
+			&& mouseY > restartButton.getPosition().y + windowPosition.y + 70 && mouseY < (restartButton.getPosition().y + restartButton.getGlobalBounds().height + windowPosition.y + 70)) {
+			if (Mouse::isButtonPressed(Mouse::Left))
+				return true;
+			return false;
+		}
+		break;
+	case 3: //In game Home button
+		if (mouseX > homeButton.getPosition().x + windowPosition.x && mouseX < (homeButton.getPosition().x + homeButton.getGlobalBounds().width + windowPosition.x)
+			&& mouseY > homeButton.getPosition().y + windowPosition.y + 70 && mouseY < (homeButton.getPosition().y + homeButton.getGlobalBounds().height + windowPosition.y + 70)) {
+			if (Mouse::isButtonPressed(Mouse::Left))
+				return true;
+			return false;
+		}
+		break;
+	case 4: //In game undo button
+		if (mouseX > undoButton.getPosition().x + windowPosition.x && mouseX < (undoButton.getPosition().x + undoButton.getGlobalBounds().width + windowPosition.x)
+			&& mouseY > undoButton.getPosition().y + windowPosition.y + 70 && mouseY < (undoButton.getPosition().y + undoButton.getGlobalBounds().height + windowPosition.y + 70)) {
 			if (Mouse::isButtonPressed(Mouse::Left))
 				return true;
 			return false;

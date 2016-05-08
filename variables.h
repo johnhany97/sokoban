@@ -36,8 +36,8 @@ int levelN;
 //Game
 Text gameWinText;
 RectangleShape gameBG;
-Texture gameWinSplashTexture, gameWinNextTexture, gameWinHomeTexture;
-Sprite gameWinSplash, gameWinNext, gameWinHome;
+Texture gameWinSplashTexture, gameWinNextTexture, gameWinHomeTexture, undoButtonTexture, homeButtonTexture, restartButtonTexture;
+Sprite gameWinSplash, gameWinNext, gameWinHome, undoButton, homeButton, restartButton;
 int playerLocX, playerLocY;
 bool flag = false, levelWon = false, gameFinished = false;
 

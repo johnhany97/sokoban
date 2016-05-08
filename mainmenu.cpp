@@ -6,7 +6,7 @@ mainmenu::mainmenu()
 {
 	//Title
 	mainTitleTexture.loadFromFile("images/title.png");
-	if (!playButtonTexture.loadFromFile("images/title.png"))
+	if (!mainTitleTexture.loadFromFile("images/title.png"))
 	{
 		std::cout << "Failed to load main title spritesheet!" << std::endl;
 	}
