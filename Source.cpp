@@ -99,8 +99,8 @@ int main() {
 								map1B[playerLocY - 1][playerLocX].setType(5);
 							}
 							swap(map1B[playerLocY][playerLocX], map1B[playerLocY - 1][playerLocX]);
-							//source.y = Up;
 							playerLocY--;
+							map1B[playerLocY][playerLocX].playerDir(2);
 						}
 					}
 					else if (Keyboard::isKeyPressed(Keyboard::Down)) {
@@ -111,8 +111,8 @@ int main() {
 								map1B[playerLocY + 1][playerLocX].setType(5);
 							}
 							swap(map1B[playerLocY][playerLocX], map1B[playerLocY + 1][playerLocX]);
-							//source.y = Down;
 							playerLocY++;
+							map1B[playerLocY][playerLocX].playerDir(3);
 						}
 					}
 					else if (mousePress(2)) { //Restart button

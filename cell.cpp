@@ -56,8 +56,8 @@ void cell::initialize() {
 		onGoal = false;
 		break;
 	case 4: //Player
-		clTexture.loadFromFile("sprites/player.png");
-		if (!clTexture.loadFromFile("sprites/player.png"))
+		clTexture.loadFromFile("sprites/player_down.png");
+		if (!clTexture.loadFromFile("sprites/player_down.png"))
 		{
 			std::cout << "Failed to load player spritesheet!" << std::endl;
 		}
@@ -181,7 +181,7 @@ void cell::playerDir(int x) {
 		img.loadFromFile("sprites/player.png");
 		if (!img.loadFromFile("sprites/player.png"))
 		{
-			std::cout << "Failed to load box win spritesheet!" << std::endl;
+			std::cout << "Failed to load player left spritesheet!" << std::endl;
 		}
 		clTexture.update(img);
 	}
@@ -190,9 +190,26 @@ void cell::playerDir(int x) {
 		img.loadFromFile("sprites/player_right.png");
 		if (!img.loadFromFile("sprites/player_right.png"))
 		{
-			std::cout << "Failed to load box win spritesheet!" << std::endl;
+			std::cout << "Failed to load player right spritesheet!" << std::endl;
 		}
 		clTexture.update(img);
+	}
+	else if (x == 2) { //Up
+		sf::Image img;
+		img.loadFromFile("sprites/player_up.png");
+		if (!img.loadFromFile("sprites/player_up.png"))
+		{
+			std::cout << "Failed to load player up spritesheet!" << std::endl;
+		}
+		clTexture.update(img);
+	}
+	else if (x == 3) { //Down
+		sf::Image img;
+		img.loadFromFile("sprites/player_down.png");
+		if (!img.loadFromFile("sprites/player_down.png"))
+		{
+			std::cout << "Failed to load player down spritesheet!" << std::endl;
+		}
 		clTexture.update(img);
 	}
 }
