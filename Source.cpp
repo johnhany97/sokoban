@@ -171,6 +171,14 @@ int main() {
 						levelWon = false;
 						flag = false;
 						//Initialize Level
+						for (int i = 0; i < 17; i++) {
+							for (int j = 0; j < 17; j++) {
+								map1A[i][j].setType(5);
+								map1A[i][j].initialize();
+								map1B[i][j].setType(5);
+								map1B[i][j].initialize();
+							}
+						}
 						level currentLevel;
 						levelInitalize(currentLevel, levelN);
 					} else { //Level out of range
@@ -232,6 +240,14 @@ int main() {
 						//Level Input is within range
 						status = 1;
 						//Initialize Level
+						for (int i = 0; i < 17; i++) {
+							for (int j = 0; j < 17; j++) {
+								map1A[i][j].setType(5);
+								map1A[i][j].initialize();
+								map1B[i][j].setType(5);
+								map1B[i][j].initialize();
+							}
+						}
 						level currentLevel;
 						levelInitalize(currentLevel, levelN);
 					}
@@ -461,9 +477,6 @@ void levelInitalize(level& currentLevel, int N) {
 				map1A[i][j].setType(0);
 				map1A[i][j].initialize();
 				map1A[i][j].setPosition(initialX, initialY);
-				//map1B[i][j].setType(4);
-				//map1B[i][j].initialize();
-				//map1B[i][j].setPosition(initialX, initialY);
 				map1B[i][j].setType(5);
 				map1B[i][j].initialize();
 				map1B[i][j].setPosition(initialX, initialY);
@@ -485,9 +498,6 @@ void levelInitalize(level& currentLevel, int N) {
 				map1A[i][j].setType(2);
 				map1A[i][j].initialize();
 				map1A[i][j].setPosition(initialX, initialY);
-				//map1B[i][j].setType(4);
-				//map1B[i][j].initialize();
-				//map1B[i][j].setPosition(initialX, initialY);
 				map1B[i][j].setType(5);
 				map1B[i][j].initialize();
 				map1B[i][j].setPosition(initialX, initialY);
@@ -505,7 +515,7 @@ void levelInitalize(level& currentLevel, int N) {
 			initialX += 50;
 		}
 		initialY += 50;
-		initialX = 0;
+		initialX = 50;
 	}
 	pushLeft = currentLevel.getPush();
 	currentLevel.print();

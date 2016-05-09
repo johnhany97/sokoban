@@ -68,7 +68,8 @@ void level::initialize(int levelNo) {
 				break;
 			}
 			ip.get(x);
-			if (x == '\n') ip.get(x);
+			if (x == '\n')
+				ip.get(x);
 		}
 	}
 	initalized = true;
