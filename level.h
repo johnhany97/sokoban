@@ -23,6 +23,7 @@ public:
 	int getContent(int, int);
 	void print();
 	int getPush();
+	void empty();
 };
 #endif LEVEL_H
 

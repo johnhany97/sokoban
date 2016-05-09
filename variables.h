@@ -2,7 +2,6 @@
 #define VARIABLES_H
 #define SCRWIDTH 950
 #define SCRHEIGHT 1000
-#define CELLSIZE 50
 #include "cell.h"
 #include <string>
 #include <SFML/Graphics.hpp>
@@ -17,7 +16,7 @@ const int Dx[4] = { 0, 0, -1, 1 };
 
 //enum Direction { Down, Left, Right, Up };
 
-const int range = 21; //Number of levels we have
+const int range = 72; //Number of levels we have
 
 //MasterSwitch
 int status = 0; //0 for mainmenu, 1 for game, 2 for settings, 3 for level chooser
@@ -39,8 +38,11 @@ RectangleShape gameBG;
 Texture gameWinSplashTexture, gameWinNextTexture, gameWinHomeTexture, undoButtonTexture, homeButtonTexture, restartButtonTexture;
 Sprite gameWinSplash, gameWinNext, gameWinHome, undoButton, homeButton, restartButton;
 int playerLocX, playerLocY, pushLeft;
-bool flag = false, levelWon = false, gameFinished = false, playing = false;
+bool flag = false, levelWon = false, gameFinished = false;
 bool sound = true;
+
+//Player
+cell player;
 
 #endif
 

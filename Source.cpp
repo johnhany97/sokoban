@@ -53,70 +53,89 @@ int main() {
 		while (window.pollEvent(event)) {
 			switch (status) {
 			case 0: //MainMenu
-				if (mmenu.mousePress(0, window)) {
+				if (mmenu.mousePress(0, window)) { //Play button pressed
 					status = 3;
 				}
-				if (mmenu.mousePress(1, window)) {
+				if (mmenu.mousePress(1, window)) { //Settings button pressed
 					status = 2;
 				}
-				if (mmenu.mousePress(2, window)) {
+				if (mmenu.mousePress(2, window)) { //Volume button pressed
 					mmenu.volumePressed(sound);
 				}
 				break;
 			case 1: //Game
 				if (!levelWon) {
-					playing = true;
 					if (Keyboard::isKeyPressed(Keyboard::Right)) {
 						if (valideMove(3))
 						{
-							if (NextIsBox(3)) {
-								swap(map1B[playerLocY][playerLocX + 1], map1B[playerLocY][playerLocX + 2]);
-								map1B[playerLocY][playerLocX + 1].setType(5);
-								pushLeft--;
+							if (player.move(3)) {
+								if (NextIsBox(3)) {
+									swap(map1B[playerLocY][playerLocX + 1], map1B[playerLocY][playerLocX + 2]);
+									map1B[playerLocY][playerLocX + 1].setType(5);
+									pushLeft--;
+								}
+								//swap(map1B[playerLocY][playerLocX], map1B[playerLocY][playerLocX + 1]);
+
+								playerLocX++;
 							}
-							swap(map1B[playerLocY][playerLocX], map1B[playerLocY][playerLocX + 1]);
-							playerLocX++;
 						}
-						map1B[playerLocY][playerLocX].playerDir(1);
+						//map1B[playerLocY][playerLocX].playerDir(1);
 					}
 					else if (Keyboard::isKeyPressed(Keyboard::Left)) {
 						if (valideMove(2))
 						{
-							if (NextIsBox(2)) {
-								swap(map1B[playerLocY][playerLocX - 1], map1B[playerLocY][playerLocX - 2]);
-								map1B[playerLocY][playerLocX - 1].setType(5);
-								pushLeft--;
+							if(player.move(2)){
+								if (NextIsBox(2)) {
+									swap(map1B[playerLocY][playerLocX - 1], map1B[playerLocY][playerLocX - 2]);
+									map1B[playerLocY][playerLocX - 1].setType(5);
+									pushLeft--;
+								}
+
+								//swap(map1B[playerLocY][playerLocX], map1B[playerLocY][playerLocX - 1]);
+								playerLocX--;
 							}
-							swap(map1B[playerLocY][playerLocX], map1B[playerLocY][playerLocX - 1]);
-							playerLocX--;
 						}
-						map1B[playerLocY][playerLocX].playerDir(0);
+						//map1B[playerLocY][playerLocX].playerDir(0);
 					}
 					else if (Keyboard::isKeyPressed(Keyboard::Up)) {
 						if (valideMove(0))
 						{
-							if (NextIsBox(0)) {
-								swap(map1B[playerLocY - 1][playerLocX], map1B[playerLocY - 2][playerLocX]);
-								map1B[playerLocY - 1][playerLocX].setType(5);
-								pushLeft--;
+							if (player.move(0)) {
+								if (NextIsBox(0)) {
+									swap(map1B[playerLocY - 1][playerLocX], map1B[playerLocY - 2][playerLocX]);
+									map1B[playerLocY - 1][playerLocX].setType(5);
+									pushLeft--;
+								}
+								playerLocY--;
 							}
-							swap(map1B[playerLocY][playerLocX], map1B[playerLocY - 1][playerLocX]);
-							playerLocY--;
+							
+							//swap(map1B[playerLocY][playerLocX], map1B[playerLocY - 1][playerLocX]);
+							
 						}
-						map1B[playerLocY][playerLocX].playerDir(2);
+						//map1B[playerLocY][playerLocX].playerDir(2);
 					}
 					else if (Keyboard::isKeyPressed(Keyboard::Down)) {
 						if (valideMove(1))
 						{
-							if (NextIsBox(1)) {
-								swap(map1B[playerLocY + 1][playerLocX], map1B[playerLocY + 2][playerLocX]);
-								map1B[playerLocY + 1][playerLocX].setType(5);
-								pushLeft--;
+							if (player.move(1)) {
+								if (NextIsBox(1)) {
+									swap(map1B[playerLocY + 1][playerLocX], map1B[playerLocY + 2][playerLocX]);
+									map1B[playerLocY + 1][playerLocX].setType(5);
+									pushLeft--;
+								}
+								//swap(map1B[playerLocY][playerLocX], map1B[playerLocY + 1][playerLocX]);
+								playerLocY++;
 							}
-							swap(map1B[playerLocY][playerLocX], map1B[playerLocY + 1][playerLocX]);
-							playerLocY++;
 						}
-						map1B[playerLocY][playerLocX].playerDir(3);
+						//map1B[playerLocY][playerLocX].playerDir(3);
+					}
+					else if (Keyboard::isKeyPressed(Keyboard::X)) {
+						for (int i = 0; i < 17; i++) {
+							for (int j = 0; j < 17; j++) {
+								cout << map1B[i][j].getType() << " ";
+							}cout << endl;
+						}
+						cout << endl << endl << endl;
 					}
 					else if (mousePress(2)) { //Restart button
 						//Initialize Level
@@ -170,13 +189,14 @@ int main() {
 					flag = false;
 					levelWon = false;
 					gameFinished = false;
-					playing = false;
 					gameWinHome.setPosition(Vector2f(70, 810));
 					//Clear maps
 					for (int i = 0; i < 17; i++) {
 						for (int j = 0; j < 17; j++) {
 							map1A[i][j].setType(6);
 							map1B[i][j].setType(6);
+							map1A[i][j].initialize();
+							map1B[i][j].initialize();
 						}
 					}
 					levelIP.setString("");
@@ -225,31 +245,25 @@ int main() {
 			if (Keyboard::isKeyPressed(Keyboard::Escape) || event.type == Event::Closed)
 				window.close();
 		}
-		if (pushLeft == 0 && playing && !levelWon) {
-			Image img;
-			img.loadFromFile("images/game_over.png");
-			gameWinSplashTexture.update(img);
-			playing = false;
-		}
-		if (!playing) {
-			if (win_clock.getElapsedTime().asSeconds() > 0.3f && !gameFinished) {
-				playing = false;
-				if (win_pic) {
-					Image img;
-					img.loadFromFile("images/game_win_2.png");
-					gameWinSplashTexture.update(img);
-					win_pic = false;
-					win_clock.restart();
-				}
-				else {
-					Image img;
-					img.loadFromFile("images/game_win.png");
-					gameWinSplashTexture.update(img);
-					win_pic = true;
-					win_clock.restart();
-				}
+		if (win_clock.getElapsedTime().asSeconds() > 0.3f && !gameFinished) {
+			if (win_pic) {
+				Image img;
+				img.loadFromFile("images/game_win_2.png");
+				gameWinSplashTexture.update(img);
+				win_pic = false;
+				win_clock.restart();
+			}
+			else {
+				Image img;
+				img.loadFromFile("images/game_win.png");
+				gameWinSplashTexture.update(img);
+				win_pic = true;
+				win_clock.restart();
 			}
 		}
+		player.update();
+
+
 		window.clear();
 		switch (status) {
 		case 0: //MainMenu
@@ -263,11 +277,13 @@ int main() {
 					map1A[i][j].draw(window);
 				}
 			}
+			player.draw(window);
 			for (int i = 0; i < 17; i++) {
 				for (int j = 0; j < 17; j++) {
-					map1B[i][j].draw(window);
+						map1B[i][j].draw(window);
 				}
 			}
+
 			window.draw(undoButton);
 			window.draw(restartButton);
 			window.draw(homeButton);
@@ -281,11 +297,6 @@ int main() {
 				window.draw(gameWinHome);
 				window.draw(gameWinNext);
 				levelWon = true;
-			}
-			else if (pushLeft == 0) {
-				window.draw(gameWinSplash);
-				window.draw(gameWinHome);
-				//Restart button 
 			}
 			break;
 		case 2: //Settings
@@ -306,14 +317,14 @@ int main() {
 
 void levelChooser() {
 	//Load MainFont
-	mainFont.loadFromFile("Grinched.ttf");
+	mainFont.loadFromFile("arcade.ttf");
 
 	//ChooseLevel Text
 	levelChoose.setFont(mainFont);
-	levelChoose.setString("Enter Level:");
-	levelChoose.setCharacterSize(200);
+	levelChoose.setString("Enter  Level");
+	levelChoose.setCharacterSize(120);
 	levelChoose.setColor(Color::Blue);
-	levelChoose.setPosition(Vector2f(90, 100));
+	levelChoose.setPosition(Vector2f(130, 100));
 
 	//LevelInput
 	levelIP.setFont(mainFont);
@@ -324,10 +335,10 @@ void levelChooser() {
 
 	//Warning
 	levelWarning.setFont(mainFont);
-	levelWarning.setString("Entered Level is Incorrect");
+	levelWarning.setString("Entered  Level is Incorrect");
 	levelWarning.setCharacterSize(50);
 	levelWarning.setColor(Color::Red);
-	levelWarning.setPosition(Vector2f(260, 600));
+	levelWarning.setPosition(Vector2f(140, 600));
 }
 
 void initialize() {
@@ -345,7 +356,8 @@ void initialize() {
 	gameWinText.setString("YOU WON!!");
 	gameWinText.setCharacterSize(50);
 	gameWinText.setColor(Color::White);
-	gameWinText.setPosition(Vector2f((SCRHEIGHT/2) - 100, 0));
+	gameWinText.setPosition(Vector2f((SCRHEIGHT / 2) - 100, 0));
+
 
 	//Game Won Sprite
 	gameWinSplashTexture.loadFromFile("images/game_win.png");
@@ -404,8 +416,8 @@ void initialize() {
 }
 
 void levelInitalize(level& currentLevel, int N) {
-	playing = true;
 	currentLevel.setSize(17, 17);
+	currentLevel.empty();
 	currentLevel.initialize(N);
 	int initialX = 0, initialY = 100;
 	for (int i = 0; i < 17; i++) {
@@ -449,9 +461,15 @@ void levelInitalize(level& currentLevel, int N) {
 				map1A[i][j].setType(0);
 				map1A[i][j].initialize();
 				map1A[i][j].setPosition(initialX, initialY);
-				map1B[i][j].setType(4);
+				//map1B[i][j].setType(4);
+				//map1B[i][j].initialize();
+				//map1B[i][j].setPosition(initialX, initialY);
+				map1B[i][j].setType(5);
 				map1B[i][j].initialize();
 				map1B[i][j].setPosition(initialX, initialY);
+				player.setType(4);
+				player.initialize();
+				player.setPosition(initialX, initialY);
 				playerLocX = j;
 				playerLocY = i;
 				break;
@@ -467,12 +485,17 @@ void levelInitalize(level& currentLevel, int N) {
 				map1A[i][j].setType(2);
 				map1A[i][j].initialize();
 				map1A[i][j].setPosition(initialX, initialY);
-				map1B[i][j].setType(4);
+				//map1B[i][j].setType(4);
+				//map1B[i][j].initialize();
+				//map1B[i][j].setPosition(initialX, initialY);
+				map1B[i][j].setType(5);
 				map1B[i][j].initialize();
 				map1B[i][j].setPosition(initialX, initialY);
+				player.setType(4);
+				player.initialize();
+				player.setPosition(initialX, initialY);
 				playerLocX = j;
 				playerLocY = i;
-
 				break;
 			default: //S P A C E
 				map1B[i][j].setType(5);
@@ -485,6 +508,8 @@ void levelInitalize(level& currentLevel, int N) {
 		initialX = 0;
 	}
 	pushLeft = currentLevel.getPush();
+	currentLevel.print();
+	cout << endl;
 }
 
 bool valideMove(int direction)

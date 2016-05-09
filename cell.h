@@ -5,13 +5,15 @@ class cell
 {
 private:
 	enum kind { empty, wall, goal, box, player, space, box_win};
-	enum Direction { Down, Right, Left, Up };
 	sf::Sprite cl;
 	sf::Texture clTexture;
 	int xLoc, yLoc;
 	bool onGoal;
 	kind type;
-
+	//Animations
+	int animationcounter, currentDir;
+	bool moving;
+	bool needToSwap;
 public:
 	cell();
 	kind getType();
@@ -26,6 +28,10 @@ public:
 	void draw(sf::RenderWindow&);
 	void switcher(int);
 	void playerDir(int);
+	bool move(int);
+	void update();
+	bool doesNeedToSwap();
+	int getDirection();
 };
 
 #endif

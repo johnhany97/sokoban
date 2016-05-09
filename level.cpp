@@ -1,6 +1,8 @@
 #include "level.h"
 #include <fstream>
 #include <iostream>
+#include <iomanip>
+#include <vector>
 
 using namespace std;
 
@@ -44,7 +46,7 @@ void level::initialize(int levelNo) {
 		for (int j = 0; j < y && !ip.eof(); j++) {
 			switch (x) {
 			case '#': //Wall
-				arr[i*y+j] = 1;
+				arr[i*y + j] = 1;
 				break;
 			case '$': //Box
 				arr[i*y + j] = 3;
@@ -70,10 +72,11 @@ void level::initialize(int levelNo) {
 		}
 	}
 	initalized = true;
+	ip.close();
 }
 
 void level::setSize(int k, int z)
-{
+{ //NEEDS UPDATE
 	if (!initalized) {
 		x = k;
 		y = z;
@@ -103,6 +106,7 @@ int level::getContent(int i, int j) {
 void level::print() {
 	for (int i = 0; i < x; i++) {
 		for (int j = 0; j < y; j++) {
+			cout << setw(2);
 			cout << arr[i*y + j] << " ";
 		}
 		cout << endl;
@@ -111,4 +115,12 @@ void level::print() {
 
 int level::getPush() {
 	return push;
+}
+
+void level::empty() {
+	for (int i = 0; i < x; i++) {
+		for (int j =0; j < y; j++) {
+			arr.pop_back();
+		}
+	}
 }

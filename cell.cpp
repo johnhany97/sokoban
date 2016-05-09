@@ -6,6 +6,9 @@ cell::cell()
 {
 	xLoc = 0; yLoc = 0;
 	onGoal = false;
+	moving = false;
+	animationcounter = 0;
+	currentDir = 1;
 }
 
 cell::kind cell::getType() {
@@ -20,9 +23,7 @@ void cell::initialize() {
 		{
 			std::cout << "Failed to load floor spritesheet!" << std::endl;
 		}
-		cl.setTexture(clTexture);
-		//xLoc = 0;
-		//yLoc = 0;
+		cl.setTexture(clTexture, true);
 		break;
 	case 1: //Wall
 		clTexture.loadFromFile("sprites/Wall.jpg");
@@ -30,9 +31,7 @@ void cell::initialize() {
 		{
 			std::cout << "Failed to load wall spritesheet!" << std::endl;
 		}
-		cl.setTexture(clTexture);
-		//xLoc = 0;
-		//yLoc = 0;
+		cl.setTexture(clTexture, true);
 		break;
 	case 2: //Goal
 		clTexture.loadFromFile("sprites/Goal.png");
@@ -40,9 +39,7 @@ void cell::initialize() {
 		{
 			std::cout << "Failed to load goal spritesheet!" << std::endl;
 		}
-		cl.setTexture(clTexture);
-		//xLoc = 0;
-		//yLoc = 0;
+		cl.setTexture(clTexture, true);
 		break;
 	case 3: //Box
 		clTexture.loadFromFile("sprites/box.png");
@@ -51,19 +48,17 @@ void cell::initialize() {
 			std::cout << "Failed to load box spritesheet!" << std::endl;
 		}
 		cl.setTexture(clTexture, true);
-		//xLoc = 0;
-		//yLoc = 0;
 		onGoal = false;
 		break;
 	case 4: //Player
-		clTexture.loadFromFile("sprites/player_down.png");
-		if (!clTexture.loadFromFile("sprites/player_down.png"))
+		clTexture.loadFromFile("sprites/player2.png");
+		if (!clTexture.loadFromFile("sprites/player2.png"))
 		{
 			std::cout << "Failed to load player spritesheet!" << std::endl;
 		}
 		cl.setTexture(clTexture, true);
-		//xLoc = 0;
-		//yLoc = 0;
+		cl.setTextureRect(sf::IntRect(32, 0, 32, 32)); //x loc, y loc, width, length
+		cl.setScale(50 / 32.0, 50 / 32.0);
 		break;
 	case 5: //S P A C E
 		clTexture.loadFromFile("sprites/space.png");
@@ -71,9 +66,7 @@ void cell::initialize() {
 		{
 			std::cout << "Failed to load space spritesheet!" << std::endl;
 		}
-		cl.setTexture(clTexture);
-		//xLoc = 0;
-		//yLoc = 0;
+		cl.setTexture(clTexture, true);
 		break;
 	case 6: //Winning Box
 		clTexture.loadFromFile("sprites/box_win.png");
@@ -82,8 +75,6 @@ void cell::initialize() {
 			std::cout << "Failed to load space spritesheet!" << std::endl;
 		}
 		cl.setTexture(clTexture, true);
-		//xLoc = 0;
-		//yLoc = 0;
 		break;
 	}
 }
@@ -148,7 +139,7 @@ int cell::getYPosition() {
 }
 
 void cell::draw(sf::RenderWindow& window) {
-	clTexture.setSmooth(true);
+	//clTexture.setSmooth(true);
 	window.draw(cl);
 }
 
@@ -174,7 +165,7 @@ void cell::switcher(int win) {
 		clTexture.update(temp);
 	}
 }
-
+/*
 void cell::playerDir(int x) {
 	if (x == 0) { //Left
 		sf::Image img;
@@ -212,4 +203,68 @@ void cell::playerDir(int x) {
 		}
 		clTexture.update(img);
 	}
+}*/
+
+bool cell::move(int dir) {
+	if (!moving) {
+		//Set current direction to dir
+		currentDir = dir;
+		//Set moving to true
+		moving = true;
+		//Reset animation counter to zero
+		animationcounter = 0;
+		return true;
+	}
+	return false;
+}
+
+void cell::update() {
+
+	if (moving && animationcounter < 12.5 && type == 4) //SHould check we are a player or a box
+	{
+		switch (currentDir) {
+		case 0: //up
+			cl.move(0, -4);
+			if ((animationcounter / 5) % 2 == 0) {
+				cl.setTextureRect(sf::IntRect(0, 96, 32, 32));
+			}
+			else cl.setTextureRect(sf::IntRect(64, 96, 32, 32));
+			break;
+		case 1: //Down
+			cl.move(0, 4);
+			if ((animationcounter / 5) % 2 == 0) {
+				cl.setTextureRect(sf::IntRect(0, 0, 32, 32));
+			}
+			else cl.setTextureRect(sf::IntRect(64, 0, 32, 32));
+			break;
+		case 2: //Left
+			cl.move(-4, 0);
+			if ((animationcounter / 5) % 2 == 0) {
+				cl.setTextureRect(sf::IntRect(0, 32, 32, 32));
+			}
+			else cl.setTextureRect(sf::IntRect(64, 32, 32, 32));
+			break;
+		case 3: //Right
+			cl.move(4, 0);
+			if ((animationcounter / 5) % 2 == 0) {
+				cl.setTextureRect(sf::IntRect(0, 64, 32, 32));
+			}
+			else cl.setTextureRect(sf::IntRect(64, 64, 32, 32));
+			break;
+		}
+		cl.setScale(50.0 / 32, 50 / 32.0);
+		animationcounter++;
+	}
+	else if(animationcounter >= 12.5)
+	{
+		moving = false;
+		animationcounter = 0;
+		needToSwap = true;
+	}
+
+}
+
+bool cell::doesNeedToSwap()
+{
+	return needToSwap;
 }
