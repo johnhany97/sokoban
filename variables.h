@@ -43,6 +43,8 @@ bool sound = true;
 
 //Player
 cell player;
-
+//Undo
+int direction;
+bool nextWasBox;
 #endif
 

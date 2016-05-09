@@ -27,11 +27,9 @@ public:
 	bool goalReached();
 	void draw(sf::RenderWindow&);
 	void switcher(int);
-	void playerDir(int);
 	bool move(int);
 	void update();
 	bool doesNeedToSwap();
-	int getDirection();
 };
 
 #endif

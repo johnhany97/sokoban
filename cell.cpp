@@ -165,45 +165,6 @@ void cell::switcher(int win) {
 		clTexture.update(temp);
 	}
 }
-/*
-void cell::playerDir(int x) {
-	if (x == 0) { //Left
-		sf::Image img;
-		img.loadFromFile("sprites/player.png");
-		if (!img.loadFromFile("sprites/player.png"))
-		{
-			std::cout << "Failed to load player left spritesheet!" << std::endl;
-		}
-		clTexture.update(img);
-	}
-	else if (x == 1) { ///Right
-		sf::Image img;
-		img.loadFromFile("sprites/player_right.png");
-		if (!img.loadFromFile("sprites/player_right.png"))
-		{
-			std::cout << "Failed to load player right spritesheet!" << std::endl;
-		}
-		clTexture.update(img);
-	}
-	else if (x == 2) { //Up
-		sf::Image img;
-		img.loadFromFile("sprites/player_up.png");
-		if (!img.loadFromFile("sprites/player_up.png"))
-		{
-			std::cout << "Failed to load player up spritesheet!" << std::endl;
-		}
-		clTexture.update(img);
-	}
-	else if (x == 3) { //Down
-		sf::Image img;
-		img.loadFromFile("sprites/player_down.png");
-		if (!img.loadFromFile("sprites/player_down.png"))
-		{
-			std::cout << "Failed to load player down spritesheet!" << std::endl;
-		}
-		clTexture.update(img);
-	}
-}*/
 
 bool cell::move(int dir) {
 	if (!moving) {
@@ -220,33 +181,33 @@ bool cell::move(int dir) {
 
 void cell::update() {
 
-	if (moving && animationcounter < 12.5 && type == 4) //SHould check we are a player or a box
+	if (moving && animationcounter < 12.5 && type == 4)
 	{
 		switch (currentDir) {
 		case 0: //up
 			cl.move(0, -4);
-			if ((animationcounter / 5) % 2 == 0) {
+			if ((animationcounter / 2) % 2 == 0) {
 				cl.setTextureRect(sf::IntRect(0, 96, 32, 32));
 			}
 			else cl.setTextureRect(sf::IntRect(64, 96, 32, 32));
 			break;
 		case 1: //Down
 			cl.move(0, 4);
-			if ((animationcounter / 5) % 2 == 0) {
+			if ((animationcounter / 2) % 2 == 0) {
 				cl.setTextureRect(sf::IntRect(0, 0, 32, 32));
 			}
 			else cl.setTextureRect(sf::IntRect(64, 0, 32, 32));
 			break;
 		case 2: //Left
 			cl.move(-4, 0);
-			if ((animationcounter / 5) % 2 == 0) {
+			if ((animationcounter / 2) % 2 == 0) {
 				cl.setTextureRect(sf::IntRect(0, 32, 32, 32));
 			}
 			else cl.setTextureRect(sf::IntRect(64, 32, 32, 32));
 			break;
 		case 3: //Right
 			cl.move(4, 0);
-			if ((animationcounter / 5) % 2 == 0) {
+			if ((animationcounter / 2) % 2 == 0) {
 				cl.setTextureRect(sf::IntRect(0, 64, 32, 32));
 			}
 			else cl.setTextureRect(sf::IntRect(64, 64, 32, 32));

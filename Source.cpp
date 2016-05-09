@@ -8,13 +8,14 @@
 	Sokoban
 */
 #include <iostream>
+#include <string>
+#include <fstream>
+#include <SFML/Graphics.hpp>
 #include "variables.h"
 #include "cell.h"
 #include "level.h"
 #include "mainmenu.h"
 #include "settingsmenu.h"
-#include <SFML/Graphics.hpp>
-#include <string>
 
 using namespace std;
 using namespace sf;
@@ -35,6 +36,7 @@ void boxer();
 bool gameWin();
 void textAligner(Text&);
 bool mousePress(int);
+void undo();
 
 //Functions
 int main() {
@@ -65,7 +67,7 @@ int main() {
 				break;
 			case 1: //Game
 				if (!levelWon) {
-					if (Keyboard::isKeyPressed(Keyboard::Right)) {
+					if (Keyboard::isKeyPressed(Keyboard::Right) || Keyboard::isKeyPressed(Keyboard::D)) {
 						if (valideMove(3))
 						{
 							if (player.move(3)) {
@@ -73,31 +75,31 @@ int main() {
 									swap(map1B[playerLocY][playerLocX + 1], map1B[playerLocY][playerLocX + 2]);
 									map1B[playerLocY][playerLocX + 1].setType(5);
 									pushLeft--;
+									nextWasBox = true;
 								}
-								//swap(map1B[playerLocY][playerLocX], map1B[playerLocY][playerLocX + 1]);
-
+								else nextWasBox = false;
+								direction = 3;
 								playerLocX++;
 							}
 						}
-						//map1B[playerLocY][playerLocX].playerDir(1);
 					}
-					else if (Keyboard::isKeyPressed(Keyboard::Left)) {
+					else if (Keyboard::isKeyPressed(Keyboard::Left) || Keyboard::isKeyPressed(Keyboard::A)) {
 						if (valideMove(2))
 						{
-							if(player.move(2)){
+							if (player.move(2)) {
 								if (NextIsBox(2)) {
 									swap(map1B[playerLocY][playerLocX - 1], map1B[playerLocY][playerLocX - 2]);
 									map1B[playerLocY][playerLocX - 1].setType(5);
 									pushLeft--;
+									nextWasBox = true;
 								}
-
-								//swap(map1B[playerLocY][playerLocX], map1B[playerLocY][playerLocX - 1]);
+								else nextWasBox = false;
+								direction = 2;
 								playerLocX--;
 							}
 						}
-						//map1B[playerLocY][playerLocX].playerDir(0);
 					}
-					else if (Keyboard::isKeyPressed(Keyboard::Up)) {
+					else if (Keyboard::isKeyPressed(Keyboard::Up) || Keyboard::isKeyPressed(Keyboard::W)) {
 						if (valideMove(0))
 						{
 							if (player.move(0)) {
@@ -105,16 +107,15 @@ int main() {
 									swap(map1B[playerLocY - 1][playerLocX], map1B[playerLocY - 2][playerLocX]);
 									map1B[playerLocY - 1][playerLocX].setType(5);
 									pushLeft--;
+									nextWasBox = true;
 								}
+								else nextWasBox = false;
+								direction = 0;
 								playerLocY--;
 							}
-							
-							//swap(map1B[playerLocY][playerLocX], map1B[playerLocY - 1][playerLocX]);
-							
 						}
-						//map1B[playerLocY][playerLocX].playerDir(2);
 					}
-					else if (Keyboard::isKeyPressed(Keyboard::Down)) {
+					else if (Keyboard::isKeyPressed(Keyboard::Down) || Keyboard::isKeyPressed(Keyboard::S)) {
 						if (valideMove(1))
 						{
 							if (player.move(1)) {
@@ -122,27 +123,20 @@ int main() {
 									swap(map1B[playerLocY + 1][playerLocX], map1B[playerLocY + 2][playerLocX]);
 									map1B[playerLocY + 1][playerLocX].setType(5);
 									pushLeft--;
+									nextWasBox = true;
 								}
-								//swap(map1B[playerLocY][playerLocX], map1B[playerLocY + 1][playerLocX]);
+								else nextWasBox = false;
+								direction = 1;
 								playerLocY++;
 							}
 						}
-						//map1B[playerLocY][playerLocX].playerDir(3);
 					}
-					else if (Keyboard::isKeyPressed(Keyboard::X)) {
-						for (int i = 0; i < 17; i++) {
-							for (int j = 0; j < 17; j++) {
-								cout << map1B[i][j].getType() << " ";
-							}cout << endl;
-						}
-						cout << endl << endl << endl;
-					}
-					else if (mousePress(2)) { //Restart button
+					else if (mousePress(2) || Keyboard::isKeyPressed(Keyboard::R)) { //Restart button
 						//Initialize Level
 						level currentLevel;
 						levelInitalize(currentLevel, levelN);
 					}
-					else if (mousePress(3)) { //Home button
+					else if (mousePress(3) || Keyboard::isKeyPressed(Keyboard::H)) { //Home button
 						status = 0;
 						s = "";
 						counter = 0;
@@ -160,8 +154,8 @@ int main() {
 						}
 						levelIP.setString("");
 					}
-					else if (mousePress(4)) { //Undo button
-						cout << "Hi, I will undo what you just did in the future :)" << endl;
+					else if (mousePress(4) || Keyboard::isKeyPressed(Keyboard::U)) { //Undo button
+						undo();
 					}
 				}
 				else if (mousePress(0)) { //Next Button
@@ -278,8 +272,6 @@ int main() {
 			}
 		}
 		player.update();
-
-
 		window.clear();
 		switch (status) {
 		case 0: //MainMenu
@@ -373,7 +365,6 @@ void initialize() {
 	gameWinText.setCharacterSize(50);
 	gameWinText.setColor(Color::White);
 	gameWinText.setPosition(Vector2f((SCRHEIGHT / 2) - 100, 0));
-
 
 	//Game Won Sprite
 	gameWinSplashTexture.loadFromFile("images/game_win.png");
@@ -630,4 +621,47 @@ bool mousePress(int spriteNo) {
 		break;
 	}
 	return false;
+}
+
+void undo() {
+	switch (direction) {
+	case 0: //Up
+		if (player.move(1)) {
+			if (nextWasBox) {
+				swap(map1B[playerLocY][playerLocX], map1B[playerLocY - 1][playerLocX]);
+				pushLeft++;
+			}
+			playerLocY++;
+		}
+		break;
+	case 1: //Down
+		if (player.move(0)) {
+			if (nextWasBox) {
+				swap(map1B[playerLocY][playerLocX], map1B[playerLocY + 1][playerLocX]);
+				pushLeft++;
+			}
+		}
+		playerLocY--;
+		break;
+	case 2: //Left
+		if (player.move(3)) {
+			if (nextWasBox) {
+				swap(map1B[playerLocY][playerLocX], map1B[playerLocY][playerLocX - 1]);
+				pushLeft++;
+			}
+		}
+		playerLocX++;
+		break;
+	case 3:
+		if (player.move(2)) {
+			if (nextWasBox) {
+				swap(map1B[playerLocY][playerLocX], map1B[playerLocY][playerLocX + 1]);
+				pushLeft++;
+			}
+		}
+		playerLocX--;
+		break;
+	}
+	nextWasBox = false;
+	direction = -1;
 }

@@ -11,25 +11,20 @@ level::level() {
 	push = 0;
 	x = 17;
 	y = 17;
-	for (int i = 0; i < x; i++) {
-		for (int j = 0; j < y; j++) {
-			arr.push_back(-1);
-			size++;
-		}
+	size = x * y;
+	for (int i = 0; i < size; i++) {
+		arr.push_back(-1);
 	}
 }
 
 level::level(int k, int z)
 {
-	size = 0;
 	push = 0;
 	x = k;
 	y = z;
-	for (int i = 0; i < x; i++) {
-		for (int j = 0; j < y; j++) {
-			arr.push_back(-1);
-			size++;
-		}
+	size = k* z;
+	for (int i = 0; i < size; i++) {
+		arr.push_back(-1);
 	}
 }
 
@@ -40,36 +35,40 @@ void level::initialize(int levelNo) {
 	int t;
 	ip >> t;
 	push = t;
-	char x;
-	ip.get(x);
-	for (int i = 0; i < x && !ip.eof(); i++) {
-		for (int j = 0; j < y && !ip.eof(); j++) {
-			switch (x) {
+	char z;
+	ip.get(z);
+	if (z == '\n')
+		ip.get(z);
+	for (int i = 0; i < x; i++) {
+		if (z == '\n')
+			ip.get(z);
+		for (int j = 0; j < y; j++) {
+			switch (z) {
 			case '#': //Wall
-				arr[i*y + j] = 1;
+				arr.at(i * y + j) = 1;
 				break;
 			case '$': //Box
-				arr[i*y + j] = 3;
+				arr.at(i * y + j) = 3;
 				break;
 			case '.': //Goal
-				arr[i*y + j] = 2;
+				arr.at(i * y + j) = 2;
 				break;
 			case '@': //Player
-				arr[i*y + j] = 4;
+				arr.at(i * y + j) = 4;
 				break;
 			case '?': //Box on goal
-				arr[i*y + j] = 5;
+				arr.at(i * y + j) = 5;
 				break;
 			case '+': //Player on goal
-				arr[i*y + j] = 6;
+				arr.at(i * y + j) = 6;
 				break;
 			case ' ': //Empty
-				arr[i*y + j] = 0;
+				arr.at(i * y + j) = 0;
 				break;
 			}
-			ip.get(x);
-			if (x == '\n')
-				ip.get(x);
+			ip.get(z);
+			if (z == '\n')
+				ip.get(z);
 		}
 	}
 	initalized = true;
