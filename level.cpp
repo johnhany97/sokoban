@@ -6,6 +6,7 @@ using namespace std;
 
 level::level() {
 	size = 0;
+	push = 0;
 	x = 17;
 	y = 17;
 	for (int i = 0; i < x; i++) {
@@ -19,6 +20,7 @@ level::level() {
 level::level(int k, int z)
 {
 	size = 0;
+	push = 0;
 	x = k;
 	y = z;
 	for (int i = 0; i < x; i++) {
@@ -33,6 +35,9 @@ void level::initialize(int levelNo) {
 	int i = 0, j = 0;
 	ifstream ip;
 	ip.open("levels/" + to_string(levelNo) + ".txt");
+	int t;
+	ip >> t;
+	push = t;
 	char x;
 	ip.get(x);
 	for (int i = 0; i < x && !ip.eof(); i++) {
@@ -102,4 +107,8 @@ void level::print() {
 		}
 		cout << endl;
 	}
+}
+
+int level::getPush() {
+	return push;
 }

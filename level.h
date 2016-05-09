@@ -12,6 +12,7 @@ private:
 	int y;
 	int size;
 	bool initalized = false;
+	int push;
 public:
 	level();
 	level(int, int);
@@ -21,6 +22,7 @@ public:
 	int getY() const;
 	int getContent(int, int);
 	void print();
+	int getPush();
 };
 #endif LEVEL_H
 

@@ -38,9 +38,8 @@ Text gameWinText;
 RectangleShape gameBG;
 Texture gameWinSplashTexture, gameWinNextTexture, gameWinHomeTexture, undoButtonTexture, homeButtonTexture, restartButtonTexture;
 Sprite gameWinSplash, gameWinNext, gameWinHome, undoButton, homeButton, restartButton;
-int playerLocX, playerLocY;
-bool flag = false, levelWon = false, gameFinished = false;
-
+int playerLocX, playerLocY, pushLeft;
+bool flag = false, levelWon = false, gameFinished = false, playing = false;
 bool sound = true;
 
 #endif

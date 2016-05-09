@@ -46,8 +46,6 @@ int main() {
 	window.setKeyRepeatEnabled(false);
 	window.setFramerateLimit(30);
 
-	//Vector2i source(1, Down);
-
 	Clock win_clock;
 	bool win_pic = true;
 	while (window.isOpen()){
@@ -67,17 +65,19 @@ int main() {
 				break;
 			case 1: //Game
 				if (!levelWon) {
+					playing = true;
 					if (Keyboard::isKeyPressed(Keyboard::Right)) {
 						if (valideMove(3))
 						{
 							if (NextIsBox(3)) {
 								swap(map1B[playerLocY][playerLocX + 1], map1B[playerLocY][playerLocX + 2]);
 								map1B[playerLocY][playerLocX + 1].setType(5);
+								pushLeft--;
 							}
 							swap(map1B[playerLocY][playerLocX], map1B[playerLocY][playerLocX + 1]);
 							playerLocX++;
-							map1B[playerLocY][playerLocX].playerDir(1);
 						}
+						map1B[playerLocY][playerLocX].playerDir(1);
 					}
 					else if (Keyboard::isKeyPressed(Keyboard::Left)) {
 						if (valideMove(2))
@@ -85,11 +85,12 @@ int main() {
 							if (NextIsBox(2)) {
 								swap(map1B[playerLocY][playerLocX - 1], map1B[playerLocY][playerLocX - 2]);
 								map1B[playerLocY][playerLocX - 1].setType(5);
+								pushLeft--;
 							}
 							swap(map1B[playerLocY][playerLocX], map1B[playerLocY][playerLocX - 1]);
 							playerLocX--;
-							map1B[playerLocY][playerLocX].playerDir(0);
 						}
+						map1B[playerLocY][playerLocX].playerDir(0);
 					}
 					else if (Keyboard::isKeyPressed(Keyboard::Up)) {
 						if (valideMove(0))
@@ -97,11 +98,12 @@ int main() {
 							if (NextIsBox(0)) {
 								swap(map1B[playerLocY - 1][playerLocX], map1B[playerLocY - 2][playerLocX]);
 								map1B[playerLocY - 1][playerLocX].setType(5);
+								pushLeft--;
 							}
 							swap(map1B[playerLocY][playerLocX], map1B[playerLocY - 1][playerLocX]);
 							playerLocY--;
-							map1B[playerLocY][playerLocX].playerDir(2);
 						}
+						map1B[playerLocY][playerLocX].playerDir(2);
 					}
 					else if (Keyboard::isKeyPressed(Keyboard::Down)) {
 						if (valideMove(1))
@@ -109,11 +111,12 @@ int main() {
 							if (NextIsBox(1)) {
 								swap(map1B[playerLocY + 1][playerLocX], map1B[playerLocY + 2][playerLocX]);
 								map1B[playerLocY + 1][playerLocX].setType(5);
+								pushLeft--;
 							}
 							swap(map1B[playerLocY][playerLocX], map1B[playerLocY + 1][playerLocX]);
 							playerLocY++;
-							map1B[playerLocY][playerLocX].playerDir(3);
 						}
+						map1B[playerLocY][playerLocX].playerDir(3);
 					}
 					else if (mousePress(2)) { //Restart button
 						//Initialize Level
@@ -167,6 +170,7 @@ int main() {
 					flag = false;
 					levelWon = false;
 					gameFinished = false;
+					playing = false;
 					gameWinHome.setPosition(Vector2f(70, 810));
 					//Clear maps
 					for (int i = 0; i < 17; i++) {
@@ -221,20 +225,29 @@ int main() {
 			if (Keyboard::isKeyPressed(Keyboard::Escape) || event.type == Event::Closed)
 				window.close();
 		}
-		if (win_clock.getElapsedTime().asSeconds() > 0.3f && !gameFinished) {
-			if (win_pic) {
-				Image img;
-				img.loadFromFile("images/game_win_2.png");
-				gameWinSplashTexture.update(img);
-				win_pic = false;
-				win_clock.restart();
-			}
-			else {
-				Image img;
-				img.loadFromFile("images/game_win.png");
-				gameWinSplashTexture.update(img);
-				win_pic = true;
-				win_clock.restart();
+		if (pushLeft == 0 && playing && !levelWon) {
+			Image img;
+			img.loadFromFile("images/game_over.png");
+			gameWinSplashTexture.update(img);
+			playing = false;
+		}
+		if (!playing) {
+			if (win_clock.getElapsedTime().asSeconds() > 0.3f && !gameFinished) {
+				playing = false;
+				if (win_pic) {
+					Image img;
+					img.loadFromFile("images/game_win_2.png");
+					gameWinSplashTexture.update(img);
+					win_pic = false;
+					win_clock.restart();
+				}
+				else {
+					Image img;
+					img.loadFromFile("images/game_win.png");
+					gameWinSplashTexture.update(img);
+					win_pic = true;
+					win_clock.restart();
+				}
 			}
 		}
 		window.clear();
@@ -268,6 +281,11 @@ int main() {
 				window.draw(gameWinHome);
 				window.draw(gameWinNext);
 				levelWon = true;
+			}
+			else if (pushLeft == 0) {
+				window.draw(gameWinSplash);
+				window.draw(gameWinHome);
+				//Restart button 
 			}
 			break;
 		case 2: //Settings
@@ -386,6 +404,7 @@ void initialize() {
 }
 
 void levelInitalize(level& currentLevel, int N) {
+	playing = true;
 	currentLevel.setSize(17, 17);
 	currentLevel.initialize(N);
 	int initialX = 0, initialY = 100;
@@ -465,6 +484,7 @@ void levelInitalize(level& currentLevel, int N) {
 		initialY += 50;
 		initialX = 0;
 	}
+	pushLeft = currentLevel.getPush();
 }
 
 bool valideMove(int direction)
@@ -510,7 +530,6 @@ void boxer() {
 
 bool gameWin() {
 	bool flag1 = true;
-	//TODO MAP1 SO FAR
 	for (int i = 0; i < 17; i++) {
 		for (int j = 0; j < 17; j++) {
 			if (map1B[i][j].getType() == 3)
