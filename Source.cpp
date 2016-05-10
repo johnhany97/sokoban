@@ -41,8 +41,7 @@ void undo();
 
 //Functions
 int main() {
-
-	err().rdbuf(NULL);
+	cerr.rdbuf(0);
 	music bgMusic(sound);
 	bgMusic.play();
 	Image icon;
@@ -164,7 +163,7 @@ int main() {
 					else if (mousePress(4) || Keyboard::isKeyPressed(Keyboard::U)) { //Undo button
 						undo();
 					}
-					if (pushLeft<0)
+					if (pushLeft<0 && !infinityModeToggle)
 					{
 						gameover = true;
 					}
@@ -318,8 +317,9 @@ int main() {
 						map1B[i][j].draw(window);
 				}
 			}
-			counterText.setString("PUSHES  LEFT  ARE  " + to_string(pushLeft + 1));
-			window.draw(counterText);
+			counterText.setString("PUSHES  LEFT  ARE  " + to_string(pushLeft));
+			if (!infinityModeToggle)
+				window.draw(counterText);
 			window.draw(undoButton);
 			window.draw(restartButton);
 			window.draw(homeButton);
@@ -458,7 +458,7 @@ void initialize() {
 	counterText.setFont(counterFont);
 	counterText.setCharacterSize(30);
 	counterText.setPosition(Vector2f(10, 10));
-	counterText.setString("PUSHES LEFT ARE " + to_string(pushLeft + 1));
+	counterText.setString("PUSHES LEFT ARE " + to_string(pushLeft));
 
 }
 
@@ -548,7 +548,7 @@ void levelInitalize(level& currentLevel, int N) {
 		initialY += 50;
 		initialX = 50;
 	}
-	pushLeft = currentLevel.getPush();
+	pushLeft = currentLevel.getPush() ;
 }
 
 bool valideMove(int direction)
