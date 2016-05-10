@@ -7,9 +7,9 @@
 	CS110 - Spring 2016 - Dr. Howaida Ismail
 	Sokoban
 */
-#include "cell.h"
-#include <string>
 #include <iostream>
+#include <string>
+#include "cell.h"
 
 cell::cell()
 {
@@ -232,9 +232,4 @@ void cell::update() {
 		needToSwap = true;
 	}
 
-}
-
-bool cell::doesNeedToSwap()
-{
-	return needToSwap;
 }

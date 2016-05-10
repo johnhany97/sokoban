@@ -9,6 +9,7 @@
 */
 #ifndef LEVEL_H
 #define LEVEL_H
+
 #include <SFML/Graphics.hpp>
 #include <vector>
 

@@ -7,8 +7,8 @@
 	CS110 - Spring 2016 - Dr. Howaida Ismail
 	Sokoban
 */
-#include "music.h"
 #include <iostream>
+#include "music.h"
 
 music::music(bool sounds, int element)
 {

@@ -9,9 +9,11 @@
 */
 #ifndef GAME_H
 #define GAME_H
-#include "level.h"
+
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include "level.h"
+
 using namespace sf;
 class game
 {
@@ -29,7 +31,7 @@ public:
 	void levelInitalize(level&, int);
 	bool valideMove(int);
 	bool NextIsBox(int);
-	void boxer();
+	void boxUpdate();
 	bool gameWin();
 	void textAligner(Text&);
 	bool mousePress(int spriteNo);

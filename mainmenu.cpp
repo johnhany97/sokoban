@@ -7,8 +7,9 @@
 	CS110 - Spring 2016 - Dr. Howaida Ismail
 	Sokoban
 */
-#include "mainmenu.h"
 #include <iostream>
+#include "mainmenu.h"
+
 using namespace sf;
 
 mainmenu::mainmenu()

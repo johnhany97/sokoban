@@ -9,7 +9,9 @@
 */
 #ifndef MUSIC_H
 #define MUSIC_H
-#include <SFML\Audio.hpp>
+
+#include <SFML/Audio.hpp>
+
 using namespace sf;
 class music
 {

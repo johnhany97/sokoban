@@ -7,19 +7,19 @@
 	CS110 - Spring 2016 - Dr. Howaida Ismail
 	Sokoban
 */
-#include "level.h"
 #include <fstream>
-#include <iostream>
 #include <iomanip>
+#include <iostream>
 #include <vector>
+#include "level.h"
 
 using namespace std;
 
 level::level() {
 	size = 0;
 	push = 0;
-	x = 17;
-	y = 17;
+	x = 17; //Default Size
+	y = 17; //Default Size
 	size = x * y;
 	for (int i = 0; i < size; i++) {
 		arr.push_back(-1);
@@ -85,16 +85,15 @@ void level::initialize(int levelNo) {
 }
 
 void level::setSize(int k, int z)
-{ //NEEDS UPDATE
-	if (!initalized) {
-		x = k;
-		y = z;
-		for (int i = 0; i < x; i++) {
-			for (int j = 0; j < y; j++) {
-				arr.push_back(-1);
-				size++;
-			}
-		}
+{
+	for (int i = 0; i < size; i++) {
+		arr.pop_back();
+	}
+	x = k;
+	y = z;
+	size = x * y;
+	for (int i = 0; i < size; i++){
+		arr.push_back(-1);
 	}
 }
 
@@ -109,7 +108,7 @@ int level::getY() const
 }
 
 int level::getContent(int i, int j) {
-	return arr[i*y + j];
+	return arr.at(i * y + j);
 }
 
 void level::print() {
@@ -127,9 +126,8 @@ int level::getPush() {
 }
 
 void level::empty() {
-	for (int i = 0; i < x; i++) {
-		for (int j =0; j < y; j++) {
-			arr.pop_back();
-		}
+	for (int i = 0; i < size; i++) {
+		arr.pop_back();
 	}
+	size = 0;
 }

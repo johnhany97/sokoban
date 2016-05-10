@@ -9,63 +9,84 @@
 */
 #ifndef VARIABLES_H
 #define VARIABLES_H
-#define SCRWIDTH 950
-#define SCRHEIGHT 1000
+
+#include <SFML/Graphics.hpp>
+#include <string>
 #include "cell.h"
 #include "mainmenu.h"
-#include "settingsmenu.h"
 #include "music.h"
-#include <string>
-#include <SFML/Graphics.hpp>
+#include "settingsmenu.h"
+
+#define SCRWIDTH 950
+#define SCRHEIGHT 1000
 
 using namespace std;
 using namespace sf;
 
-//Global Variables
-Font mainFont;
+/*
+	Main Menu
+*/
 mainmenu mmenu;
-settingsmenu smenu;
+bool sound = true;
 
-//Directions Arrays
-// UP , DOWN , LEFT , RIGHT
+/*
+	Settings Menu
+*/
+settingsmenu smenu;
+bool infinityModeToggle = false, showTutorial = false;
+
+/*
+	Direction Arrays
+		Up | Down | Left | Right
+*/
 const int Dy[4] = { -1, 1, 0, 0 };
 const int Dx[4] = { 0, 0, -1, 1 };
 
-const int range = 72; //Number of levels we have
+/*
+	Number of levels available in the game
+*/
+const int range = 72;
 
-//MasterSwitch
-int status = 0; //0 for mainmenu, 1 for game, 2 for settings, 3 for level chooser
+/*
+	Master Switch
+		0 Main menu (default)
+		1 Game
+		2 Settings
+		3 Level Chooser
+*/
+int status = 0;
 
-const int rangeChars = 5; //Number of characters a user is allowed to enter
+/*
+	Limit for user-input in Level Chooser
+*/
+const int rangeChars = 5;
 
+/*
+	Maps used in game to create the scene
+*/
 cell map1A[17][17], map1B[17][17];
 
-//LevelChooser
-Text levelChoose, levelIP, levelWarning;
+/*
+	Level Chooser Variables
+*/
 bool warning = false;
+int counter = 0, levelN;
 string s = "";
-int counter = 0;
-int levelN;
+Text levelChoose, levelIP, levelWarning;
 
-//Game
-Text gameWinText, counterText;
-Font counterFont;
-RectangleShape gameBG;
-Texture gameWinSplashTexture, gameWinNextTexture, gameWinHomeTexture, undoButtonTexture, homeButtonTexture, restartButtonTexture;
-Sprite gameWinSplash, gameWinNext, gameWinHome, undoButton, homeButton, restartButton;
-int playerLocX, playerLocY, pushLeft;
-bool flag = false, levelWon = false, gameFinished = false;
-bool sound = true, infinityModeToggle = false, showTutorial = false;
-
+/*
+	Game Variables
+*/
+bool gameFinished = false, gameover, levelWon = false, nextWasBox;
+int direction = -1, playerLocX, playerLocY, pushLeft;
+cell player;
+Font mainFont, counterFont;
 music bgMusic(sound, 1);
 music bxMusic(sound, 2);
+RectangleShape gameBG;
+Sprite gameWinSplash, gameWinNext, gameWinHome, undoButton, homeButton, restartButton;
+Texture gameWinSplashTexture, gameWinNextTexture, gameWinHomeTexture, undoButtonTexture, homeButtonTexture, restartButtonTexture;
+Text counterText;
 
-//Player
-cell player;
-//Undo
-int direction;
-bool nextWasBox;
-//Gameover
-bool gameover;
 #endif
 

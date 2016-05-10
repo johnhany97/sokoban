@@ -9,6 +9,7 @@
 */
 #include "game.h"
 #include "variables.h"
+
 game::game()
 {
 	window = new RenderWindow(VideoMode(SCRWIDTH, SCRHEIGHT), "Sokoban - Hackarz Version"); //SFML Window
@@ -33,7 +34,7 @@ void game::render() {
 		break;
 	case 1: //Game
 		window->draw(gameBG);
-		boxer();
+		boxUpdate();
 		for (int i = 0; i < 17; i++) {
 			for (int j = 0; j < 17; j++) {
 				map1A[i][j].draw(*window);
@@ -180,7 +181,6 @@ void game::gameLoop() {
 						s = "";
 						counter = 0;
 						warning = false;
-						flag = false;
 						levelWon = false;
 						gameFinished = false;
 						gameover = false;
@@ -207,7 +207,6 @@ void game::gameLoop() {
 					if (levelN > range) gameFinished = true;
 					if (levelN <= range) {
 						levelWon = false;
-						flag = false;
 						//Initialize Level
 						for (int i = 0; i < 17; i++) {
 							for (int j = 0; j < 17; j++) {
@@ -233,7 +232,6 @@ void game::gameLoop() {
 					s = "";
 					counter = 0;
 					warning = false;
-					flag = false;
 					levelWon = false;
 					gameover = false;
 					gameFinished = false;
@@ -302,7 +300,6 @@ void game::gameLoop() {
 					}
 					else { //Level Input out of range
 						warning = true;
-						gameWinHome.setPosition(Vector2f(332, 810));
 					}
 				}
 				break;
@@ -369,16 +366,6 @@ void game::initialize() {
 	gameBG.setFillColor(background);
 	gameBG.setPosition(0, 0);
 	gameBG.setSize(Vector2f(SCRWIDTH, SCRHEIGHT));
-
-	//Load MainFont
-	mainFont.loadFromFile("Grinched.ttf");
-
-	//Game Won
-	gameWinText.setFont(mainFont);
-	gameWinText.setString("YOU WON!!");
-	gameWinText.setCharacterSize(50);
-	gameWinText.setColor(Color::White);
-	gameWinText.setPosition(Vector2f((SCRHEIGHT / 2) - 100, 0));
 
 	//Game Won Sprite
 	gameWinSplashTexture.loadFromFile("images/game_win.png");
@@ -558,7 +545,7 @@ bool game::NextIsBox(int direction)
 	return (map1B[y1][x1].getType() == 3 || map1B[y1][x1].getType() == 6);
 }
 
-void game::boxer() {
+void game::boxUpdate() {
 	for (int i = 0; i < 17; i++) {
 		for (int j = 0; j < 17; j++) {
 			if (map1A[i][j].getType() == 2 && map1B[i][j].getType() == 3) {

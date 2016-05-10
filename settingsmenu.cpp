@@ -7,8 +7,8 @@
 	CS110 - Spring 2016 - Dr. Howaida Ismail
 	Sokoban
 */
-#include "settingsmenu.h"
 #include <iostream>
+#include "settingsmenu.h"
 
 using namespace sf;
 

@@ -9,7 +9,9 @@
 */
 #ifndef CELL_H
 #define CELL_H
+
 #include <SFML/Graphics.hpp>
+
 class cell
 {
 private:
@@ -38,7 +40,6 @@ public:
 	void switcher(int);
 	bool move(int);
 	void update();
-	bool doesNeedToSwap();
 };
 
 #endif
