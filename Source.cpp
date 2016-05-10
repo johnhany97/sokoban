@@ -66,7 +66,7 @@ int main() {
 				}
 				break;
 			case 1: //Game
-				if (!levelWon) {
+				if (!levelWon && !gameover) {
 					if (Keyboard::isKeyPressed(Keyboard::Right) || Keyboard::isKeyPressed(Keyboard::D)) {
 						if (valideMove(3))
 						{
@@ -144,6 +144,7 @@ int main() {
 						flag = false;
 						levelWon = false;
 						gameFinished = false;
+						gameover = false;
 						gameWinHome.setPosition(Vector2f(70, 810));
 						//Clear maps
 						for (int i = 0; i < 17; i++) {
@@ -156,6 +157,10 @@ int main() {
 					}
 					else if (mousePress(4) || Keyboard::isKeyPressed(Keyboard::U)) { //Undo button
 						undo();
+					}
+					if (pushLeft<0)
+					{
+						gameover = true;
 					}
 				}
 				else if (mousePress(0)) { //Next Button
@@ -190,6 +195,7 @@ int main() {
 					warning = false;
 					flag = false;
 					levelWon = false;
+					gameover = false;
 					gameFinished = false;
 					gameWinHome.setPosition(Vector2f(70, 810));
 					//Clear maps
@@ -207,6 +213,15 @@ int main() {
 			case 2: //Settings
 				if (Keyboard::isKeyPressed(Keyboard::B)) {
 					status = 0;
+				}
+				if (smenu.mousePress(0, window)) { //Tutorial button pressed
+					smenu.tutorialPressed(showTutorial);
+				}
+				if (smenu.mousePress(1, window)) { //Home button pressed
+					status = 0;
+				}
+				if (smenu.mousePress(2, window)) { //Mode button pressed
+					smenu.modePressed(infinityModeToggle);
 				}
 				break;
 			case 3: //LevelChooser
@@ -255,7 +270,7 @@ int main() {
 			if (Keyboard::isKeyPressed(Keyboard::Escape) || event.type == Event::Closed)
 				window.close();
 		}
-		if (win_clock.getElapsedTime().asSeconds() > 0.3f && !gameFinished) {
+		if (win_clock.getElapsedTime().asSeconds() > 0.3f && !gameFinished && !gameover) {
 			if (win_pic) {
 				Image img;
 				img.loadFromFile("images/game_win_2.png");
@@ -263,13 +278,19 @@ int main() {
 				win_pic = false;
 				win_clock.restart();
 			}
-			else {
+			else if(!gameover && !gameFinished){
 				Image img;
 				img.loadFromFile("images/game_win.png");
 				gameWinSplashTexture.update(img);
 				win_pic = true;
 				win_clock.restart();
 			}
+		}
+		else if (gameover)
+		{
+			Image img;
+			img.loadFromFile("images/game_over.png");
+			gameWinSplashTexture.update(img);
 		}
 		player.update();
 		window.clear();
@@ -291,7 +312,8 @@ int main() {
 						map1B[i][j].draw(window);
 				}
 			}
-
+			counterText.setString("PUSHES LEFT ARE " + to_string(pushLeft + 1));
+			window.draw(counterText);
 			window.draw(undoButton);
 			window.draw(restartButton);
 			window.draw(homeButton);
@@ -305,6 +327,11 @@ int main() {
 				window.draw(gameWinHome);
 				window.draw(gameWinNext);
 				levelWon = true;
+			}
+			else if (gameover)
+			{
+				window.draw(gameWinSplash);
+				window.draw(gameWinHome);
 			}
 			break;
 		case 2: //Settings
@@ -351,7 +378,7 @@ void levelChooser() {
 
 void initialize() {
 	//Game background
-	Color background(7, 118, 118);
+	Color background(47, 75, 110);
 	gameBG.setFillColor(background);
 	gameBG.setPosition(0, 0);
 	gameBG.setSize(Vector2f(SCRWIDTH, SCRHEIGHT));
@@ -419,6 +446,13 @@ void initialize() {
 	}
 	restartButton.setTexture(restartButtonTexture);
 	restartButton.setPosition(Vector2f(888, 937));
+
+	//counter text (in game)
+	counterFont.loadFromFile("arcade.ttf");
+	counterText.setFont(counterFont);
+	counterText.setCharacterSize(30);
+	counterText.setPosition(Vector2f(10, 10));
+	counterText.setString("PUSHES LEFT ARE " + to_string(pushLeft + 1));
 
 }
 
@@ -509,8 +543,6 @@ void levelInitalize(level& currentLevel, int N) {
 		initialX = 50;
 	}
 	pushLeft = currentLevel.getPush();
-	currentLevel.print();
-	cout << endl;
 }
 
 bool valideMove(int direction)
@@ -582,7 +614,7 @@ bool mousePress(int spriteNo) {
 	case 0: //Next Button
 		if (mouseX > gameWinNext.getPosition().x + windowPosition.x && mouseX < (gameWinNext.getPosition().x + gameWinNext.getGlobalBounds().width + windowPosition.x)
 			&& mouseY > gameWinNext.getPosition().y + windowPosition.y + 30 && mouseY < (gameWinNext.getPosition().y + gameWinNext.getGlobalBounds().height + windowPosition.y + 30)) {
-			if (Mouse::isButtonPressed(Mouse::Left))
+			if (Mouse::isButtonPressed(Mouse::Left) && Event::MouseButtonReleased)
 				return true;
 			return false;
 		}
@@ -590,31 +622,31 @@ bool mousePress(int spriteNo) {
 	case 1: //Home Button
 		if (mouseX > gameWinHome.getPosition().x + windowPosition.x && mouseX < (gameWinHome.getPosition().x + gameWinHome.getGlobalBounds().width + windowPosition.x)
 			&& mouseY > gameWinHome.getPosition().y + windowPosition.y + 30 && mouseY < (gameWinHome.getPosition().y + gameWinHome.getGlobalBounds().height + windowPosition.y + 30)) {
-			if (Mouse::isButtonPressed(Mouse::Left))
+			if (Mouse::isButtonPressed(Mouse::Left) && Event::MouseButtonReleased)
 				return true;
 			return false;
 		}
 		break;
 	case 2: //In game restart button
 		if (mouseX > restartButton.getPosition().x + windowPosition.x && mouseX < (restartButton.getPosition().x + restartButton.getGlobalBounds().width + windowPosition.x)
-			&& mouseY > restartButton.getPosition().y + windowPosition.y + 70 && mouseY < (restartButton.getPosition().y + restartButton.getGlobalBounds().height + windowPosition.y + 70)) {
-			if (Mouse::isButtonPressed(Mouse::Left))
+			&& mouseY > restartButton.getPosition().y + windowPosition.y + 60 && mouseY < (restartButton.getPosition().y + restartButton.getGlobalBounds().height + windowPosition.y + 60)) {
+			if (Mouse::isButtonPressed(Mouse::Left) && Event::MouseButtonReleased)
 				return true;
 			return false;
 		}
 		break;
 	case 3: //In game Home button
 		if (mouseX > homeButton.getPosition().x + windowPosition.x && mouseX < (homeButton.getPosition().x + homeButton.getGlobalBounds().width + windowPosition.x)
-			&& mouseY > homeButton.getPosition().y + windowPosition.y + 70 && mouseY < (homeButton.getPosition().y + homeButton.getGlobalBounds().height + windowPosition.y + 70)) {
-			if (Mouse::isButtonPressed(Mouse::Left))
+			&& mouseY > homeButton.getPosition().y + windowPosition.y + 60 && mouseY < (homeButton.getPosition().y + homeButton.getGlobalBounds().height + windowPosition.y + 60)) {
+			if (Mouse::isButtonPressed(Mouse::Left) && Event::MouseButtonReleased)
 				return true;
 			return false;
 		}
 		break;
 	case 4: //In game undo button
 		if (mouseX > undoButton.getPosition().x + windowPosition.x && mouseX < (undoButton.getPosition().x + undoButton.getGlobalBounds().width + windowPosition.x)
-			&& mouseY > undoButton.getPosition().y + windowPosition.y + 70 && mouseY < (undoButton.getPosition().y + undoButton.getGlobalBounds().height + windowPosition.y + 70)) {
-			if (Mouse::isButtonPressed(Mouse::Left))
+			&& mouseY > undoButton.getPosition().y + windowPosition.y + 60 && mouseY < (undoButton.getPosition().y + undoButton.getGlobalBounds().height + windowPosition.y + 60)) {
+			if (Mouse::isButtonPressed(Mouse::Left) && Event::MouseButtonReleased)
 				return true;
 			return false;
 		}

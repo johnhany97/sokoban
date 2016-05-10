@@ -14,8 +14,6 @@ using namespace sf;
 const int Dy[4] = { -1, 1, 0, 0 };
 const int Dx[4] = { 0, 0, -1, 1 };
 
-//enum Direction { Down, Left, Right, Up };
-
 const int range = 72; //Number of levels we have
 
 //MasterSwitch
@@ -33,18 +31,21 @@ int counter = 0;
 int levelN;
 
 //Game
-Text gameWinText;
+Text gameWinText, counterText;
+Font counterFont;
 RectangleShape gameBG;
 Texture gameWinSplashTexture, gameWinNextTexture, gameWinHomeTexture, undoButtonTexture, homeButtonTexture, restartButtonTexture;
 Sprite gameWinSplash, gameWinNext, gameWinHome, undoButton, homeButton, restartButton;
 int playerLocX, playerLocY, pushLeft;
 bool flag = false, levelWon = false, gameFinished = false;
-bool sound = true;
+bool sound = true, infinityModeToggle = false, showTutorial = false;
 
 //Player
 cell player;
 //Undo
 int direction;
 bool nextWasBox;
+//Gameover
+bool gameover;
 #endif
 

@@ -6,10 +6,16 @@ using namespace sf;
 class settingsmenu
 {
 private:
-	Text settingsTitle, settingsStatus, settingsBack;
 	Font mainFont;
+	RectangleShape settingsBG;
+	Sprite settingsTitle, modeButton, tutorialButton, homeButton;
+	Texture settingsTitleTexture, modeButtonTexture, tutorialButtonTexture, homeButtonTexture;
+
 public:
 	settingsmenu();
 	void draw(RenderWindow&);
+	bool mousePress(int, RenderWindow&);
+	void modePressed(bool&);
+	void tutorialPressed(bool&);
 };
 #endif
