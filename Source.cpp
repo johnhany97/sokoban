@@ -16,6 +16,7 @@
 #include "level.h"
 #include "mainmenu.h"
 #include "settingsmenu.h"
+#include "music.h"
 
 using namespace std;
 using namespace sf;
@@ -40,6 +41,10 @@ void undo();
 
 //Functions
 int main() {
+
+	err().rdbuf(NULL);
+	music bgMusic(sound);
+	bgMusic.play();
 	Image icon;
 	icon.loadFromFile("HackarzIcon.png");
 	window.setIcon(50, 50, icon.getPixelsPtr());
@@ -63,6 +68,7 @@ int main() {
 				}
 				if (mmenu.mousePress(2, window)) { //Volume button pressed
 					mmenu.volumePressed(sound);
+					bgMusic.switcher();
 				}
 				break;
 			case 1: //Game
@@ -312,7 +318,7 @@ int main() {
 						map1B[i][j].draw(window);
 				}
 			}
-			counterText.setString("PUSHES LEFT ARE " + to_string(pushLeft + 1));
+			counterText.setString("PUSHES  LEFT  ARE  " + to_string(pushLeft + 1));
 			window.draw(counterText);
 			window.draw(undoButton);
 			window.draw(restartButton);
