@@ -9,14 +9,7 @@
 */
 #include "game.h"
 
-using namespace std;
-using namespace sf;
-
-//Prototypes
-
-//Functions
 int main() {
-	cerr.rdbuf(0);
 
 	game sokoban;
 	sokoban.gameLoop();

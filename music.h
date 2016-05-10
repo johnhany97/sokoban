@@ -1,3 +1,12 @@
+/*
+	John Ayad, 900150853
+	Monica Fahmy, 900142228
+	Youssef Ibrahim, 900142576
+	All Rights Reserved.
+
+	CS110 - Spring 2016 - Dr. Howaida Ismail
+	Sokoban
+*/
 #ifndef MUSIC_H
 #define MUSIC_H
 #include <SFML\Audio.hpp>
@@ -6,7 +15,7 @@ class music
 {
 private:
 	bool playing;
-	Music backgroundMusic, boxMusic;
+	Music bmusic;
 	SoundBuffer soundBuffer;
 	Sound sound;
 	int elementtype;

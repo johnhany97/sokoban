@@ -1,34 +1,41 @@
+/*
+	John Ayad, 900150853
+	Monica Fahmy, 900142228
+	Youssef Ibrahim, 900142576
+	All Rights Reserved.
+
+	CS110 - Spring 2016 - Dr. Howaida Ismail
+	Sokoban
+*/
 #include "music.h"
 #include <iostream>
-
-
 
 music::music(bool sounds, int element)
 {
 	elementtype = element;
 	if (elementtype == 1)
 	{
-		if (!soundBuffer.loadFromFile("music.ogg"))
+		if (!bmusic.openFromFile("music.ogg"))
 		{
 			std::cout << "Error loading background music file" << std::endl;
 		}
 		playing = sounds;
-		sound.setBuffer(soundBuffer);
-		sound.setLoop(true);
-		sound.setVolume(50);
+		bmusic.setLoop(true);
+		bmusic.setPosition(0, 0, 0); // change its 3D position
+		bmusic.setVolume(50);
 		if (playing) play();
 	}
 	else if (elementtype == 2)
 	{
-		boxMusic.openFromFile("slide.ogg");
-		if (!boxMusic.openFromFile("slide.ogg"))
+		if (!soundBuffer.loadFromFile("slide.ogg"))
 		{
 			std::cout << "Error opening slide music file" << std::endl;
 		}
 		playing = sounds;
-		boxMusic.setLoop(false);
-		boxMusic.setPosition(0, 0, 0); // change its 3D position
-		boxMusic.setVolume(50);
+		sound.setBuffer(soundBuffer);
+		sound.setLoop(false);
+		sound.setPosition(0, 0, 0); // change its 3D position
+		sound.setVolume(50);
 	}
 }
 
@@ -47,14 +54,14 @@ void music::switcher() {
 
 void music::play() {
 	if (elementtype == 1 && playing)
-		sound.play();
+		bmusic.play();
 	else if (elementtype == 2 && playing)
-		boxMusic.play();
+		sound.play();
 }
 
 void music::stop() {
 	if (elementtype == 1)
-		sound.stop();
+		bmusic.stop();
 	else if (elementtype == 2)
-		boxMusic.stop();
+		sound.stop();
 }
