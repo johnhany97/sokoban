@@ -6,9 +6,12 @@ class music
 {
 private:
 	bool playing;
-	Music backgroundMusic;
+	Music backgroundMusic, boxMusic;
+	SoundBuffer soundBuffer;
+	Sound sound;
+	int elementtype;
 public:
-	music(bool);
+	music(bool, int);
 	void switcher();
 	void play();
 	void stop();

@@ -3,11 +3,19 @@
 #define SCRWIDTH 950
 #define SCRHEIGHT 1000
 #include "cell.h"
+#include "mainmenu.h"
+#include "settingsmenu.h"
+#include "music.h"
 #include <string>
 #include <SFML/Graphics.hpp>
 
 using namespace std;
 using namespace sf;
+
+//Global Variables
+Font mainFont;
+mainmenu mmenu;
+settingsmenu smenu;
 
 //Directions Arrays
 // UP , DOWN , LEFT , RIGHT
@@ -39,6 +47,9 @@ Sprite gameWinSplash, gameWinNext, gameWinHome, undoButton, homeButton, restartB
 int playerLocX, playerLocY, pushLeft;
 bool flag = false, levelWon = false, gameFinished = false;
 bool sound = true, infinityModeToggle = false, showTutorial = false;
+
+music bgMusic(sound, 1);
+music bxMusic(sound, 2);
 
 //Player
 cell player;

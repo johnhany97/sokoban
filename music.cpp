@@ -3,18 +3,33 @@
 
 
 
-music::music(bool sound)
+music::music(bool sounds, int element)
 {
-	backgroundMusic.openFromFile("music.ogg");
-	if (!backgroundMusic.openFromFile("music.ogg"))
+	elementtype = element;
+	if (elementtype == 1)
 	{
-		std::cout << "Error opening background music file" << std::endl;
+		if (!soundBuffer.loadFromFile("music.ogg"))
+		{
+			std::cout << "Error loading background music file" << std::endl;
+		}
+		playing = sounds;
+		sound.setBuffer(soundBuffer);
+		sound.setLoop(true);
+		sound.setVolume(50);
+		if (playing) play();
 	}
-	playing = sound;
-	backgroundMusic.setLoop(true);
-	backgroundMusic.setPosition(0, 0, 0); // change its 3D position
-	backgroundMusic.setVolume(50);
-	if (playing) play();
+	else if (elementtype == 2)
+	{
+		boxMusic.openFromFile("slide.ogg");
+		if (!boxMusic.openFromFile("slide.ogg"))
+		{
+			std::cout << "Error opening slide music file" << std::endl;
+		}
+		playing = sounds;
+		boxMusic.setLoop(false);
+		boxMusic.setPosition(0, 0, 0); // change its 3D position
+		boxMusic.setVolume(50);
+	}
 }
 
 void music::switcher() {
@@ -31,9 +46,15 @@ void music::switcher() {
 }
 
 void music::play() {
-	backgroundMusic.play();
+	if (elementtype == 1 && playing)
+		sound.play();
+	else if (elementtype == 2 && playing)
+		boxMusic.play();
 }
 
 void music::stop() {
-	backgroundMusic.stop();
+	if (elementtype == 1)
+		sound.stop();
+	else if (elementtype == 2)
+		boxMusic.stop();
 }
