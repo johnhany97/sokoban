@@ -24,7 +24,6 @@ settingsmenu::settingsmenu()
 	settingsBG.setSize(Vector2f(950, 1000));
 
 	//Settings Title
-	settingsTitleTexture.loadFromFile("images/settings_title.png");
 	if (!settingsTitleTexture.loadFromFile("images/settings_title.png")) {
 		std::cout << "Failed to load settings title spritesheet!" << std::endl;
 	}
@@ -32,7 +31,6 @@ settingsmenu::settingsmenu()
 	settingsTitle.setPosition(Vector2f(0, 0));
 
 	//ModeButton
-	modeButtonTexture.loadFromFile("images/classic_button.png");
 	if (!modeButtonTexture.loadFromFile("images/classic_button.png")) {
 		std::cout << "Failed to load classic mode button spritesheet!" << std::endl;
 	}
@@ -40,7 +38,6 @@ settingsmenu::settingsmenu()
 	modeButton.setPosition(Vector2f(72, 536.5));
 
 	//TutorialButton
-	tutorialButtonTexture.loadFromFile("images/tutorial_button.png");
 	if (!tutorialButtonTexture.loadFromFile("images/tutorial_button.png")) {
 		std::cout << "Failed to load tutorial button spritesheet!" << std::endl;
 	}
@@ -48,12 +45,18 @@ settingsmenu::settingsmenu()
 	tutorialButton.setPosition(Vector2f(596.5, 536.5));
 
 	//HomeButton
-	homeButtonTexture.loadFromFile("images/home_button.png");
 	if (!homeButtonTexture.loadFromFile("images/home_button.png")) {
 		std::cout << "Failed to load home button spritesheet!" << std::endl;
 	}
 	homeButton.setTexture(homeButtonTexture);
 	homeButton.setPosition(Vector2f(332, 742));
+
+	//Tutorial
+	if (!tutorialTexture.loadFromFile("images/tutorial.png")) {
+		std::cout << "Failed to load tutorial spritesheet!" << std::endl;
+	}
+	tutorial.setTexture(tutorialTexture);
+	tutorial.setPosition(Vector2f(0, 0));
 }
 
 void settingsmenu::draw(RenderWindow& window) {
@@ -95,6 +98,13 @@ bool settingsmenu::mousePress(int spriteNo, RenderWindow &window) {
 			return false;
 		}
 		break;
+	case 3: //Tutorial
+		if (mouseX > tutorial.getPosition().x + windowPosition.x && mouseX < (tutorial.getPosition().x + tutorial.getGlobalBounds().width + windowPosition.x)
+			&& mouseY > tutorial.getPosition().y + windowPosition.y + 60 && mouseY < (tutorial.getPosition().y + tutorial.getGlobalBounds().height + windowPosition.y + 60)) {
+			if (Mouse::isButtonPressed(Mouse::Left) && Event::MouseButtonReleased)
+				return true;
+			return false;
+		}
 	}
 	return false;
 }
@@ -104,7 +114,6 @@ void settingsmenu::modePressed(bool& classicModeToggle) {
 		//Switch to off
 		classicModeToggle = false;
 		Image temp;
-		temp.loadFromFile("images/classic_button.png");
 		if (!temp.loadFromFile("images/classic_button.png")) {
 			std::cout << "Failed to classic mode button off spritesheet!" << std::endl;
 		}
@@ -114,7 +123,6 @@ void settingsmenu::modePressed(bool& classicModeToggle) {
 		//Switch to on
 		classicModeToggle = true;
 		Image temp;
-		temp.loadFromFile("images/infinity_button.png");
 		if (!temp.loadFromFile("images/infinity_button.png")) {
 			std::cout << "Failed to infinity mode button off spritesheet!" << std::endl;
 		}
@@ -126,11 +134,13 @@ void settingsmenu::tutorialPressed(bool& showTutorial) {
 	if (showTutorial) {
 		//Switch to off
 		showTutorial = false;
-		//HIDE IT
 	}
 	else {
 		//Switch to on
-		showTutorial = false;
-		//SHOW IT
+		showTutorial = true;
 	}
+}
+
+void settingsmenu::showT(RenderWindow &window) {
+	window.draw(tutorial);
 }

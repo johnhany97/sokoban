@@ -16,14 +16,15 @@
 using namespace std;
 
 level::level() {
-	size = 0;
 	push = 0;
 	x = 17; //Default Size
 	y = 17; //Default Size
-	size = x * y;
-	for (int i = 0; i < size; i++) {
-		arr.push_back(-1);
+	for (int i = 0; i < y; i++) {
+		for (int j = 0; j < x; j++) {
+			arr.push_back(-1);
+		}
 	}
+	size = arr.size();
 }
 
 level::level(int k, int z)
@@ -31,10 +32,12 @@ level::level(int k, int z)
 	push = 0;
 	x = k;
 	y = z;
-	size = k* z;
-	for (int i = 0; i < size; i++) {
-		arr.push_back(-1);
+	for (int i = 0; i < y; i++) {
+		for (int j = 0; j < x; j++) {
+			arr.push_back(-1);
+		}
 	}
+	size = arr.size();
 }
 
 void level::initialize(int levelNo) {
@@ -86,15 +89,15 @@ void level::initialize(int levelNo) {
 
 void level::setSize(int k, int z)
 {
-	for (int i = 0; i < size; i++) {
-		arr.pop_back();
-	}
+	empty();
 	x = k;
 	y = z;
-	size = x * y;
-	for (int i = 0; i < size; i++){
-		arr.push_back(-1);
+	for (int i = 0; i < y; i++){
+		for (int j = 0; j < x; j++) {
+			arr.push_back(-1);
+		}
 	}
+	size = arr.size();
 }
 
 int level::getX() const
@@ -108,7 +111,7 @@ int level::getY() const
 }
 
 int level::getContent(int i, int j) {
-	return arr.at(i * y + j);
+	return arr[i * y + j];
 }
 
 void level::print() {
@@ -126,8 +129,10 @@ int level::getPush() {
 }
 
 void level::empty() {
-	for (int i = 0; i < size; i++) {
-		arr.pop_back();
+	for (int i = 0; i < y; i++) {
+		for (int j = 0; j < x; j++) {
+			arr.push_back(-1);
+		}
 	}
-	size = 0;
+	size = arr.size();
 }

@@ -34,8 +34,6 @@ public:
 	sf::Vector2f getPosition();
 	int getXPosition();
 	int getYPosition();
-	void goalReach(int);
-	bool goalReached();
 	void draw(sf::RenderWindow&);
 	void switcher(int);
 	bool move(int);

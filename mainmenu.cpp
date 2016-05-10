@@ -15,7 +15,6 @@ using namespace sf;
 mainmenu::mainmenu()
 {
 	//Title
-	mainTitleTexture.loadFromFile("images/title.png");
 	if (!mainTitleTexture.loadFromFile("images/title.png"))
 	{
 		std::cout << "Failed to load main title spritesheet!" << std::endl;
@@ -30,7 +29,6 @@ mainmenu::mainmenu()
 	mainBG.setSize(Vector2f(950, 1000));
 
 	//Play Button
-	playButtonTexture.loadFromFile("images/play_button.png");
 	if (!playButtonTexture.loadFromFile("images/play_button.png"))
 	{
 		std::cout << "Failed to load play button spritesheet!" << std::endl;
@@ -39,7 +37,6 @@ mainmenu::mainmenu()
 	playButton.setPosition(Vector2f(123, 601));
 
 	//Settings Button
-	settingsButtonTexture.loadFromFile("images/settings_button.png");
 	if (!settingsButtonTexture.loadFromFile("images/settings_button.png"))
 	{
 		std::cout << "Failed to load settings button spritesheet!" << std::endl;
@@ -48,7 +45,6 @@ mainmenu::mainmenu()
 	settingsButton.setPosition(Vector2f(123, 424.5));
 
 	//Volume Button
-	volumeButtonTexture.loadFromFile("images/volume_button.png");
 	if (!volumeButtonTexture.loadFromFile("images/volume_button.png"))
 	{
 		std::cout << "Failed to load volume button spritesheet!" << std::endl;
@@ -105,7 +101,6 @@ void mainmenu::volumePressed(bool& sound) {
 		//Switch to off
 		sound = false;
 		Image temp;
-		temp.loadFromFile("images/volume_button_off.png");
 		if (!temp.loadFromFile("images/volume_button_off.png")) {
 			std::cout << "Failed to load volume button off spritesheet!" << std::endl;
 		}
@@ -115,7 +110,6 @@ void mainmenu::volumePressed(bool& sound) {
 		//Switch to on
 		sound = true;
 		Image temp;
-		temp.loadFromFile("images/volume_button.png");
 		if (!temp.loadFromFile("images/volume_button.png")) {
 			std::cout << "Failed to load volume button spritesheet!" << std::endl;
 		}

@@ -71,6 +71,9 @@ void game::render() {
 		break;
 	case 2: //Settings
 		smenu.draw(*window);
+		if (showTutorial) {
+			smenu.showT(*window);
+		}
 		break;
 	case 3: //LevelChooser
 		window->draw(levelChoose);
@@ -196,6 +199,9 @@ void game::gameLoop() {
 					}
 					else if (mousePress(4) || Keyboard::isKeyPressed(Keyboard::U)) { //Undo button
 						undo();
+					} 
+					else if (Keyboard::isKeyPressed(Keyboard::F10)) {
+						pushLeft++;
 					}
 					if (pushLeft<0 && !infinityModeToggle)
 					{
@@ -249,17 +255,20 @@ void game::gameLoop() {
 				}
 				break;
 			case 2: //Settings
-				if (Keyboard::isKeyPressed(Keyboard::B)) {
-					status = 0;
+				if (!showTutorial) {
+					if (smenu.mousePress(0, *window)) { //Tutorial button pressed
+						smenu.tutorialPressed(showTutorial);
+						smenu.showT(*window);
+					}
+					if (smenu.mousePress(1, *window)) { //Home button pressed
+						status = 0;
+					}
+					if (smenu.mousePress(2, *window)) { //Mode button pressed
+						smenu.modePressed(infinityModeToggle);
+					}
 				}
-				if (smenu.mousePress(0, *window)) { //Tutorial button pressed
-					smenu.tutorialPressed(showTutorial);
-				}
-				if (smenu.mousePress(1, *window)) { //Home button pressed
-					status = 0;
-				}
-				if (smenu.mousePress(2, *window)) { //Mode button pressed
-					smenu.modePressed(infinityModeToggle);
+				else if (smenu.mousePress(3, *window)) {
+					showTutorial = false;
 				}
 				break;
 			case 3: //LevelChooser
@@ -368,7 +377,6 @@ void game::initialize() {
 	gameBG.setSize(Vector2f(SCRWIDTH, SCRHEIGHT));
 
 	//Game Won Sprite
-	gameWinSplashTexture.loadFromFile("images/game_win.png");
 	if (!gameWinSplashTexture.loadFromFile("images/game_win.png"))
 	{
 		std::cout << "Failed to load win splash spritesheet!" << std::endl;
@@ -377,7 +385,6 @@ void game::initialize() {
 	gameWinSplash.setPosition(Vector2f(0, 0));
 
 	//Next button
-	gameWinNextTexture.loadFromFile("images/next_button.png");
 	if (!gameWinNextTexture.loadFromFile("images/next_button.png"))
 	{
 		std::cout << "Failed to load next button spritesheet!" << std::endl;
@@ -386,7 +393,6 @@ void game::initialize() {
 	gameWinNext.setPosition(Vector2f(590, 810));
 
 	//Home button
-	gameWinHomeTexture.loadFromFile("images/home_button.png");
 	if (!gameWinHomeTexture.loadFromFile("images/home_button.png"))
 	{
 		std::cout << "Failed to load home button spritesheet!" << std::endl;
@@ -395,7 +401,6 @@ void game::initialize() {
 	gameWinHome.setPosition(Vector2f(70, 810));
 
 	//undo Button (in game)
-	undoButtonTexture.loadFromFile("sprites/undo.png");
 	if (!undoButtonTexture.loadFromFile("sprites/undo.png"))
 	{
 		std::cout << "Failed to load undo button spritesheet!" << std::endl;
@@ -404,7 +409,6 @@ void game::initialize() {
 	undoButton.setPosition(Vector2f(1, 937));
 
 	//home Button (in game)
-	homeButtonTexture.loadFromFile("sprites/home.png");
 	if (!homeButtonTexture.loadFromFile("sprites/home.png"))
 	{
 		std::cout << "Failed to load home button spritesheet!" << std::endl;
@@ -413,7 +417,6 @@ void game::initialize() {
 	homeButton.setPosition(Vector2f(445, 937));
 
 	//restart Button (in game)
-	restartButtonTexture.loadFromFile("sprites/restart.png");
 	if (!restartButtonTexture.loadFromFile("sprites/restart.png"))
 	{
 		std::cout << "Failed to load restart button spritesheet!" << std::endl;
@@ -431,7 +434,6 @@ void game::initialize() {
 }
 
 void game::levelInitalize(level& currentLevel, int N) {
-	currentLevel.setSize(17, 17);
 	currentLevel.empty();
 	currentLevel.initialize(N);
 	int initialX = 0, initialY = 100;

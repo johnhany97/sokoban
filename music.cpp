@@ -48,7 +48,8 @@ void music::switcher() {
 	else {
 		//Switch to on
 		playing = true;
-		play();
+		if (elementtype == 1)
+			play();
 	}
 }
 

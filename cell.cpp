@@ -27,7 +27,6 @@ cell::kind cell::getType() {
 void cell::initialize() {
 	switch (type) {
 	case 0: //Empty tile (floor)
-		clTexture.loadFromFile("sprites/floor.jpg");
 		if (!clTexture.loadFromFile("sprites/floor.jpg"))
 		{
 			std::cout << "Failed to load floor spritesheet!" << std::endl;
@@ -35,7 +34,6 @@ void cell::initialize() {
 		cl.setTexture(clTexture, true);
 		break;
 	case 1: //Wall
-		clTexture.loadFromFile("sprites/Wall.jpg");
 		if (!clTexture.loadFromFile("sprites/Wall.jpg"))
 		{
 			std::cout << "Failed to load wall spritesheet!" << std::endl;
@@ -43,7 +41,6 @@ void cell::initialize() {
 		cl.setTexture(clTexture, true);
 		break;
 	case 2: //Goal
-		clTexture.loadFromFile("sprites/Goal.png");
 		if (!clTexture.loadFromFile("sprites/Goal.png"))
 		{
 			std::cout << "Failed to load goal spritesheet!" << std::endl;
@@ -51,7 +48,6 @@ void cell::initialize() {
 		cl.setTexture(clTexture, true);
 		break;
 	case 3: //Box
-		clTexture.loadFromFile("sprites/box.png");
 		if (!clTexture.loadFromFile("sprites/box.png"))
 		{
 			std::cout << "Failed to load box spritesheet!" << std::endl;
@@ -60,7 +56,6 @@ void cell::initialize() {
 		onGoal = false;
 		break;
 	case 4: //Player
-		clTexture.loadFromFile("sprites/player2.png");
 		if (!clTexture.loadFromFile("sprites/player2.png"))
 		{
 			std::cout << "Failed to load player spritesheet!" << std::endl;
@@ -70,7 +65,6 @@ void cell::initialize() {
 		cl.setScale(50 / 32.0, 50 / 32.0);
 		break;
 	case 5: //S P A C E
-		clTexture.loadFromFile("sprites/space.png");
 		if (!clTexture.loadFromFile("sprites/space.png"))
 		{
 			std::cout << "Failed to load space spritesheet!" << std::endl;
@@ -78,7 +72,6 @@ void cell::initialize() {
 		cl.setTexture(clTexture, true);
 		break;
 	case 6: //Winning Box
-		clTexture.loadFromFile("sprites/box_win.png");
 		if (!clTexture.loadFromFile("sprites/box_win.png"))
 		{
 			std::cout << "Failed to load space spritesheet!" << std::endl;
@@ -124,21 +117,6 @@ sf::Vector2f cell::getPosition() {
 	return cl.getPosition();
 }
 
-void cell::goalReach(int swap) {
-	if ((type == box || type == box_win) && swap == 1) {
-		onGoal = true;
-		switcher(1);
-	}
-	else if ((type == box || type == box_win) && swap == 0) {
-		onGoal = false;
-		switcher(0);
-	}
-}
-
-bool cell::goalReached() {
-	return onGoal;
-}
-
 int cell::getXPosition() {
 	return cl.getPosition().x;
 }
@@ -156,7 +134,6 @@ void cell::switcher(int win) {
 	if (type == box && win == 0) {
 		onGoal = false;
 		sf::Image temp;
-		temp.loadFromFile("sprites/box.png");
 		if (!temp.loadFromFile("sprites/box.png"))
 		{
 			std::cout << "Failed to load box spritesheet!" << std::endl;
@@ -166,7 +143,6 @@ void cell::switcher(int win) {
 	else if (type == box && win == 1) {
 		onGoal = true;
 		sf::Image temp;
-		temp.loadFromFile("sprites/box_win.png");
 		if (!temp.loadFromFile("sprites/box_win.png"))
 		{
 			std::cout << "Failed to load box win spritesheet!" << std::endl;
@@ -190,32 +166,32 @@ bool cell::move(int dir) {
 
 void cell::update() {
 
-	if (moving && animationcounter < 12.5 && type == 4)
+	if (moving && animationcounter < 50 && type == 4)
 	{
 		switch (currentDir) {
 		case 0: //up
-			cl.move(0, -4);
+			cl.move(0, -5);
 			if ((animationcounter / 2) % 2 == 0) {
 				cl.setTextureRect(sf::IntRect(0, 96, 32, 32));
 			}
 			else cl.setTextureRect(sf::IntRect(64, 96, 32, 32));
 			break;
 		case 1: //Down
-			cl.move(0, 4);
+			cl.move(0, 5);
 			if ((animationcounter / 2) % 2 == 0) {
 				cl.setTextureRect(sf::IntRect(0, 0, 32, 32));
 			}
 			else cl.setTextureRect(sf::IntRect(64, 0, 32, 32));
 			break;
 		case 2: //Left
-			cl.move(-4, 0);
+			cl.move(-5, 0);
 			if ((animationcounter / 2) % 2 == 0) {
 				cl.setTextureRect(sf::IntRect(0, 32, 32, 32));
 			}
 			else cl.setTextureRect(sf::IntRect(64, 32, 32, 32));
 			break;
 		case 3: //Right
-			cl.move(4, 0);
+			cl.move(5, 0);
 			if ((animationcounter / 2) % 2 == 0) {
 				cl.setTextureRect(sf::IntRect(0, 64, 32, 32));
 			}
@@ -223,9 +199,9 @@ void cell::update() {
 			break;
 		}
 		cl.setScale(50.0 / 32, 50 / 32.0);
-		animationcounter++;
+		animationcounter+=5;
 	}
-	else if(animationcounter >= 12.5)
+	else if(animationcounter >= 50)
 	{
 		moving = false;
 		animationcounter = 0;

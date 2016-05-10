@@ -19,8 +19,8 @@ class settingsmenu
 private:
 	Font mainFont;
 	RectangleShape settingsBG;
-	Sprite settingsTitle, modeButton, tutorialButton, homeButton;
-	Texture settingsTitleTexture, modeButtonTexture, tutorialButtonTexture, homeButtonTexture;
+	Sprite settingsTitle, modeButton, tutorialButton, homeButton, tutorial;
+	Texture settingsTitleTexture, modeButtonTexture, tutorialButtonTexture, homeButtonTexture, tutorialTexture;
 
 public:
 	settingsmenu();
@@ -28,5 +28,6 @@ public:
 	bool mousePress(int, RenderWindow&);
 	void modePressed(bool&);
 	void tutorialPressed(bool&);
+	void showT(RenderWindow&);
 };
 #endif
