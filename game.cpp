@@ -57,7 +57,7 @@ void game::render() {
 			window->draw(gameWinHome);
 			levelWon = true;
 		}
-		else if (gameWin() && !gameFinished) {
+		else if ((gameWin() || levelWon) && !gameFinished) {
 			window->draw(gameWinSplash);
 			window->draw(gameWinHome);
 			window->draw(gameWinNext);
@@ -107,6 +107,7 @@ void game::gameLoop() {
 			case 1: //Game
 				if (!levelWon && !gameover) {
 					if (Keyboard::isKeyPressed(Keyboard::Right) || Keyboard::isKeyPressed(Keyboard::D)) {
+						cheatCode = "";
 						if (valideMove(3))
 						{
 							if (player.move(3)) {
@@ -124,6 +125,7 @@ void game::gameLoop() {
 						}
 					}
 					else if (Keyboard::isKeyPressed(Keyboard::Left) || Keyboard::isKeyPressed(Keyboard::A)) {
+						cheatCode = "";
 						if (valideMove(2))
 						{
 							if (player.move(2)) {
@@ -141,6 +143,7 @@ void game::gameLoop() {
 						}
 					}
 					else if (Keyboard::isKeyPressed(Keyboard::Up) || Keyboard::isKeyPressed(Keyboard::W)) {
+						cheatCode = "";
 						if (valideMove(0))
 						{
 							if (player.move(0)) {
@@ -158,6 +161,7 @@ void game::gameLoop() {
 						}
 					}
 					else if (Keyboard::isKeyPressed(Keyboard::Down) || Keyboard::isKeyPressed(Keyboard::S)) {
+						cheatCode = "";
 						if (valideMove(1))
 						{
 							if (player.move(1)) {
@@ -174,12 +178,31 @@ void game::gameLoop() {
 							}
 						}
 					}
+					else if (event.type == Event::TextEntered) {
+						if ((event.text.unicode == 106 || event.text.unicode == 74) && cheatCode.length() == 0) {
+							cheatCode = "";
+							cheatCode.push_back('J');
+						}
+						else if ((event.text.unicode == 109 || event.text.unicode == 77) && cheatCode == "J") {
+							cheatCode.push_back('M');
+						}
+						else if ((event.text.unicode == 121 || event.text.unicode == 89) && cheatCode == "JM") {
+							cheatCode.push_back('Y');
+						}
+						else
+							cheatCode = "";
+						if (cheatCode == "JMY") {
+							levelWon = true;
+						}
+					}
 					else if (mousePress(2) || Keyboard::isKeyPressed(Keyboard::R)) { //Restart button
 																					 //Initialize Level
+						cheatCode = "";
 						level currentLevel;
 						levelInitalize(currentLevel, levelN);
 					}
 					else if (mousePress(3) || Keyboard::isKeyPressed(Keyboard::H)) { //Home button
+						cheatCode = "";
 						status = 0;
 						s = "";
 						counter = 0;
@@ -209,6 +232,7 @@ void game::gameLoop() {
 					}
 				}
 				else if (mousePress(0)) { //Next Button
+					cheatCode = "";
 					levelN++;
 					if (levelN > range) gameFinished = true;
 					if (levelN <= range) {
@@ -234,6 +258,7 @@ void game::gameLoop() {
 					}
 				}
 				else if (mousePress(1)) { //Home Button
+					cheatCode = "";
 					status = 0;
 					s = "";
 					counter = 0;

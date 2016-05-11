@@ -79,6 +79,7 @@ Text levelChoose, levelIP, levelWarning;
 */
 bool gameFinished = false, gameover, levelWon = false, nextWasBox;
 int direction = -1, playerLocX, playerLocY, pushLeft;
+string cheatCode = "";
 cell player;
 Font mainFont, counterFont;
 music bgMusic(sound, 1);
