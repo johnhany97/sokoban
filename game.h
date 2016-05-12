@@ -32,10 +32,11 @@ public:
 	bool valideMove(int);
 	bool NextIsBox(int);
 	void boxUpdate();
-	bool gameWin();
+	bool gameWin(int, int);
 	void textAligner(Text&);
 	bool mousePress(int spriteNo);
 	void undo();
+	void move(int);
 	~game();
 };
 #endif

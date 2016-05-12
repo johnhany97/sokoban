@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="cell">
+    <Position X="0.5" Y="0.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="cell::kind">
+        <TypeIdentifier>
+          <NewMemberFileName>cell.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAgICCAIAAAAECAIAMAAAACARABAAAAAABQAgBkIAA=</HashCode>
+      <FileName>cell.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="game">
+    <Position X="7" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAMAAAACAAAgAEQCAEAAAAAAQAIQQAAAAQwACI=</HashCode>
+      <FileName>game.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="music">
+    <Position X="9.25" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAABAAACQAgAAAAAAACkAAAAAABAAAAAAAA=</HashCode>
+      <FileName>music.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="level">
+    <Position X="5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAgACIEAAAACgAEAAAAAIABoAGAgAAA=</HashCode>
+      <FileName>level.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="mainmenu">
+    <Position X="2.75" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>BAAIAAIAAAAABAAAAAIQAAAAAIAEABIAAAAAgAAAABA=</HashCode>
+      <FileName>mainmenu.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="settingsmenu">
+    <Position X="11.25" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>QAAAIAAAAAAACMAAAAIQAAAAAhAECAQIRAAAABgAABA=</HashCode>
+      <FileName>settingsmenu.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

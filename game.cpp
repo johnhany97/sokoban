@@ -46,7 +46,7 @@ void game::render() {
 				map1B[i][j].draw(*window);
 			}
 		}
-		counterText.setString("PUSHES  LEFT  ARE  " + to_string(pushLeft));
+		counterText.setString("PUSHES  LEFT  ARE  " + to_string(pushLeft + 1));
 		if (!infinityModeToggle)
 			window->draw(counterText);
 		window->draw(undoButton);
@@ -57,7 +57,7 @@ void game::render() {
 			window->draw(gameWinHome);
 			levelWon = true;
 		}
-		else if ((gameWin() || levelWon) && !gameFinished) {
+		else if ((gameWin(0, 0) || levelWon) && !gameFinished) {
 			window->draw(gameWinSplash);
 			window->draw(gameWinHome);
 			window->draw(gameWinNext);
@@ -108,75 +108,19 @@ void game::gameLoop() {
 				if (!levelWon && !gameover) {
 					if (Keyboard::isKeyPressed(Keyboard::Right) || Keyboard::isKeyPressed(Keyboard::D)) {
 						cheatCode = "";
-						if (valideMove(3))
-						{
-							if (player.move(3)) {
-								if (NextIsBox(3)) {
-									swap(map1B[playerLocY][playerLocX + 1], map1B[playerLocY][playerLocX + 2]);
-									bxMusic.play();
-									map1B[playerLocY][playerLocX + 1].setType(5);
-									pushLeft--;
-									nextWasBox = true;
-								}
-								else nextWasBox = false;
-								direction = 3;
-								playerLocX++;
-							}
-						}
+						move(3);
 					}
 					else if (Keyboard::isKeyPressed(Keyboard::Left) || Keyboard::isKeyPressed(Keyboard::A)) {
 						cheatCode = "";
-						if (valideMove(2))
-						{
-							if (player.move(2)) {
-								if (NextIsBox(2)) {
-									swap(map1B[playerLocY][playerLocX - 1], map1B[playerLocY][playerLocX - 2]);
-									bxMusic.play();
-									map1B[playerLocY][playerLocX - 1].setType(5);
-									pushLeft--;
-									nextWasBox = true;
-								}
-								else nextWasBox = false;
-								direction = 2;
-								playerLocX--;
-							}
-						}
+						move(2);
 					}
 					else if (Keyboard::isKeyPressed(Keyboard::Up) || Keyboard::isKeyPressed(Keyboard::W)) {
 						cheatCode = "";
-						if (valideMove(0))
-						{
-							if (player.move(0)) {
-								if (NextIsBox(0)) {
-									swap(map1B[playerLocY - 1][playerLocX], map1B[playerLocY - 2][playerLocX]);
-									bxMusic.play();
-									map1B[playerLocY - 1][playerLocX].setType(5);
-									pushLeft--;
-									nextWasBox = true;
-								}
-								else nextWasBox = false;
-								direction = 0;
-								playerLocY--;
-							}
-						}
+						move(0);
 					}
 					else if (Keyboard::isKeyPressed(Keyboard::Down) || Keyboard::isKeyPressed(Keyboard::S)) {
 						cheatCode = "";
-						if (valideMove(1))
-						{
-							if (player.move(1)) {
-								if (NextIsBox(1)) {
-									swap(map1B[playerLocY + 1][playerLocX], map1B[playerLocY + 2][playerLocX]);
-									bxMusic.play();
-									map1B[playerLocY + 1][playerLocX].setType(5);
-									pushLeft--;
-									nextWasBox = true;
-								}
-								else nextWasBox = false;
-								direction = 1;
-								playerLocY++;
-							}
-						}
+						move(1);
 					}
 					else if (event.type == Event::TextEntered) {
 						if ((event.text.unicode == 106 || event.text.unicode == 74) && cheatCode.length() == 0) {
@@ -222,11 +166,11 @@ void game::gameLoop() {
 					}
 					else if (mousePress(4) || Keyboard::isKeyPressed(Keyboard::U)) { //Undo button
 						undo();
-					} 
+					}
 					else if (Keyboard::isKeyPressed(Keyboard::F10)) {
 						pushLeft++;
 					}
-					if (pushLeft<0 && !infinityModeToggle)
+					if (pushLeft < 0 && !infinityModeToggle)
 					{
 						gameover = true;
 					}
@@ -454,7 +398,7 @@ void game::initialize() {
 	counterText.setFont(counterFont);
 	counterText.setCharacterSize(30);
 	counterText.setPosition(Vector2f(10, 10));
-	counterText.setString("PUSHES LEFT ARE " + to_string(pushLeft));
+	counterText.setString("PUSHES LEFT ARE " + to_string(pushLeft + 1));
 
 }
 
@@ -543,7 +487,7 @@ void game::levelInitalize(level& currentLevel, int N) {
 		initialY += 50;
 		initialX = 50;
 	}
-	pushLeft = currentLevel.getPush();
+	pushLeft = currentLevel.getPush() + 6;
 }
 
 bool game::valideMove(int direction)
@@ -587,15 +531,17 @@ void game::boxUpdate() {
 	}
 }
 
-bool game::gameWin() {
-	bool flag1 = true;
-	for (int i = 0; i < 17; i++) {
-		for (int j = 0; j < 17; j++) {
-			if (map1B[i][j].getType() == 3)
-				flag1 = false;
-		}
+bool game::gameWin(int i, int j) {
+	if (map1B[i][j].getType() == 3) {
+		return false;
 	}
-	return flag1;
+	else if (j < 16 && i < 17) {
+		return (true && gameWin(i, j+1));
+	}
+	else if (j == 16 && i < 17) {
+		return (true && gameWin(i + 1, 0));
+	}
+	else return true;
 }
 
 void game::textAligner(Text& text) {
@@ -697,6 +643,79 @@ void game::undo() {
 	}
 	nextWasBox = false;
 	direction = -1;
+}
+
+void game::move(int dir) {
+	switch (dir) {
+		case 0: //Up
+			if (valideMove(0))
+			{
+				if (player.move(0)) {
+					if (NextIsBox(0)) {
+						swap(map1B[playerLocY - 1][playerLocX], map1B[playerLocY - 2][playerLocX]);
+						bxMusic.play();
+						map1B[playerLocY - 1][playerLocX].setType(5);
+						pushLeft--;
+						nextWasBox = true;
+					}
+					else nextWasBox = false;
+					direction = 0;
+					playerLocY--;
+				}
+			}
+			break;
+		case 1: //Down
+			if (valideMove(1))
+			{
+				if (player.move(1)) {
+					if (NextIsBox(1)) {
+						swap(map1B[playerLocY + 1][playerLocX], map1B[playerLocY + 2][playerLocX]);
+						bxMusic.play();
+						map1B[playerLocY + 1][playerLocX].setType(5);
+						pushLeft--;
+						nextWasBox = true;
+					}
+					else nextWasBox = false;
+					direction = 1;
+					playerLocY++;
+				}
+			}
+			break;
+		case 2: //Left
+			if (valideMove(2))
+			{
+				if (player.move(2)) {
+					if (NextIsBox(2)) {
+						swap(map1B[playerLocY][playerLocX - 1], map1B[playerLocY][playerLocX - 2]);
+						bxMusic.play();
+						map1B[playerLocY][playerLocX - 1].setType(5);
+						pushLeft--;
+						nextWasBox = true;
+					}
+					else nextWasBox = false;
+					direction = 2;
+					playerLocX--;
+				}
+			}
+			break;
+		case 3: //Right
+			if (valideMove(3))
+			{
+				if (player.move(3)) {
+					if (NextIsBox(3)) {
+						swap(map1B[playerLocY][playerLocX + 1], map1B[playerLocY][playerLocX + 2]);
+						bxMusic.play();
+						map1B[playerLocY][playerLocX + 1].setType(5);
+						pushLeft--;
+						nextWasBox = true;
+					}
+					else nextWasBox = false;
+					direction = 3;
+					playerLocX++;
+				}
+			}
+			break;
+	}
 }
 
 game::~game()
