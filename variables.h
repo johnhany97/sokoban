@@ -77,7 +77,7 @@ Text levelChoose, levelIP, levelWarning;
 /*
 	Game Variables
 */
-bool gameFinished = false, gameover, levelWon = false, nextWasBox;
+bool gameFinished = false, gameover, levelWon = false, nextWasBox, conductHint;
 int direction = -1, playerLocX, playerLocY, pushLeft;
 string cheatCode = "";
 cell player;
@@ -85,9 +85,9 @@ Font mainFont, counterFont;
 music bgMusic(sound, 1);
 music bxMusic(sound, 2);
 RectangleShape gameBG;
-Sprite gameWinSplash, gameWinNext, gameWinHome, undoButton, homeButton, restartButton;
-Texture gameWinSplashTexture, gameWinNextTexture, gameWinHomeTexture, undoButtonTexture, homeButtonTexture, restartButtonTexture;
-Text counterText;
+Sprite gameWinSplash, gameWinNext, gameWinHome, undoButton, homeButton, restartButton, hintButton;
+Texture gameWinSplashTexture, gameWinNextTexture, gameWinHomeTexture, undoButtonTexture, homeButtonTexture, restartButtonTexture, hintButtonTexture;
+Text counterText, hintText;
 
 #endif
 

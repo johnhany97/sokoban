@@ -53,6 +53,8 @@ void game::render() {
 		window->draw(undoButton);
 		window->draw(restartButton);
 		window->draw(homeButton);
+		window->draw(hintButton);
+		window->draw(hintText);
 		if (gameFinished) {
 			window->draw(gameWinSplash);
 			window->draw(gameWinHome);
@@ -89,6 +91,35 @@ void game::render() {
 void game::gameLoop() {
 
 	while (window->isOpen()) {
+		if (conductHint) {
+			string temp;
+			solver curSolved(levelN, temp);
+			curSolved.run(map1A, map1B, playerLocX, playerLocY);
+			temp = curSolved.getSol();
+			switch (temp.at(0)) {
+			case 'U': //UP
+					  //cout << "Move upwards\n";
+				hintText.setString("Move  upwards");
+				break;
+			case 'D': //DOWN
+					  //cout << "Move downwards\n";
+				hintText.setString("Move  downwards");
+				break;
+			case 'L': //LEFT
+					  //cout << "Move to the left\n";
+				hintText.setString("Move  to  the  left");
+				break;
+			case 'R': //RIGHT
+					  //cout << "Move to the right\n";
+				hintText.setString("Move  to  the  right");
+				break;
+			case ' ': //NO SOLUTION FOUND
+					  //cout << "No way out of it]n";
+				hintText.setString("NO  WAY  OUT");
+				break;
+			}
+			conductHint = false;
+		}
 		Event event;
 		while (window->pollEvent(event)) {
 			switch (status) {
@@ -109,42 +140,27 @@ void game::gameLoop() {
 				if (!levelWon && !gameover) {
 					if (Keyboard::isKeyPressed(Keyboard::Right) || Keyboard::isKeyPressed(Keyboard::D)) {
 						cheatCode = "";
+						hintText.setString("");
 						move(3);
 					}
 					else if (Keyboard::isKeyPressed(Keyboard::Left) || Keyboard::isKeyPressed(Keyboard::A)) {
 						cheatCode = "";
+						hintText.setString("");
 						move(2);
 					}
 					else if (Keyboard::isKeyPressed(Keyboard::Up) || Keyboard::isKeyPressed(Keyboard::W)) {
 						cheatCode = "";
+						hintText.setString("");
 						move(0);
 					}
 					else if (Keyboard::isKeyPressed(Keyboard::Down) || Keyboard::isKeyPressed(Keyboard::S)) {
 						cheatCode = "";
+						hintText.setString("");
 						move(1);
 					}
-					else if (Keyboard::isKeyPressed(Keyboard::X)) { //ONLY FOR THE FIRST 5 LEVELS!!!
-						string temp;
-						solver curSolved(levelN, temp);
-						curSolved.run(map1A, map1B, playerLocX, playerLocY);
-						temp = curSolved.getSol();
-						switch (temp.at(0)) {
-						case 'U': //UP
-							cout << "Move upwards\n";
-							break;
-						case 'D': //DOWN
-							cout << "Move downwards\n";
-							break;
-						case 'L': //LEFT
-							cout << "Move to the left\n";
-							break;
-						case 'R': //RIGHT
-							cout << "Move to the right\n";
-							break;
-						case ' ': //NO SOLUTION FOUND
-							cout << "No way out of it]n";
-							break;
-						}
+					else if (mousePress(5) || Keyboard::isKeyPressed(Keyboard::X) && levelN <= 5) { //ONLY FOR THE FIRST 5 LEVELS!!!
+						conductHint = true;
+						hintText.setString("PROCESSING");
 					}
 					else if (event.type == Event::TextEntered) {
 						if ((event.text.unicode == 106 || event.text.unicode == 74) && cheatCode.length() == 0) {
@@ -417,6 +433,13 @@ void game::initialize() {
 	restartButton.setTexture(restartButtonTexture);
 	restartButton.setPosition(Vector2f(888, 937));
 
+	//hint Button (in game)
+	if (!hintButtonTexture.loadFromFile("images/hint_button.png")) {
+		std::cout << "Failed to load hint button spritesheet!" << std::endl;
+	}
+	hintButton.setTexture(hintButtonTexture);
+	hintButton.setPosition(Vector2f(888, 2));
+
 	//counter text (in game)
 	counterFont.loadFromFile("arcade.ttf");
 	counterText.setFont(counterFont);
@@ -424,6 +447,11 @@ void game::initialize() {
 	counterText.setPosition(Vector2f(10, 10));
 	counterText.setString("PUSHES LEFT ARE " + to_string(pushLeft + 1));
 
+	//hint text (in game)
+	hintText.setFont(counterFont);
+	hintText.setCharacterSize(30);
+	hintText.setPosition(Vector2f(525, 10));
+	//hintText.setString("Move to the right");
 }
 
 void game::levelInitalize(level& currentLevel, int N) {
@@ -617,6 +645,14 @@ bool game::mousePress(int spriteNo) {
 	case 4: //In game undo button
 		if (mouseX > undoButton.getPosition().x + windowPosition.x && mouseX < (undoButton.getPosition().x + undoButton.getGlobalBounds().width + windowPosition.x)
 			&& mouseY > undoButton.getPosition().y + windowPosition.y + 60 && mouseY < (undoButton.getPosition().y + undoButton.getGlobalBounds().height + windowPosition.y + 60)) {
+			if (Mouse::isButtonPressed(Mouse::Left) && Event::MouseButtonReleased)
+				return true;
+			return false;
+		}
+		break;
+	case 5: //In game hint button
+		if (mouseX > hintButton.getPosition().x + windowPosition.x && mouseX < (hintButton.getPosition().x + hintButton.getGlobalBounds().width + windowPosition.x)
+			&& mouseY > hintButton.getPosition().y + windowPosition.y + 60 && mouseY < (hintButton.getPosition().y + hintButton.getGlobalBounds().height + windowPosition.y + 60)) {
 			if (Mouse::isButtonPressed(Mouse::Left) && Event::MouseButtonReleased)
 				return true;
 			return false;
