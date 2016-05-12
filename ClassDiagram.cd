@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="cell">
-    <Position X="0.5" Y="0.5" Width="2" />
+    <Position X="0.5" Y="0.5" Width="1.5" />
     <Compartments>
       <Compartment Name="Nested Types" Collapsed="false" />
     </Compartments>
@@ -13,40 +13,47 @@
       </Enum>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAAgICCAIAAAAECAIAMAAAACARABAAAAAABQAgBkIAA=</HashCode>
+      <HashCode>AAAgICAAIAAAAECAIAMAAAACARABAAAAAABAAgAkAAA=</HashCode>
       <FileName>cell.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="game">
-    <Position X="7" Y="0.5" Width="2" />
+    <Position X="2.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAMAAAACAAAgAEQCAEAAAAAAQAIQQAAAAQwACI=</HashCode>
+      <HashCode>AAAAAAAMAAAACACAgAEQCAEAAAAAAQAIQQAAAAQwACI=</HashCode>
       <FileName>game.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="music">
-    <Position X="9.25" Y="0.5" Width="1.75" />
+    <Position X="7.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAEAAABAAACQAgAAAAAAACkAAAAAABAAAAAAAA=</HashCode>
       <FileName>music.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="level">
-    <Position X="5" Y="0.5" Width="1.75" />
+  <Class Name="solver">
+    <Position X="11" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAAAgACIEAAAACgAEAAAAAIABoAGAgAAA=</HashCode>
+      <HashCode>AABAAgAAAAAAAAADAAAAAAAABAAQCQAAAAAwAAACgAA=</HashCode>
+      <FileName>solver.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="level">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAACIEAAAACgAEAAAAAIABoAAAgAAA=</HashCode>
       <FileName>level.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="mainmenu">
-    <Position X="2.75" Y="0.5" Width="2" />
+    <Position X="5.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>BAAIAAIAAAAABAAAAAIQAAAAAIAEABIAAAAAgAAAABA=</HashCode>
       <FileName>mainmenu.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="settingsmenu">
-    <Position X="11.25" Y="0.5" Width="2" />
+    <Position X="9.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QAAAIAAAAAAACMAAAAIQAAAAAhAECAQIRAAAABgAABA=</HashCode>
       <FileName>settingsmenu.h</FileName>
