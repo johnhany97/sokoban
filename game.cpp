@@ -53,8 +53,10 @@ void game::render() {
 		window->draw(undoButton);
 		window->draw(restartButton);
 		window->draw(homeButton);
-		window->draw(hintButton);
-		window->draw(hintText);
+		if (levelN <= 5) {
+			window->draw(hintButton);
+			window->draw(hintText);
+		}
 		if (gameFinished) {
 			window->draw(gameWinSplash);
 			window->draw(gameWinHome);
@@ -158,7 +160,7 @@ void game::gameLoop() {
 						hintText.setString("");
 						move(1);
 					}
-					else if (mousePress(5) || Keyboard::isKeyPressed(Keyboard::X) && levelN <= 5) { //ONLY FOR THE FIRST 5 LEVELS!!!
+					else if ((mousePress(5) || Keyboard::isKeyPressed(Keyboard::X)) && levelN <= 5) { //ONLY FOR THE FIRST 5 LEVELS!!!
 						conductHint = true;
 						hintText.setString("PROCESSING");
 					}
