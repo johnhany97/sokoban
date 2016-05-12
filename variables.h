@@ -45,7 +45,7 @@ const int Dx[4] = { 0, 0, -1, 1 };
 /*
 	Number of levels available in the game
 */
-const int range = 72;
+const int range = 105;
 
 /*
 	Master Switch

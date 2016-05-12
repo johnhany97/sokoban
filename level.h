@@ -24,11 +24,7 @@ private:
 	int push;
 public:
 	level();
-	level(int, int);
 	void initialize(int);
-	void setSize(int, int);
-	int getX() const;
-	int getY() const;
 	int getContent(int, int);
 	void print();
 	int getPush();

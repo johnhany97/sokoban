@@ -18,7 +18,6 @@ private:
 	enum kind { empty, wall, goal, box, player, space, box_win};
 	sf::Sprite cl;
 	sf::Texture clTexture;
-	int xLoc, yLoc;
 	bool onGoal;
 	kind type;
 	//Animations
@@ -32,8 +31,6 @@ public:
 	void initialize();
 	void setPosition(int, int);
 	sf::Vector2f getPosition();
-	int getXPosition();
-	int getYPosition();
 	void draw(sf::RenderWindow&);
 	void switcher(int);
 	bool move(int);

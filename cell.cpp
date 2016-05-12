@@ -13,7 +13,6 @@
 
 cell::cell()
 {
-	xLoc = 0; yLoc = 0;
 	onGoal = false;
 	moving = false;
 	animationcounter = 0;
@@ -109,24 +108,13 @@ void cell::setType(int t) {
 
 void cell::setPosition(int k, int z) {
 	cl.setPosition(k, z);
-	xLoc = z;
-	yLoc = k;
 }
 
 sf::Vector2f cell::getPosition() {
 	return cl.getPosition();
 }
 
-int cell::getXPosition() {
-	return cl.getPosition().x;
-}
-
-int cell::getYPosition() {
-	return cl.getPosition().y;
-}
-
 void cell::draw(sf::RenderWindow& window) {
-	//clTexture.setSmooth(true);
 	window.draw(cl);
 }
 

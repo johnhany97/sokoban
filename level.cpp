@@ -27,19 +27,6 @@ level::level() {
 	size = arr.size();
 }
 
-level::level(int k, int z)
-{
-	push = 0;
-	x = k;
-	y = z;
-	for (int i = 0; i < y; i++) {
-		for (int j = 0; j < x; j++) {
-			arr.push_back(-1);
-		}
-	}
-	size = arr.size();
-}
-
 void level::initialize(int levelNo) {
 	int i = 0, j = 0;
 	ifstream ip;
@@ -85,29 +72,6 @@ void level::initialize(int levelNo) {
 	}
 	initalized = true;
 	ip.close();
-}
-
-void level::setSize(int k, int z)
-{
-	empty();
-	x = k;
-	y = z;
-	for (int i = 0; i < y; i++){
-		for (int j = 0; j < x; j++) {
-			arr.push_back(-1);
-		}
-	}
-	size = arr.size();
-}
-
-int level::getX() const
-{
-	return x;
-}
-
-int level::getY() const
-{
-	return y;
 }
 
 int level::getContent(int i, int j) {
