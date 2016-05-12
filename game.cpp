@@ -9,6 +9,7 @@
 */
 #include "game.h"
 #include "variables.h"
+#include "solver.h"
 
 game::game()
 {
@@ -121,6 +122,29 @@ void game::gameLoop() {
 					else if (Keyboard::isKeyPressed(Keyboard::Down) || Keyboard::isKeyPressed(Keyboard::S)) {
 						cheatCode = "";
 						move(1);
+					}
+					else if (Keyboard::isKeyPressed(Keyboard::X)) { //ONLY FOR THE FIRST 5 LEVELS!!!
+						string temp;
+						solver curSolved(levelN, temp);
+						curSolved.run(map1A, map1B, playerLocX, playerLocY);
+						temp = curSolved.getSol();
+						switch (temp.at(0)) {
+						case 'U': //UP
+							cout << "Move upwards\n";
+							break;
+						case 'D': //DOWN
+							cout << "Move downwards\n";
+							break;
+						case 'L': //LEFT
+							cout << "Move to the left\n";
+							break;
+						case 'R': //RIGHT
+							cout << "Move to the right\n";
+							break;
+						case ' ': //NO SOLUTION FOUND
+							cout << "No way out of it]n";
+							break;
+						}
 					}
 					else if (event.type == Event::TextEntered) {
 						if ((event.text.unicode == 106 || event.text.unicode == 74) && cheatCode.length() == 0) {

@@ -31,6 +31,9 @@ void level::initialize(int levelNo) {
 	int i = 0, j = 0;
 	ifstream ip;
 	ip.open("levels/" + to_string(levelNo) + ".txt");
+	if (ip.fail()) {
+		cerr << "Error opening level # " << levelNo << ". Check if file is corrupted\n";
+	}
 	int t;
 	ip >> t;
 	push = t;
