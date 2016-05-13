@@ -70,7 +70,8 @@ cell map1A[17][17], map1B[17][17];
 	Level Chooser Variables
 */
 bool warning = false;
-int counter = 0, levelN;
+int counter = 0;
+int levelN;
 string s = "";
 Text levelChoose, levelIP, levelWarning;
 
