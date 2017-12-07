@@ -13,5 +13,5 @@ Game is built in C++ and SFML.
 - More levels could be easily added via adding a simple text file in the levels folder
 - Validates user inputs
 - Supports two game modes (Infinity mode and classic mode)
-- DFS implemented to have a "Hints" button. (Enabled only for the first 5 levels considering how complex Sokoban could be)
+- BFS implemented to have a "Hints" button. (Enabled only for the first 5 levels considering how complex Sokoban could be) (DFS is implemented but commented out as it doesn't return the optimal solution)
 - Animated character movements
